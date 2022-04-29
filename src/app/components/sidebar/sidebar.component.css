@@ -1,0 +1,36 @@
+div{
+    background-color: #7A1E19;
+}
+.titulo{
+    height:19vh;
+}
+.logo{
+    height:17vh;
+}
+
+.title{
+    font-family: "Rubik";
+    text-align: center;
+    font-size:50px !important ;  
+    font-weight:bold;
+    margin-top: 3%;
+  }
+  .copy{
+      color: #fff;
+      text-align: center;
+      width: 100%;
+      bottom: 0;
+      position: relative;
+      flex-direction: column ;
+      
+  }
+  .sidebar-wrapper{
+      height:85vh;
+  }
+  .contenedor{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-direction: column;
+    height: 21vh;
+  }

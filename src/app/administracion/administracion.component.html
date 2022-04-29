@@ -1,0 +1,53 @@
+
+<div class="" style=" height:100vh " >
+   
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="card card-user" style="margin-top:25%" >
+          
+          <div style="text-align: center " class="mt-5">
+          <img class=" border-gray" style="height: 100px; width: 100px" src="../assets/img/login.png" alt="...">
+        
+        </div>
+  
+          
+          <div class="card-body">
+           
+            <div class="description">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label style="font-weight: bold">Usuario</label>
+                        <input type="email" class="form-control mt-2"[(ngModel)]="usuario"  [ngModelOptions]="{standalone: true}" style="text-align: center">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label style="font-weight: bold">Contraseña</label>
+                        <input type="password" class="form-control mt-2" [(ngModel)]="pass"  [ngModelOptions]="{standalone: true}" style="text-align: center">
+                      </div>
+                    </div>
+                  </div>
+            </div>
+         <br>
+            <ngb-toast style=" margin: 0 auto;" class="toast" *ngIf="errorLogin" [autohide]="false"
+                      (hidden)="show=false">
+                      Usuario o contraseña incorrectos
+                    </ngb-toast>
+            <hr>
+            <div class="button-container">
+              <button class="btn button-perso" (click)="login()">Ingresar</button>
+    
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+  

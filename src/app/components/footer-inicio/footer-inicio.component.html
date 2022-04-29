@@ -1,0 +1,36 @@
+<div class="patrocinadores ">
+  <label class="texto-patrocinadores">Patrocinadores:</label>
+  <div class="row d-flex justify-content-center" style="margin-bottom: -4%;">
+    <div *ngFor="let patrocinador of patrocinadores" style="padding: 10px;">
+      <div class="card d-flex justify-content-center text-center" style="height:100px;width:150px">
+      
+        <img [src]='URL+patrocinador.imagen' (click)="openPatrocinador(patrocinador.link)" class="card-img-top" style="height:100%;width:90%; cursor:pointer" alt="...">
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<div style="background-color: #000;" class=" d-flex justify-content-center pd-5 mt-3"> <label
+    class="texto-patrocinadores">Comparte este evento: </label></div>
+<div class="redes-sociales">
+  <div class="row d-flex justify-content-center">
+
+    <div class="col-lg-12">
+      <div class=" d-flex justify-content-center">
+        <img src='{{imagen}}' *ngFor="let imagen of redessociales" class="card-img-top"
+          style="height:50px;width:50px;padding: 5px; cursor: pointer" alt="...">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="info">
+  <label style="padding-top:5px">© 2022 Universidad Técnica de Ambato - Todos los derechos reservados</label>
+  <br>
+  <label>Campus Huachi Dirección: Av. Los Chasquis y Río Payamino | Teléfono (03)-2851894 ext. 82120 /
+    0992947123</label>
+</div>
+<div class="copyright">
+  <label style="padding-top:5px">Copyright (c) 2020 Universidad Técnica de Ambato</label>
+</div>

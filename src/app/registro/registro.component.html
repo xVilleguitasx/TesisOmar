@@ -1,0 +1,439 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="separador"></div>
+
+<div class="main-content animate__animated animate__zoomIn" *ngIf="registroID">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image" style="background-color: #fff;">
+
+        </div>
+        <div class="card-body">
+          <div class="author">
+
+            <img class="avatar border-gray" src="../assets/img/usuario.png" alt="...">
+            <h5 class="title">IGRESE SU DOCUMENTO DE IDENTIDAD</h5>
+          </div>
+          <div class="description">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control mt-2 input-inicio" [(ngModel)]="documentoIdentidad" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                    style="text-align: center">
+                    <label class="ayuda">C.I./passport</label>
+                  
+                    
+                </div>
+                
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <ngb-toast style=" margin: 0 auto;"class="toast" *ngIf="cedulaImcompleta"  [autohide]="false" (hidden)="show=false">
+            Ingrese su documento de identidad para continuar
+          </ngb-toast>
+        </div>
+        <hr>
+        <div class="button-container">
+          <button class="btn  button-perso" (click)="cambiarForm('registroForm')">
+            Continuar
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-content animate__animated animate__zoomIn" *ngIf="registroForm">
+  
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header">
+
+          <h5 class="title" style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-right: 20px;"
+              (click)="cambiarForm('registroID')"></i>Registro</h5>
+             
+        </div>
+        <div class="card-body">
+          <form >
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Tipo de Identificación</label>
+                  <br>
+                  <div class="d-inline-block" ngbDropdown #dropIdentificacion="ngbDropdown" >
+                    <button type="button" class="btn btn-outline btn-neutral border  btn-block" id="dropdownManual" [disabled]="inscripcionExiste"
+                      ngbDropdownAnchor (focus)="dropIdentificacion.open()">{{tipoIdentificacion}}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem *ngFor="let identificacion of identificaciones"
+                        (click)="CambiarDocumento(identificacion)">{{identificacion.nombre}}</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-md-3 px-1">
+                <div class="form-group">
+                  <label>Documento de identifición</label>
+                  <input [disabled]="inscripcionExiste" type="text" class="form-control mt-2" [(ngModel)]="documentoIdentidad" (blur)="validarCedula(event)"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                    [ngModelOptions]="{standalone: true}"  >  
+                    <div class="alert alert-danger mt-3" role="alert" *ngIf="!cedulaCorrecta" >
+                      Cedula incorrecta
+                    </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Nombres Completos</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="nombres"onkeydown="return /[a-z, ]/i.test(event.key)"
+                    [ngModelOptions]="{standalone: true}"  >
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Apellidos Completos</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="apellidos"  onkeydown="return /[a-z, ]/i.test(event.key)"
+                    [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Dirección</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="direccion"
+                    [ngModelOptions]="{standalone: true}" >
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo de inscripción</label>
+                  <br>
+                  <div class="d-inline-block" ngbDropdown #dropInscripcion="ngbDropdown">
+                    <button type="button" class="btn btn-outline  btn-block btn-neutral border" id="dropdownManual"
+                      ngbDropdownAnchor (focus)="dropInscripcion.open()">{{tipoInscripcion}}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem *ngFor="let inscripcion of inscripciones"
+                        (click)="CambiarInscripcion(inscripcion)">{{inscripcion.nom_inscr}}</button> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="row" *ngIf="tipoEstudiante">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Carrera</label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropCarrera="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border" id="dropdownManual"
+                          ngbDropdownAnchor (focus)="dropCarrera.open()">{{tipoCarrera}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                          <button ngbDropdownItem (click)="CambiarCarrera(carrera)"
+                            *ngFor="let carrera of carreras">{{carrera.carrera}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row" *ngIf="tipoEstudiante">
+                  <br>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Semestre</label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropSemestre="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border"
+                          id="dropdownSemestre" ngbDropdownAnchor
+                          (focus)="dropSemestre.open()">{{tipoSemestre}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownSemestre">
+                          <button ngbDropdownItem (click)="CambiarSemestre(semestre)"
+                            *ngFor="let semestre of semestres">{{semestre.semestre}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Paralelo</label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropdownParalelo="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border"
+                          id="dropdownParalelo" ngbDropdownAnchor
+                          (focus)="dropdownParalelo.open()">{{tipoParalelo}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownParalelo">
+                          <button ngbDropdownItem (click)="CambiarParalelo(paralelo)"
+                            *ngFor="let paralelo of paralelos">{{paralelo.nombre}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row" *ngIf="tipoAutor">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Tipo Paper</label>
+                      <br>
+                      <div class="d-inline-block" ngbDropdown #dropRevista="ngbDropdown">
+                        <button type="button" class="btn btn-outline  btn-block btn-neutral border" id="dropdownManual"
+                          ngbDropdownAnchor (focus)="dropRevista.open()">{{tipoPaper}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                          <button ngbDropdownItem (click)="CambiarPaper(paper)"
+                            *ngFor="let paper of papers">{{paper.tipo}}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5 pr-1">
+                    <div class="form-group">
+                      <label>Ids Paper</label>
+                      <input type="text" class="form-control mt-2" [(ngModel)]="idPaper"   [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 ">
+                <div class="form-group">
+                  <label>Teléfono</label>
+                  <input type="text" class="form-control mt-2"[ngModelOptions]="{standalone: true}" [(ngModel)]="telefono"  onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control mt-2" (blur)="validarEmail()"   [ngModelOptions]="{standalone: true}" [(ngModel)]="email">
+                  <div class="alert alert-danger mt-3" role="alert" *ngIf="!mailValido" >
+                    Email incorrecto
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 ">
+                <div class="form-group">
+                  <label>Lenguaje</label>
+                  <div class="d-inline-block" ngbDropdown #dropLenguaje="ngbDropdown">
+                    <button type="button" class="btn btn-outline btn-neutral border btn-block" id="dropdownManual"
+                      ngbDropdownAnchor (focus)="dropLenguaje.open()">{{tipoIdioma}}</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem *ngFor="let idioma of idiomas"
+                        (click)="CambiarLenguaje(idioma)">{{idioma.idioma}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <ngb-toast style=" margin: 0 auto;"class="toast" *ngIf="mostrarToas"  [autohide]="false" (hidden)="show=false">
+                Completar todos los datos
+              </ngb-toast>
+            </div>
+            <hr>
+            <div class="button-container" style="text-align: center;">
+              <button class="btn 
+              button-perso" (click)="guardarPersona()" submit>
+
+                Continuar
+              </button>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="main-content animate__animated animate__zoomIn" *ngIf="registroPago">
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="card-header">
+          <h5 style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-right: 20px;"
+              (click)="cambiarForm('registroForm')"></i></h5>
+        </div>
+        <div style="text-align: center">
+          <img class=" border-gray" style="height: 100px; width: 100px" src="../assets/img/metodo-de-pago.png"
+            alt="...">
+          <h5 class="title">Forma de pago</h5>
+        </div>
+
+
+        <div class="card-body">
+
+          <div class="description" style="margin-left: 40px;">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+              <label class="form-check-label" for="flexRadioDefault1" (click)="CambiarMetodoPago(1)">
+                <i class="fa fa-money"></i>
+                Efectivo
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+              <label class="form-check-label" for="flexRadioDefault2" (click)="CambiarMetodoPago(2)">
+
+                <i class="fa fa-credit-card-alt"></i>
+                Tarjeta de credito/debito
+              </label>
+            </div>
+          </div>
+          <hr>
+          <div class="button-container">
+            <button class="btn  button-perso" (click)="pago()">Continuar </button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row animate__animated animate__zoomIn" *ngIf="pagoEfectivo">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="card card-user ">
+      <div class="card-header">
+        <h5 style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-left: 20px; margin-top: 10px;"
+            (click)="retornarPago()"></i></h5>
+        </div>
+      <div style="text-align: center " class="mt-5">
+        <img class=" border-gray" style="height: 100px; width: 100px" src="../assets/img/pagoEfectivo.png" alt="...">
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="description">
+          <hr>
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <h6 class="title">Banco del Austro</h6>
+                <h6 class="title">Cuenta Corriente número: 555555</h6>
+                <h6 class="title">Titular: </h6>
+                <h6 class="title">Ruc: </h6>
+
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+
+        <div class="button-container">
+          <button class="btn   button-perso" (click)="guardarDatos()">Finalizar </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="row animate__animated animate__zoomIn" *ngIf="pagoTarjeta">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="card card-user ">
+      <div class="card-header">
+        <h5 style="cursor: pointer;"> <i class="fas fa-arrow-left" style="margin-left: 20px; margin-top: 10px;"
+            (click)="retornarPago()"></i></h5>
+        </div>
+      <div style="text-align: center " class="mt-5">
+        <img class=" border-gray" style="height: 100px; width: 100px" src="../assets/img/pagoTarjeta.png" alt="...">
+
+      </div>
+
+
+      <div class="card-body">
+
+        <div class="description">
+
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+
+             
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="label">Número de identificacion</label>
+                    <input type="text" class="form-control mt-2"
+                       placeholder="2300687510">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Nombre como aparece en la tarjeta</label>
+                    <input type="text" class="form-control mt-2"
+                       placeholder="Omar Fonseca">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Número de tarjeta</label>
+                    <input type="text" class="form-control mt-2"
+                      placeholder="12871 61728 8127 71">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Fecha de expiración</label>
+                    <input type="text" class="form-control mt-2"
+                      placeholder="12/27">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Codigo de seguridad</label>
+                    <input type="password" class="form-control mt-2"
+                      placeholder="***">
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+<hr>
+        <div class="button-container">
+          <button class="btn   button-perso" (click)="guardarDatos()">Finalizar </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

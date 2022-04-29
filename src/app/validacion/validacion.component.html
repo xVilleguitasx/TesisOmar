@@ -1,0 +1,124 @@
+
+<div class="panel-header panel-header-sm">
+</div>
+<div class="separador"></div>
+<div class="main-content" >
+  
+    <div *ngIf="!encontrado" class="row animate__animated animate__zoomIn">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="card card-user ">
+          
+          <div style="text-align: center " class="mt-5">
+          <img class=" border-gray" style="height: 100px; width: 100px" src="../assets/img/validacion.png" alt="...">
+          <h5 class="title">IGRESE SU DOCUMENTO DE IDENTIDAD</h5>
+        </div>
+  
+          
+          <div class="card-body">
+           
+            <div class="description">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control mt-2 input-inicio" style="text-align: center" onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                        [(ngModel)]="documentoIdentidad">
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <hr>
+            <div class="button-container">
+              <button class="btn button-perso" (click)="buscarInscripcion()">Continuar </button>
+    
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+    <div *ngIf="encontrado"   class="row animate__animated animate__zoomIn">
+      
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <div class="card">
+            <div class="card-header"  style="margin-top:-5%">
+              <h5 class="title" style="cursor: pointer;"> <i class="fas fa-arrow-left"  (click)="cambiarEncontrado()"></i></h5>
+             </div>
+              <div style="text-align: center " class="mt-3">
+               
+              <img class=" border-gray" style="height: 150px; width: 150px" src="../assets/img/validacion.png">
+              <h5 style=" margin-top:2%;font-size:30px; font-weight: bold;">VALIDACÍON</h5>
+              
+              
+            </div>
+            <div class="card-body">
+              <form>
+              
+                <div class="row">
+                  <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                      <label>C.I.</label>
+                      <input type="text" class="form-control mt-2" [ngModelOptions]="{standalone: true}"  [(ngModel)]="documentoIdentidad" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                      <label>Participante</label>
+                      <input type="text" class="form-control mt-2" [ngModelOptions]="{standalone: true}" [(ngModel)]="nombre">
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                 
+                <div class="row">
+                  <div class="col-md-6 pr-1">
+                    <div class="form-group">
+                      <label>Cargue la imagen de su comprobante de depósito</label>
+                      <br>
+                      <div class="custom-file mt-2 ">
+                        <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile" (change)="onFileSelected($event)">
+                        <label class="custom-file-label" for="validatedCustomFile">{{textoImg}}</label>
+                      
+                      </div>
+                      <br>
+                      <label>Nota: extensión de la imagen (.jpg) y tamaño (menos de 2 MB)</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-1">
+                    <div class="form-group">
+                      <label>Pon tu número de comprobante de depósito</label>
+                      
+                      <input type="text" class="form-control mt-2" [ngModelOptions]="{standalone: true}" [(ngModel)]="comprobanteDeposito">
+                        <label> <span class="mytooltip tooltip-effect-1"> <span class="tooltip-item"><i class="fa fa-question-circle-o" aria-hidden="true" style=" margin-right: 5px;"></i>Toca aquí para ver un ejemplo</span> <span class="tooltip-content clearfix"> <img src="./assets/img/ejemplo_deposito1.jpeg"> <span class="tooltip-text">Recuerda verificar de manera correcta tus datos antes de continuar.</span> </span> </span></label>
+                    
+                   </div>
+                  </div>
+                </div>
+                <div style="text-align: center;">
+                  <ngb-toast style=" margin: 0 auto;"class="toast" *ngIf="mostrarMensaje"  [autohide]="false" (hidden)="show=false">
+                    Completar todos los datos
+                  </ngb-toast>
+                </div>
+                <hr>
+                <div class="button-container" style="text-align: center;">
+                  <button class="btn 
+                  button-perso" (click)="enviarDatos()">
+    
+                    Verificar 
+                  </button>
+    
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    
+      
+     
+    </div>
+     
+     
+    
+  </div>

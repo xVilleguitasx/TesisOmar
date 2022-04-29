@@ -1,0 +1,2615 @@
+<!--  <div class="container"> -->
+<div style="padding-left: 20px; padding-right: 20px; width: 100%; height: 100%">
+  <hr />
+
+  <div class="d-flex justify-content-between" style="width: 100%; height: 100%; background-color: #802417">
+    <div>
+      <img class="logo" src="./assets/img/logo-fisei.png" alt="" />
+    </div>
+    <div>
+      <img class="logo" src="./assets/img/dide.png" alt="" />
+    </div>
+  </div>
+  <hr />
+  <button (click)="onLogOut()" class="btn btn-danger">Salir</button>
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Control inscripciones</a>
+      <ng-template ngbNavContent>
+        <div class="box mt-3 mb-3">
+          <div class="container-3">
+            <span class="icon"><i class="fa fa-search"></i></span>
+            <input type="search" id="search" placeholder="Buscar..." (keypress)="busquedaMiltoFiltro()"
+              style="border: 1px solid #802417" [(ngModel)]="multiFiltro" />
+          </div>
+        </div>
+        <div class="row" style="padding-top: 15px !important">
+          <div class="col-md-2">
+            <div class="form-group">
+              <label class="textoNegrita">Tipo de registro</label>
+              <br />
+              <div class="d-inline-block" ngbDropdown #dropRegistro="ngbDropdown">
+                <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                  id="dropdownManual" ngbDropdownAnchor (focus)="dropRegistro.open()">
+                  {{ tipoRegistro }}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                  <button ngbDropdownItem *ngFor="let registro of registros" (click)="CambiarRegistro(registro)">
+                    {{ registro }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label class="textoNegrita">Comprobantes</label>
+              <br />
+              <div class="d-inline-block" ngbDropdown #dropComprobante="ngbDropdown">
+                <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                  id="dropdownManual" ngbDropdownAnchor (focus)="dropComprobante.open()">
+                  {{ tipoComprobante }}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                  <button ngbDropdownItem *ngFor="let comprobante of comprobantes"
+                    (click)="CambiarComprobante(comprobante)">
+                    {{ comprobante }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label class="textoNegrita">Tipo de inscripción</label>
+              <br />
+              <div class="d-inline-block" ngbDropdown #dropInscripcion="ngbDropdown">
+                <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                  id="dropdownManual" ngbDropdownAnchor (focus)="dropInscripcion.open()">
+                  {{ tipoInscripcion }}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                  <button ngbDropdownItem *ngFor="let inscripcion of inscripcion"
+                    (click)="CambiarInscripcion(inscripcion)">
+                    {{ inscripcion.nom_inscr }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label class="textoNegrita">Tipo de pago</label>
+              <br />
+              <div class="d-inline-block" ngbDropdown #dropPagos="ngbDropdown">
+                <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                  id="dropdownManual" ngbDropdownAnchor (focus)="dropPagos.open()">
+                  {{ tipoPago }}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                  <button ngbDropdownItem *ngFor="let pago of pagos" (click)="CambiarPago(pago)">
+                    {{ pago.tipo }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" *ngIf="tipoEstudiante">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="textoNegrita">Carrera</label>
+                  <br />
+                  <div class="d-inline-block" ngbDropdown #dropCarrera="ngbDropdown">
+                    <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                      id="dropdownManual" ngbDropdownAnchor (focus)="dropCarrera.open()">
+                      {{ tipoCarrera }}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem (click)="CambiarCarrera(carrera)" *ngFor="let carrera of carreras">
+                        {{ carrera.carrera }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="textoNegrita">Semestre</label>
+                  <br />
+                  <div class="d-inline-block" ngbDropdown #dropSemestre="ngbDropdown">
+                    <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                      id="dropdownSemestre" ngbDropdownAnchor (focus)="dropSemestre.open()">
+                      {{ tipoSemestre }}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownSemestre">
+                      <button ngbDropdownItem (click)="CambiarSemestre(semestre)" *ngFor="let semestre of semestres">
+                        {{ semestre.semestre }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="textoNegrita">Paralelo</label>
+                  <br />
+                  <div class="d-inline-block" ngbDropdown #dropdownParalelo="ngbDropdown">
+                    <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                      id="dropdownParalelo" ngbDropdownAnchor (focus)="dropdownParalelo.open()">
+                      {{ tipoParalelo }}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownParalelo">
+                      <button ngbDropdownItem (click)="CambiarParalelo(paralelo)" *ngFor="let paralelo of paralelos">
+                        {{ paralelo.nombre }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6" style="text-align: left">
+            <button class="btn btn-rojo" (click)="restablecerBusqueda()">
+              Restablecer busqueda
+            </button>
+          </div>
+          <div class="col-6" style="text-align: right">
+            <button class="btn btn-rojo" (click)="openFacturasLote(facturasLote)">
+              Cargar faturas por lotes
+            </button>
+          </div>
+        </div>
+        <!-- Tabla -->
+        <div class="scrollme">
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr style="font-weight: bold; font-size: 12px">
+                <td scope="col">Estado</td>
+                <td scope="col">Número</td>
+                <td scope="col">DI</td>
+                <td scope="col">Apellidos</td>
+                <td scope="col">Nombres</td>
+                <td scope="col">Tipo Inscrito</td>
+                <td scope="col">Tipo Pago</td>
+                <td scope="col">Comprobante</td>
+                <td scope="col">Número Deposito</td>
+                <td scope="col">Correo</td>
+                <td scope="col">Celular</td>
+                <td scope="col">Dirección</td>
+                <td scope="col">Factura</td>
+                <td scope="col">Editar</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let inscripcion of inscripcionesFiltradas
+                    | slice: (page - 1) * pageSize:page * pageSize
+                " style="font-size: 10px">
+                <td scope="col " *ngIf="inscripcion.estado != 'V'">
+                  <label class="container" id="c2">
+                    <input type="checkbox" (click)="cambiarEstado(inscripcion)" class="chek" />
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                <td scope="col " *ngIf="inscripcion.estado === 'V'">
+                  <label class="container" id="c2">
+                    <input type="checkbox" checked="checked" (click)="cambiarEstado(inscripcion)" class="chek" />
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                
+                <td scope="col">{{ inscripcion.numero }}</td>
+                <td scope="col">{{ inscripcion.di }}</td>
+                <td scope="col">{{ inscripcion.apellidos }}</td>
+                <td scope="col">{{ inscripcion.nombres }}</td>
+                <td scope="col">{{ inscripcion.tipo_Inscrito }}</td>
+                <td scope="col">{{ inscripcion.tipo_Pago }}</td>
+                <td scope="col" style="text-align: center" *ngIf="inscripcion.comprobante != null">
+                  <!--                <img style="max-width: 30px; cursor: pointer;" src="../../../assets/img/comprobante.png"
+                    (click)="openComprobante(inscripcion,comprobante)"> -->
+                  <i style="cursor: pointer; font-size: 25px; color: #b41e26" class="fas fa-file-invoice"
+                    (click)="openComprobante(inscripcion, comprobante)"></i>
+                </td>
+                <td *ngIf="inscripcion.comprobante === null"></td>
+                <td scope="col">{{ inscripcion.numero_Deposito }}</td>
+                <td scope="col">{{ inscripcion.correo }}</td>
+                <td scope="col">{{ inscripcion.celular }}</td>
+                <td scope="col">{{ inscripcion.direccion }}</td>
+                <td scope="col" style="text-align: center">
+                  <i (click)="openFactura(inscripcion, factura)"
+                    style="cursor: pointer; font-size: 25px; color: #b41e26" *ngIf="inscripcion.factura === ''"
+                    class="fas fa-upload"></i>
+
+                  <i class="fas fa-eye" *ngIf="inscripcion.factura != ''" (click)="openFactura(inscripcion, factura)"
+                    style="cursor: pointer; font-size: 25px; color: #b41e26"></i>
+                </td>
+                <td>
+                  <button class="btn" (click)="editarRegistroAdmin(inscripcion, editarIncripcion)"
+                    style="margin-right: 5px">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <!--   <button class="btn"   style="background:#7A1E19"><i class="fa-solid fa-trash"></i></button> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ngb-pagination [collectionSize]="inscripcionesFiltradas.length" [pageSize]="pageSize" [(page)]="page"
+          [maxSize]="20" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+        <!-- Template EditInscription -->
+        <ng-template #editarIncripcion let-modal>
+          <div class="modal-header">
+            <div style="text-align: center !important; width: 100%">
+              <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                Inscripción
+              </h4>
+            </div>
+          </div>
+          <div class="modal-body" style="text-align: center">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Apellidos</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="apellidosInscripcion"
+                    [ngModelOptions]="{ standalone: true }" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Nombres</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="nombresInscripcion"
+                    [ngModelOptions]="{ standalone: true }" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tipo Inscripción</label>
+                  <br />
+                  <div class="d-inline-block" ngbDropdown #drop="ngbDropdown">
+                    <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                      id="dropdownManual" ngbDropdownAnchor (focus)="drop.open()">
+                      {{ tipoInscrpcion }}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button ngbDropdownItem *ngFor="let item of inscripcion"
+                        (click)="actualizarTipoInscripcionAdmin(item)">
+                        {{ item.nom_inscr }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Número de deposito</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="numeroDepositoInscripcion"
+                    [ngModelOptions]="{ standalone: true }" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Correo</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="correoInscripcion"
+                    [ngModelOptions]="{ standalone: true }" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Celular</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="celularInscripcion"
+                    [ngModelOptions]="{ standalone: true }" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Dirección</label>
+                  <input type="text" class="form-control mt-2" [(ngModel)]="direccionInscripcion"
+                    [ngModelOptions]="{ standalone: true }" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Estado</label>
+                  <label class="content-input" style="margin-left: 45%">
+                    <input type="checkbox" checked *ngIf="estadoInscripcion" (click)="editarEstadoIscripcion()" />
+                    <input type="checkbox" *ngIf="!estadoInscripcion" (click)="editarEstadoIscripcion()" />
+                    <i></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align: center">
+              <ngb-toast style="margin: 0 auto" class="toast" *ngIf="erorInscripcion" [autohide]="false"
+                (hidden)="show = false">
+                Completar todos los datos
+              </ngb-toast>
+            </div>
+
+            <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+              (click)="guardarInscripcion()">
+              Guardar
+            </button>
+          </div>
+        </ng-template>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Reportes</a>
+
+      <ng-template ngbNavContent>
+        <div>
+          <h2>Reportes de inscritos</h2>
+          <button class="btn" (click)="openModalReportes(reporteGeneral)">
+            <i class="fa fa-plus" aria-hidden="true"></i> Reporte General
+          </button>
+          <button class="btn" (click)="openModalReportes(reporteInscritos)">
+            <i class="fa fa-plus" aria-hidden="true"></i> Generar Reporte
+          </button>
+        </div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a ngbNavLink>Certificados</a>
+      <ng-template ngbNavContent>
+        <div class="scrollme">
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr style="font-weight: bold; font-size: 12px">
+                <td scope="col">Estado</td>
+                <td scope="col">Número</td>
+                <td scope="col">DI</td>
+                <td scope="col">Apellidos</td>
+                <td scope="col">Nombres</td>
+                <td scope="col">Tipo Inscrito</td>
+                <td scope="col">Tipo Pago</td>
+                <td scope="col">Correo</td>
+                <td scope="col">Celular</td>
+                <td scope="col">Dirección</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let inscripcion of inscripcionesValidadas
+                    | slice: (page - 1) * pageSize:page * pageSize
+                " style="font-size: 10px">
+                <td scope="col " *ngIf="inscripcion.estado != 'V'">
+                  <label class="container" id="c2">
+                    <input type="checkbox" (click)="cambiarEstado(inscripcion)" class="chek" />
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                <td scope="col " *ngIf="inscripcion.estado === 'V'">
+                  <label class="container" id="c2">
+                    <input type="checkbox" checked="checked" (click)="cambiarEstado(inscripcion)" class="chek" />
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+               
+                <td scope="col">{{ inscripcion.numero }}</td>
+                <td scope="col">{{ inscripcion.di }}</td>
+                <td scope="col">{{ inscripcion.apellidos }}</td>
+                <td scope="col">{{ inscripcion.nombres }}</td>
+                <td scope="col">{{ inscripcion.tipo_Inscrito }}</td>
+                <td scope="col">{{ inscripcion.tipo_Pago }}</td>
+                <td scope="col">{{ inscripcion.correo }}</td>
+                <td scope="col">{{ inscripcion.celular }}</td>
+                <td scope="col">{{ inscripcion.direccion }}</td>
+               
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <ngb-pagination [collectionSize]="inscripcionesValidadas.length" [pageSize]="pageSize" [(page)]="page"
+          [maxSize]="20" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+           
+      </ng-template>     
+    </li>
+    <li [ngbNavItem]="4">
+      <a ngbNavLink>Configuración</a>
+
+      <ng-template ngbNavContent>
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active2" class="nav-tabs">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>Opciones de Inscripción</a>
+            <ng-template ngbNavContent>
+              <div class="opciones-registro">
+                <label class="content-input" *ngFor="let config of configuraciones">
+                  <input type="checkbox" *ngIf="!config.estado" (click)="cambiarConfiguracion(config)" />
+                  <input type="checkbox" *ngIf="config.estado" (click)="cambiarConfiguracion(config)" checked />
+                  Habilitar {{ config.nombre }}
+
+                  <i></i>
+                </label>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>Patrocinadores</a>
+            <ng-template ngbNavContent>
+              <div class="patrocinadores">
+                <button class="btn" (click)="openPatrocinadores(patrocinador)">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar
+                  Patrocinador
+                </button>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of patrocinadores">
+                    <div class="row">
+                      <div class="col-1" style="text-align: center">
+                        <img [src]="URL + item.imagen" class="patrocinador-img" />
+                      </div>
+                      <div class="col-11">
+                        {{ item.nombre }}
+                        <br />
+                        <a [href]="item.link">
+                          {{ item.link }}
+                        </a>
+                        <br />
+                        <label class="content-input">
+                          <input type="checkbox" checked *ngIf="item.estado"
+                            (click)="actualizarEstadoPatrocinador(item)" />
+                          <input type="checkbox" *ngIf="!item.estado" (click)="actualizarEstadoPatrocinador(item)" />
+                          <i></i>
+                        </label>
+                        <br />
+                        <button class="btn" (click)="editarPatrocinador(item, patrocinador)">
+                          Editar
+                        </button>
+                        <button class="btn btn-eliminar" (click)="alertPatrocinador(item)">
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <!-- Patrocinadores -->
+
+                <ng-template #patrocinador let-modal>
+                  <div class="modal-header">
+                    <div style="text-align: center !important; width: 100%">
+                      <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                        Patrocinador
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="modal-body" style="text-align: center">
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Nombre</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="nombrePatrocinador"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Imagen</label>
+                          <br />
+                          <div class="file-select" id="src-file1">
+                            <input type="file" name="src-file1" aria-label="Archivo"
+                              (change)="selectImgPatrocinador($event)" accept="image/*" />
+                          </div>
+                          <br />
+                          <label>{{ textoInPutPatrocinador }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Estado</label>
+                          <label class="content-input" style="margin-left: 45%">
+                            <input type="checkbox" checked *ngIf="estadoPatrocinador"
+                              (click)="cambiarEstadoPatrocinador()" />
+                            <input type="checkbox" *ngIf="!estadoPatrocinador" (click)="cambiarEstadoPatrocinador()" />
+                            <i></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Link</label>
+                          <input type="text" class="form-control mt-2" [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="linkPatrocinador" />
+                        </div>
+                      </div>
+                    </div>
+                    <div style="text-align: center">
+                      <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                        (hidden)="show = false">
+                        Completar todos los datos
+                      </ngb-toast>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                      Cancelar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      *ngIf="idPatrocinador === null" (click)="guardarPatrocinador()">
+                      Agregar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      *ngIf="idPatrocinador != null" (click)="cambiarDatosPatrocinador()">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>Información Registro</a>
+            <ng-template ngbNavContent>
+              <div class="informacion_registro">
+                <button class="btn" (click)="openInfoRegistro(infoRegistro)">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar
+                  información de registro
+                </button>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of infoRegistros">
+                    <div class="row">
+                      <div class="col-1" style="text-align: center">
+                        <img [src]="URL + item.imagen" class="patrocinador-img" />
+                      </div>
+                      <div class="col-11">
+                        <br />
+                        <label class="content-input">
+                          <input type="checkbox" checked *ngIf="item.estado"
+                            (click)="actualizarEstadoinfoRegistro(item)" />
+                          <input type="checkbox" *ngIf="!item.estado" (click)="actualizarEstadoinfoRegistro(item)" />
+                          <i></i>
+                        </label>
+                        <br />
+                        <button class="btn" (click)="editarInfoRegistro(item, infoRegistro)">
+                          Editar
+                        </button>
+                        <button class="btn btn-eliminar" (click)="alertInfoRegistro(item)">
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <!-- Información Registro -->
+
+                <ng-template #infoRegistro let-modal>
+                  <div class="modal-header">
+                    <div style="text-align: center !important; width: 100%">
+                      <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                        Información Registro
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="modal-body" style="text-align: center">
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Imagen</label>
+                          <br />
+                          <div class="file-select" id="src-file1">
+                            <input type="file" name="src-file1" aria-label="Archivo"
+                              (change)="selectImgInfoRegistro($event)" accept="image/*" />
+                          </div>
+                          <br />
+                          <label>{{ textoInputInfoRegistro }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Estado</label>
+                          <label class="content-input" style="margin-left: 45%">
+                            <input type="checkbox" checked *ngIf="estadoInfoRegistro"
+                              (click)="cambiarEstadoInfoRegistro()" />
+                            <input type="checkbox" *ngIf="!estadoInfoRegistro" (click)="cambiarEstadoInfoRegistro()" />
+                            <i></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="text-align: center">
+                      <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                        (hidden)="show = false">
+                        Completar todos los datos
+                      </ngb-toast>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                      Cancelar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarInfoRegistro()" *ngIf="idInfoRegistro === null">
+                      Agregar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="cambiarDatosInfoRegistro()" *ngIf="idInfoRegistro != null">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="4">
+            <a ngbNavLink>Ediciones</a>
+            <ng-template ngbNavContent>
+              <div class="ediciones">
+                <button class="btn" (click)="openEdiciones(ediciones)">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Edición
+                </button>
+
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of listadoEdiciones">
+                    <div class="row">
+                      <div class="col-1" style="text-align: center">
+                        <img [src]="URL + item.imagen" class="patrocinador-img" />
+                      </div>
+                      <div class="col-11">
+                        {{ item.titulo }}
+                        <br />
+
+                        <button class="btn" (click)="editarEdicion(item, ediciones)">
+                          Editar
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ng-template #ediciones let-modal>
+                  <div class="modal-header">
+                    <div style="text-align: center !important; width: 100%">
+                      <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                        Edición
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="modal-body" style="text-align: center">
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Titulo</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="tituloEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Imagen</label>
+                          <br />
+                          <div class="file-select" id="src-file1">
+                            <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImgEdicion($event)"
+                              accept="image/*" />
+                          </div>
+                          <br />
+                          <label>{{ textoImputImgEdicion }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Pdf</label>
+                          <br />
+                          <div class="file-select" id="src-file1">
+                            <input type="file" name="src-file1" aria-label="Archivo" (change)="selectPdfEdicion($event)"
+                              accept="application/pdf" />
+                          </div>
+                          <br />
+                          <label>{{ textoImputPdfEdicion }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Lugar</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="lugarEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Modalidad</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="modalidadEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>horas</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="horasEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>fecha</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="fechaEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Teléfono</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="telefonoEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Correo</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="correoEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Web</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="webEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Edición</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="anioEdicion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="text-align: center">
+                      <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                        (hidden)="show = false">
+                        Completar todos los datos
+                      </ngb-toast>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                      Cancelar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarEdicion()" *ngIf="idEdicion === null">
+                      Agregar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarEdicion()" *ngIf="idEdicion != null">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="5">
+            <a ngbNavLink>Revistas</a>
+            <ng-template ngbNavContent>
+              <div class="papers">
+                <button class="btn" (click)="openPapers(papers)">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Revista
+                </button>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of tipoPaper">
+                    <label class="content-input">
+                      {{ item.tipo }}
+                      <input type="checkbox" checked *ngIf="item.estado" (click)="actualizarEstadoPaper(item)" />
+                      <input type="checkbox" *ngIf="!item.estado" (click)="actualizarEstadoPaper(item)" />
+                      <i></i>
+                    </label>
+                    <button class="btn" (click)="editarPaper(item, papers)">
+                      Editar
+                    </button>
+                    <button class="btn btn-eliminar" (click)="eliminarPaper(item.id)">
+                      Eliminar
+                    </button>
+                  </li>
+                </ul>
+                <ng-template #papers let-modal>
+                  <div class="modal-header">
+                    <div style="text-align: center !important; width: 100%">
+                      <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                        Revista
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="modal-body" style="text-align: center">
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Nombre</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="nombrePaper"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Estado</label>
+                          <label class="content-input" style="margin-left: 45%">
+                            <input type="checkbox" checked *ngIf="estadoPaper" (click)="cambiarEstadoPaper()" />
+                            <input type="checkbox" *ngIf="!estadoPaper" (click)="cambiarEstadoPaper()" />
+                            <i></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="text-align: center">
+                      <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                        (hidden)="show = false">
+                        Completar todos los datos
+                      </ngb-toast>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                      Cancelar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarPaper()" *ngIf="idPaper === null">
+                      Agregar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarPaper()" *ngIf="idPaper != null">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="6">
+            <a ngbNavLink>Carreras</a>
+            <ng-template ngbNavContent>
+              <div class="carreras">
+                <button class="btn" (click)="openCarrera(carrera)">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Carrera
+                </button>
+
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of carreras">
+                    <label class="content-input">
+                      {{ item.carrera }}
+                      <input type="checkbox" checked *ngIf="item.estado" (click)="actualizarEstadoCarrera(item)" />
+                      <input type="checkbox" *ngIf="!item.estado" (click)="actualizarEstadoCarrera(item)" />
+                      <i></i>
+                    </label>
+                    <button class="btn" (click)="editarCarrera(item, carrera)">
+                      Editar
+                    </button>
+                    <button class="btn btn-eliminar" (click)="eliminarCarrera(item.id)">
+                      Eliminar
+                    </button>
+                  </li>
+                </ul>
+                <ng-template #carrera let-modal>
+                  <div class="modal-header">
+                    <div style="text-align: center !important; width: 100%">
+                      <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                        Carrera
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="modal-body" style="text-align: center">
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Nombre</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="nombreCarrera"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Estado</label>
+                          <label class="content-input" style="margin-left: 45%">
+                            <input type="checkbox" checked *ngIf="estadoCarrera" (click)="cambiarEstadoCarrera()" />
+                            <input type="checkbox" *ngIf="!estadoCarrera" (click)="cambiarEstadoCarrera()" />
+                            <i></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="text-align: center">
+                      <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                        (hidden)="show = false">
+                        Completar todos los datos
+                      </ngb-toast>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                      Cancelar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarCarrera()" *ngIf="idCarreraActual === null">
+                      Agregar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarCarrera()" *ngIf="idCarreraActual != null">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="7">
+            <a ngbNavLink>Semestres</a>
+            <ng-template ngbNavContent>
+              <div class="semestres">
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of semestres">
+                    <label class="content-input">
+                      {{ item.semestre }}
+                      <input type="checkbox" checked *ngIf="item.estado" (click)="actualizarEstadoSemestre(item)" />
+                      <input type="checkbox" *ngIf="!item.estado" (click)="actualizarEstadoSemestre(item)" />
+                      <i></i>
+                    </label>
+                    <!--   <button class="btn"(click)="editarPaper(item,papers)">Editar</button> -->
+                  </li>
+                </ul>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="8">
+            <a ngbNavLink>Tipo de inscripción</a>
+            <ng-template ngbNavContent>
+              <div class="tipoInscripcion">
+                <button class="btn" (click)="openTipoDeIncripcion(tipoInscripcion)">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Tipo de
+                  Inscripción
+                </button>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of inscripcion">
+                    <label class="content-input">
+                      {{ item.nom_inscr }} - ${{ item.costo }}
+                      <input type="checkbox" checked *ngIf="item.estado" (click)="actualizarEstadoInscripcion(item)" />
+                      <input type="checkbox" *ngIf="!item.estado" (click)="actualizarEstadoInscripcion(item)" />
+                      <i></i>
+                    </label>
+                    <button class="btn" (click)="editarTipoInscripcion(item, tipoInscripcion)">
+                      Editar
+                    </button>
+                  </li>
+                </ul>
+                <ng-template #tipoInscripcion let-modal>
+                  <div class="modal-header">
+                    <div style="text-align: center !important; width: 100%">
+                      <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                        Tipo de Inscripcion
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="modal-body" style="text-align: center">
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Tipo</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="nombreTipoInscripcion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Precio</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="precioTipoInscripcion"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Estado</label>
+                          <label class="content-input" style="margin-left: 45%">
+                            <input type="checkbox" checked *ngIf="estadoTipoInscripcion"
+                              (click)="cambiarEstadoTipoInscripcion()" />
+                            <input type="checkbox" *ngIf="!estadoTipoInscripcion"
+                              (click)="cambiarEstadoTipoInscripcion()" />
+                            <i></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="text-align: center">
+                      <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                        (hidden)="show = false">
+                        Completar todos los datos
+                      </ngb-toast>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                      Cancelar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarTipoInscripcion()" *ngIf="idTipoInscripcion === null">
+                      Agregar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarTipoInscripcion()" *ngIf="idTipoInscripcion != null">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="9">
+            <a ngbNavLink>Idiomas</a>
+            <ng-template ngbNavContent>
+              <div class="idiomas">
+                <button class="btn" (click)="openIdioma(idioma)">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Idioma
+                </button>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let item of idiomas">
+                    <label class="content-input">
+                      {{ item.idioma }}
+                      <input type="checkbox" checked *ngIf="item.estado" (click)="actualizarEstadoIdioma(item)" />
+                      <input type="checkbox" *ngIf="!item.estado" (click)="actualizarEstadoIdioma(item)" />
+                      <i></i>
+                    </label>
+                    <button class="btn" (click)="editarIdioma(item, idioma)">
+                      Editar
+                    </button>
+                  </li>
+                </ul>
+                <ng-template #idioma let-modal>
+                  <div class="modal-header">
+                    <div style="text-align: center !important; width: 100%">
+                      <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                        Idioma
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="modal-body" style="text-align: center">
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Nombre</label>
+                          <input type="text" class="form-control mt-2" [(ngModel)]="nombreIdioma"
+                            [ngModelOptions]="{ standalone: true }" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Estado</label>
+                          <label class="content-input" style="margin-left: 45%">
+                            <input type="checkbox" checked *ngIf="estadoIdioma" (click)="cambiarEstadoIdioma()" />
+                            <input type="checkbox" *ngIf="!estadoIdioma" (click)="cambiarEstadoIdioma()" />
+                            <i></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="text-align: center">
+                      <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                        (hidden)="show = false">
+                        Completar todos los datos
+                      </ngb-toast>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                      Cancelar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarIdioma()" *ngIf="idIdioma === null">
+                      Agregar
+                    </button>
+                    <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                      (click)="guardarIdioma()" *ngIf="idIdioma != null">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="10">
+            <a ngbNavLink>Comité</a>
+            <ng-template ngbNavContent>
+              <button (click)="openComite(comite)" class="btn" style="margin-right: 15px">
+                <i class="fa fa-plus" aria-hidden="true"></i> Nuevo Comité
+              </button>
+              <div class="filtros-comite">
+                <div class="d-inline-block" ngbDropdown #dropTipoComite="ngbDropdown" style="margin-right: 15px">
+                  <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                    id="dropdownManual" ngbDropdownAnchor (focus)="dropTipoComite.open()">
+                    {{ tipoComiteMostrar }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                    <button ngbDropdownItem *ngFor="let item of tipoComiteLista" (click)="cambiarTipoComite(item)">
+                      {{ item }}
+                    </button>
+                  </div>
+                </div>
+                <!--  <div class="box mt-3 mb-3">
+                  <div class="container-3">
+                    
+                    <input type="search" class="form-control "  placeholder="Buscar por nombre..." (keyup)="filtroComite()"
+                      style="border: 1px solid #802417" [(ngModel)]="nombreComiteBuscar" />
+                  </div>
+                </div> -->
+              </div>
+              <div class="scrollme">
+                <table class="table table-striped mt-3">
+                  <thead>
+                    <tr style="font-weight: bold; font-size: 12px">
+                      <td scope="col">Id</td>
+                      <td scope="col">Tipo</td>
+                      <td scope="col">Nombre</td>
+                      <td scope="col">Cargo</td>
+                      <td scope="col">Instituto</td>
+                      <td scope="col">País</td>
+                      <td scope="col">Edición</td>
+                      <td scope="col">Opciones</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="
+                        let item of comiteFiltrado
+                          | slice
+                            : (pageComite - 1) * pageSizeComite
+                            : pageComite * pageSizeComite
+                      " style="font-size: 10px">
+                      <td scope="col">{{ item.id }}</td>
+                      <td scope="col">{{ item.tipo }}</td>
+                      <td scope="col">{{ item.nombre }}</td>
+                      <td scope="col">{{ item.cargo }}</td>
+                      <td scope="col">{{ item.instituto }}</td>
+                      <td scope="col">{{ item.pais }}</td>
+
+                      <td scope="col">{{ item.edicion }}</td>
+                      <td>
+                        <button class="btn" (click)="editarComision(item, comite)" style="margin-right: 5px">
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn" (click)="alertComite(item.id)" style="background: #7a1e19">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <ngb-pagination [collectionSize]="comiteFiltrado.length" [pageSize]="pageSizeComite"
+                  [(page)]="pageComite" [maxSize]="20" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+                </ngb-pagination>
+              </div>
+              <ng-template #comite let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Comité
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="nombreComte"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Tipo Comité</label>
+                        <br />
+                        <div class="d-inline-block" ngbDropdown #drop="ngbDropdown">
+                          <button style="color: black" type="button"
+                            class="btn btn-outline btn-block btn-neutral border" id="dropdownManual" ngbDropdownAnchor
+                            (focus)="drop.open()">
+                            {{ TipoComite }}
+                          </button>
+                          <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                            <button ngbDropdownItem *ngFor="let item of tipoComite"
+                              (click)="actualziarTipoComite(item)">
+                              {{ item.tipo }}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Cargo</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="CargoComite"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Instituto</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="InstitutoComite"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>País</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="PaisComite"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarComite()" *ngIf="idComite === null">
+                    Agregar
+                  </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarComite()" *ngIf="idComite != null">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="11">
+            <a ngbNavLink>Conferencistas</a>
+            <ng-template ngbNavContent>
+              <button class="btn" (click)="openInvestigadores(investigador)">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar
+                Conferencista
+              </button>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of investigadores">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.foto" alt="" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.nombre }}
+                      <br />
+                      <button class="btn" (click)="editarInvestigador(item, investigador)">
+                        Editar
+                      </button>
+                      <button class="btn btn-eliminar" (click)="eliminarInvestigador(item)">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ng-template #investigador let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Conferencista
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="nombreInvestigador"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Pais</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="paisInvestigador"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Foto</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo"
+                            (change)="selectImgInvestigador($event)" accept="image/*" />
+                        </div>
+                        <br />
+                        <label>{{ fotoInvestigador }}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Hoja de Vida</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo"
+                            (change)="selectPDFInvestigador($event)" accept="application/pdf" />
+                        </div>
+                        <br />
+                        <label>{{ hojaDeVidaInvestigador }}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Edición</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="Edicion"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Institución</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="institucionInvestigador"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarInvestigador()" *ngIf="idInvestigador === null">
+                    Agregar
+                  </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarInvestigador()" *ngIf="idInvestigador != null">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="12">
+            <a ngbNavLink>Información congreso</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of informacionCongreso">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.logo" alt="" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.nombre }}
+                      <br />
+                      {{ item.titulo }}
+                      <br />
+                      {{ item.fecha }}
+                      <br />
+                      <button class="btn" (click)="editarInfoCongreso(item, infoCongreso)">
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ng-template #infoCongreso let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Informacion Congreso
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="nombreCongreso"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="tituloCongreso"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="fechaCongreso"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Logo</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectLogoCongreso($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        <label>{{ logoCongreso }}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark"
+                  (click)="cerrarModal()">
+                  Cancelar
+                </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarInformacionRegistro()">
+                    Guardar
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="13">
+            <a ngbNavLink>Imagenes Portada</a>
+            <ng-template ngbNavContent>
+              <button class="btn" (click)="openImgPortada(imgPortada)">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Imagen
+              </button>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of imagenesPortada">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.imagen" alt="" />
+                    </div>
+                    <div class="col-11">
+                      <a [href]="item.link" *ngIf="item.link != null">{{
+                        item.link
+                      }}</a>
+
+                      <br />
+                      <button class="btn" (click)="editImgPortada(item, imgPortada)">
+                        Editar
+                      </button>
+                      <button class="btn btn-eliminar" (click)="eliminarInfoCongresi(item.id)">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ng-template #imgPortada let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Imagen Portada
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImgPortada($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagenPortada }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="linkImgPortada"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Estado</label>
+                        <label class="content-input" style="margin-left: 45%">
+                          <input type="checkbox" checked *ngIf="estadoImgPortada"
+                            (click)="cambiarEstadoImagenPortada()" />
+                          <input type="checkbox" *ngIf="!estadoImgPortada" (click)="cambiarEstadoImagenPortada()" />
+                          <i></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarImagenPortada()" *ngIf="idImgPortada === null">
+                    Agregar
+                  </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarImagenPortada()" *ngIf="idImgPortada != null">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="14">
+            <a ngbNavLink>Configuración Certificados</a>
+            <ng-template ngbNavContent>
+              <button class="btn" (click)="openConfiCertificados(configuracionCertificados)">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Certificado
+              </button>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of confiCertificados">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.plantilla" class="patrocinador-img" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.nombre }}
+                      <br />
+                      {{ item.tipo }}
+                      <br />
+                      <br />
+                      <button class="btn" (click)="openConfiCertificados(configuracionCertificados,item)">
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>  
+              <ng-template #configuracionCertificados let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Configuración Certificados
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="nombreCertificado"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Plantilla</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectPlantilla($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ plantillaCertificado }}
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+            
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarConfiCertificado()">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="15">
+            <a ngbNavLink>Galeria Lugar</a>
+            <ng-template ngbNavContent>
+              
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of galeriaLugar">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.imagen" class="patrocinador-img" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.nombre }}
+                      <br />
+                      <button class="btn" (click)="openGaleriaModal(galeriaLugarModal,item)">
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>  
+              <ng-template #galeriaLugarModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Lugar evento
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="nombreGaleria"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImgGaleria($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagenGaleria }}
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+            
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarGaleriaLugar()">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="16">
+            <a ngbNavLink>Galeria información</a>
+            <ng-template ngbNavContent>
+              <button class="btn" (click)="openGaleriaModal(galeriaInfo)">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Imagen
+              </button>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of gleririaInformacion">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]=" URL + item.imagen" class="patrocinador-img" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.nombre }}
+                      <br />
+                      <button class="btn" (click)="openGaleriaModal(galeriaInfo,item)">
+                        Editar
+                      </button>
+                      <button class="btn" (click)="openGaleriaModal(item.id)">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>  
+              <ng-template #galeriaInfo let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Información evento
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="nombreGaleria"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImgGaleria($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagenGaleria }}
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+            
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarGaleriaInfo()">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+              
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="17">
+            <a ngbNavLink>Presentación</a>
+            <ng-template ngbNavContent>
+             
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of presentacion">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]=" URL + item.imagen_boton_1" class="patrocinador-img" />
+                    </div>
+                    <div class="col-1" style="text-align: center">
+                      <img [src]=" URL + item.imagen_boton_2" class="patrocinador-img" />
+                    </div>
+                    <div class="col-10">
+                      {{ item.texto }}
+                      <br />
+                      <button class="btn" (click)="openPresentacion(presenacionModal,item)">
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>  
+              <ng-template #presenacionModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Presentación
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto</label>
+                        <br>
+                          <textarea  id="" cols="60" rows="15"  [(ngModel)]="textoPresentacion"
+                          [ngModelOptions]="{ standalone: true }"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link 1</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="link_boton_1"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen 1</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImg1Presentacion($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagen_boton_1 }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link 2</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="link_boton_2"
+                        [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen 2</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImg2Presentacion($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagen_boton_2 }}
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+            
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarPresentacion()">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+              
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="18">
+            <a ngbNavLink>Lugar del evento</a>
+            <ng-template ngbNavContent>
+             
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of lugarDelEvento">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]=" URL + item.imagen" class="patrocinador-img" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.texto_1}}
+                      <br />
+                      <br />
+                      {{ item.texto_2}}
+                      <br />
+                      <button class="btn" (click)="openLugarDelEvento(LugarDelEventoModal,item)">
+                        Editar
+                      </button>
+                    
+                    </div>
+                  </div>
+                </li>
+              </ul>  
+              <ng-template #LugarDelEventoModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                     Lugar del evento
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 1</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="texto1LugarEvento"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImgLugarDelEvento($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagenLugarEvento }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 2</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="texto2LugarEvento"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+            
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarLugarDelEvento()">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+              
+              
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
+  <!-- Template comprobante -->
+  <ng-template #comprobante let-modal>
+    <div class="modal-header">
+      <div style="text-align: center !important; width: 100%">
+        <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold; color: #802417">
+          Comprobante
+        </h4>
+      </div>
+    </div>
+    <div class="modal-body">
+      <img [src]="documento" alt="" />
+    </div>
+    <div class="modal-footer">
+      <div style="text-align: center !important; width: 100%">
+        <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+          (click)="modal.close('Save click')">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <!-- Template subir factura -->
+  <ng-template #factura let-modal>
+    <div class="modal-header">
+      <div style="text-align: center !important; width: 100%">
+        <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold; color: #802417">
+          FACTURA
+        </h4>
+      </div>
+    </div>
+    <div class="modal-body" style="text-align: center">
+      <div *ngIf="documento != null">
+        <pdf-viewer [src]="documento" [render-text]="true" [original-size]="false" style="width: 100%; height: 500px">
+        </pdf-viewer>
+      </div>
+      <div *ngIf="documento === null" style="text-align: center">
+        <label>{{ textoPdf }}</label>
+        <br />
+        <div class="file-select" id="src-file1">
+          <input type="file" name="src-file1" aria-label="Archivo" (change)="onFileSelected($event)"
+            accept="application/pdf" />
+        </div>
+        <br />
+        <button type="button" class="btn btn-outline-dark btn-rojo" (click)="guardarPdf()" *ngIf="textoPdf != ''">
+          Subir documento
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div style="text-align: center !important; width: 100%">
+        <button *ngIf="documento != null" style="background: #802417; margin-right: 15px" type="button"
+          class="btn btn-outline-dark btn-eliminar" (click)="eliminarFactura()">
+          Eliminar
+        </button>
+        <button style="background: #b1bdbd; margin-left: 15px" type="button" class="btn btn-outline-dark"
+          (click)="modal.close('Save click')">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <!-- Facturas por lote -->
+  <ng-template #facturasLote let-modal>
+    <div class="modal-header">
+      <div style="text-align: center !important; width: 100%">
+        <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+          Facturas por lotes
+        </h4>
+      </div>
+    </div>
+    <div class="modal-body" style="text-align: center">
+      <div class="file-select" id="src-file2">
+        <input type="file" name="src-file2" aria-label="Archivo" webkitdirectory accept="application/pdf"
+          ng-file-model="files" multiple (change)="onFolderSelected($event)" />
+      </div>
+      <h5 *ngFor="let factura of facturasPorLotes">{{ factura.name }}</h5>
+      <button *ngIf="facturasPorLotes.length > 0" style="background: #b41e26" type="button" class="btn btn-outline-dark"
+        (click)="subirPdfPorLotes()">
+        Subir documentos
+      </button>
+    </div>
+    <div class="modal-footer">
+      <div style="text-align: center !important; width: 100%">
+        <button style="background: #b1bdbd" type="button" class="btn btn-outline-dark"
+          (click)="modal.close('Save click')">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </ng-template>
+ 
+  <ng-template #reporteInscritos let-modal>
+    <div style="margin-left: 30px; margin-top: 30px">
+      <div class="row">
+        <div class="col-4">
+          <div class="form-group">
+            <label class="textoNegrita">Tipo de registro</label>
+            <br />
+            <div class="d-inline-block" ngbDropdown #dropRegistro="ngbDropdown">
+              <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                id="dropdownManual" ngbDropdownAnchor (focus)="dropRegistro.open()">
+                {{ tipoRegistro }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                <button ngbDropdownItem *ngFor="let registro of registros" (click)="CambiarRegistro(registro)">
+                  {{ registro }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label class="textoNegrita">Comprobantes</label>
+            <br />
+            <div class="d-inline-block" ngbDropdown #dropComprobante="ngbDropdown">
+              <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                id="dropdownManual" ngbDropdownAnchor (focus)="dropComprobante.open()">
+                {{ tipoComprobante }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                <button ngbDropdownItem *ngFor="let comprobante of comprobantes"
+                  (click)="CambiarComprobante(comprobante)">
+                  {{ comprobante }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label class="textoNegrita">Tipo de inscripción</label>
+            <br />
+            <div class="d-inline-block" ngbDropdown #dropInscripcion="ngbDropdown">
+              <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                id="dropdownManual" ngbDropdownAnchor (focus)="dropInscripcion.open()">
+                {{ tipoInscripcion }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                <button ngbDropdownItem *ngFor="let inscripcion of inscripcion"
+                  (click)="CambiarInscripcion(inscripcion)">
+                  {{ inscripcion.nom_inscr }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <div class="form-group">
+            <label class="textoNegrita">Tipo de pago</label>
+            <br />
+            <div class="d-inline-block" ngbDropdown #dropPagos="ngbDropdown">
+              <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                id="dropdownManual" ngbDropdownAnchor (focus)="dropPagos.open()">
+                {{ tipoPago }}
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                <button ngbDropdownItem *ngFor="let pago of pagos" (click)="CambiarPago(pago)">
+                  {{ pago.tipo }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8" *ngIf="tipoEstudiante">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="textoNegrita">Carrera</label>
+                <br />
+                <div class="d-inline-block" ngbDropdown #dropCarrera="ngbDropdown">
+                  <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                    id="dropdownManual" ngbDropdownAnchor (focus)="dropCarrera.open()">
+                    {{ tipoCarrera }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                    <button ngbDropdownItem (click)="CambiarCarrera(carrera)" *ngFor="let carrera of carreras">
+                      {{ carrera.carrera }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="textoNegrita">Semestre</label>
+                <br />
+                <div class="d-inline-block" ngbDropdown #dropSemestre="ngbDropdown">
+                  <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                    id="dropdownSemestre" ngbDropdownAnchor (focus)="dropSemestre.open()">
+                    {{ tipoSemestre }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownSemestre">
+                    <button ngbDropdownItem (click)="CambiarSemestre(semestre)" *ngFor="let semestre of semestres">
+                      {{ semestre.semestre }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="textoNegrita">Paralelo</label>
+                <br />
+                <div class="d-inline-block" ngbDropdown #dropdownParalelo="ngbDropdown">
+                  <button style="color: black" type="button" class="btn btn-outline btn-block btn-neutral border"
+                    id="dropdownParalelo" ngbDropdownAnchor (focus)="dropdownParalelo.open()">
+                    {{ tipoParalelo }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownParalelo">
+                    <button ngbDropdownItem (click)="CambiarParalelo(paralelo)" *ngFor="let paralelo of paralelos">
+                      {{ paralelo.nombre }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-10">
+          <input type="text" placeholder="Titulo del Documento" class="form-control mt-2"
+            style="border: 1px solid #802417" [(ngModel)]="tituloReporte" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6" style="text-align: left">
+          <button class="btn btn-rojo" (click)="restablecerBusqueda()">
+            Restablecer busqueda
+          </button>
+          <button class="btn btn-rojo" (click)="getPDF()">
+            Convertir a PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas_div_pdf">
+      <div style="width: 100% !important">
+        <div style="width: 100% !important" class="contenedor">
+          <img style="width: 100% !important" src="./assets/img/BANNER.png" />
+          <div class="texto-encima">{{ informacionCongreso[0].titulo }}</div>
+          <div class="centrado">
+            <h3 style="font-weight: bold">{{ tituloReporte }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <div class="scrollme">
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr style="font-weight: bold; font-size: 12px">
+                <td scope="col">#</td>
+                <td scope="col">DI</td>
+                <td scope="col">Apellidos</td>
+                <td scope="col">Nombres</td>
+                <td scope="col">Tipo Inscrito</td>
+                <td scope="col">Costo</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of inscripcionesFiltradas; let indice = index" style="font-size: 10px">
+                <td scope="col">{{ indice + 1 }}</td>
+                <td scope="col">{{ item.di }}</td>
+                <td scope="col">{{ item.apellidos }}</td>
+                <td scope="col">{{ item.nombres }}</td>
+                <td scope="col">{{ item.tipo_Inscrito }}</td>
+                <td scope="col" *ngIf="item.tipo_Inscrito == 'STUDENT'">
+                  {{ inscripcion[2].costo }}
+                </td>
+                <td scope="col" *ngIf="item.tipo_Inscrito == 'PROFESSIONAL'">
+                  {{ inscripcion[1].costo }}
+                </td>
+                <td scope="col" *ngIf="item.tipo_Inscrito == 'AUTHOR'">
+                  {{ inscripcion[0].costo }}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5" style="text-align: right">Total:</td>
+                <td colspan="1">${{ totalRecaudacion }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #reporteGeneral let-modal>
+    <div style="margin-left: 30px; margin-top: 30px">
+      <div class="row">
+        <div class="col-10">
+          <h1>Reporte</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6" style="text-align: left">
+          <button class="btn btn-rojo" (click)="getPDF()">
+            Convertir a PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas_div_pdf">
+      <div style="width: 100% !important">
+        <div style="width: 100% !important" class="contenedor">
+          <img style="width: 100% !important" src="./assets/img/BANNER.png" />
+          <div class="texto-encima">{{ informacionCongreso[0].titulo }}</div>
+          <div class="centrado">
+            <h3 style="font-weight: bold">Reporte General</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div>
+          <div>
+            <div class="row" style="margin-bottom: 20px">
+              <div class="col-md-1"></div>
+              <div class="col-md-10">
+                Fecha de creación: {{ fechaCreacionReporte }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="text-align: center !important">
+                <h5 style="font-weight: bold">Participantes</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                Total de registros: {{ inscripciones.length }}
+                <br />
+                Total de registros Validados: {{ inscritosValidados }}
+                <br />
+                Total de registros sin validar:
+                {{ inscripciones.length - inscritosValidados }}
+              </div>
+              <div class="col-md-5">
+                <div style="display: block">
+                  <canvas baseChart [datasets]="barChartDataInscritos" [labels]="barChartLabelsInscritos"
+                    [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="text-align: center !important">
+                <h5 style="font-weight: bold">Tipo de participante</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                Total estudiantes: {{ totalEstudiantes }}
+                <br />
+                Total profesionales: {{ totalProfesionales }}
+                <br />
+                Total autores: {{ totalAutores }}
+              </div>
+              <div class="col-md-5">
+                <div style="display: block">
+                  <canvas baseChart [datasets]="barChartDataInscritosTipo" [labels]="barChartLabelsInscritosTipo"
+                    [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="text-align: center !important">
+                <h5 style="font-weight: bold">Estudiantes</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                Total estudiantes: {{ totalEstudiantes }}
+                <br />
+                Total estudiantes validados: {{ totalestudiantesValidados }}
+                <br />
+                Total estudiantes sin validar:
+                {{ totalEstudiantes - totalestudiantesValidados }}
+              </div>
+              <div class="col-md-5">
+                <div style="display: block">
+                  <canvas baseChart [datasets]="barChartDataEstudiantes" [labels]="barChartLabelsEstudiantes"
+                    [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="text-align: center !important">
+                <h5 style="font-weight: bold">Profesonales</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                Total profesionales: {{ totalProfesionales }}
+                <br />
+                Total profesionales validados: {{ totalProfesionalesValidados }}
+                <br />
+                Total profesionales sin validar:
+                {{ totalProfesionales - totalProfesionalesValidados }}
+              </div>
+              <div class="col-md-5">
+                <div style="display: block">
+                  <canvas baseChart [datasets]="barChartDataProfesionales" [labels]="barChartLabelsProfesionales"
+                    [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="text-align: center !important">
+                <h5 style="font-weight: bold">Autores</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                Total autores: {{ totalAutores }}
+                <br />
+                Total autores validados: {{ totalAutoresValidados }}
+                <br />
+                Total autores sin validar:
+                {{ totalAutores - totalAutoresValidados }}
+              </div>
+              <div class="col-md-5">
+                <div style="display: block">
+                  <canvas baseChart [datasets]="barChartDataAutores" [labels]="barChartLabelsAutores"
+                    [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="text-align: center !important">
+                <h5 style="font-weight: bold">Recaudación</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                Total recaudación: ${{ totalRecaudacion }}
+                <br />
+                Estudiantes: ${{ totalRecaudacionEstudiantes }}
+                <br />
+                Profesionales: ${{ totalRecaudacionProfesionales }}
+                <br />
+                Autores: ${{ totalRecaudacionAutores }}
+              </div>
+              <div class="col-md-5">
+                <div style="display: block">
+                  <canvas baseChart [datasets]="barChartDataTotales" [labels]="barChartLabelsTotales"
+                    [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" style="text-align: center !important">
+                <h5 style="font-weight: bold">Tipo de pago</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                Total: {{ pagoTarjeta + pagoEfectivo }}
+                <br />
+                Efectivo: {{ pagoEfectivo }}
+                <br />
+                Tarjeta: {{ pagoTarjeta }}
+              </div>
+              <div class="col-md-5">
+                <div style="display: block">
+                  <canvas baseChart [datasets]="barChartDataTipoPago" [labels]="barChartLabelsTipoPago"
+                    [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,15 @@
+.panel-header.panel-header-sm{
+background-color: #B41E26 !important;
+height: 50px !important;
+padding-bottom: 50px;
+}
+.separador{
+   height: 50px !important
+    
+}
+img{
+   object-fit:cover;
+}
+.dropdown-menu { max-height: 280px; overflow-y: auto; min-width: 100% !important; background-attachment: local, local, scroll, scroll; }
+
+.dropdown-item { white-space: normal; }

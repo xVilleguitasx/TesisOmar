@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+
+.button-perso{
+    background-color: #7A1E19 !important;
+
+}
+.input-inicio{
+    border: 3px solid #7A1E19;
+}

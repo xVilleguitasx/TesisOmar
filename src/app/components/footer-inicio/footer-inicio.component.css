@@ -1,0 +1,39 @@
+
+.patrocinadores {
+    background-color: #0B0100;
+    text-align: center;
+  }
+  .texto-patrocinadores{
+      color: #fff !important;
+      font-size: 1.2rem;
+      margin-top:5px;
+      margin-bottom: 5px;
+  }
+  .redes-sociales{
+      background-color: #220201;
+  }
+  .info{
+      background-color: #3C0401;
+      text-align: center;
+      color: white;
+      font-size: 12px;
+  }
+  .copyright{
+    background-color: #7A1E19;
+    text-align: center;
+    color: white;
+    font-size:10px; 
+    
+  }
+  .card{
+      border-radius: 10%;
+      height: 70%;
+     
+  }
+  .card-img-top{
+    border-radius: 10%;
+    
+    padding:15%;
+    
+  }
+  

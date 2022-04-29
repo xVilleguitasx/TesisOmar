@@ -1,0 +1,27 @@
+
+img{
+    height: 300px;
+    width: 100%;
+}
+.logo{
+    max-width: 50%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.cat {
+    height: 100px;
+    width: 400px;
+   }
+nav.navbar {
+    background-color: #B41E26;
+}
+
+hr{
+    height:5px;
+    background-color: #802417;
+}
+
+
+img{
+border-radius: 0px;
+}

@@ -1,0 +1,37 @@
+<div class="panel-header panel-header-sm">
+
+</div>
+<div class="separador"></div>
+<div class="main-content ">
+
+  <div class="row animate__animated animate__zoomIn">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="card card-user">
+        <div class="card-body">
+
+          <div class="description" >
+            <div style="text-align: center">
+
+              <ngb-carousel>
+                <ng-template ngbSlide >
+                  <div style="text-align: center">
+                    <img  class=" border-gray" src="../assets/img/informacion.jpg" alt="...">
+                  </div>
+                </ng-template>
+               
+                <ng-template ngbSlide *ngFor="let imagen of images">
+                  <div style="text-align: center">
+                    <img [src]="URL+imagen.imagen" alt="Random first slide" style="margin: auto;">
+                  </div>
+                </ng-template>
+              </ngb-carousel>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

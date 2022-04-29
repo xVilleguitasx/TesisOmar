@@ -1,0 +1,460 @@
+<div class="container">
+  <!-- Header -->
+  <app-header-inicio></app-header-inicio>
+  <!-- Contenido de la pagina -->
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    [(activeId)]="active"
+    class="nav-tabs d-flex justify-content-center"
+  >
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Inicio</a>
+      <ng-template ngbNavContent>
+        <div class="row">
+          <div class="col-md-4 mx-auto my-5">
+            <a
+              ><img
+                class="img-fluid z-depth-1"
+                src="https://csei.uta.edu.ec/csei2021/images/indice.jpeg"
+                alt="video"
+            /></a>
+          </div>
+
+          <div class="col-md-4 mx-auto my-5">
+            <a
+              ><img
+                class="img-fluid z-depth-1"
+                src="https://csei.uta.edu.ec/csei2021/images/mpdi6.jpg"
+                alt="video"
+            /></a>
+          </div>
+
+          <div class="col-md-4 mx-auto my-5">
+            <a
+              ><img
+                class="img-fluid z-depth-1"
+                src="https://csei.uta.edu.ec/csei2021/images/springerBook.jpg"
+                alt="video"
+            /></a>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Sobre el evento</a>
+      <ng-template ngbNavContent>
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="comite"
+          class="nav-tabs d-flex justify-content-center"
+        >
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>Presentación</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <P style="font-size: 20px; text-align: justify">
+                    La Universidad Técnica de Ambato y las instituciones
+                    patrocinadoras, convocan a la comunidad científica y
+                    profesional al III CONGRESO de Ciencia de la Computación,
+                    Electrónica e Industrial, CSEI 2021, que se realizará del 25
+                    al 29 de octubre de 2021 en Ambato , Ecuador. La
+                    convocatoria se realiza teniendo en cuenta el I y II
+                    CONGRESO de Ciencia de la Computación, Electrónica e
+                    Industrial, CSEI 2019 y CSEI 2020, el éxito de las Jornadas
+                    Internacionales de Investigación Científica de la Facultad
+                    de Ingeniería en Sistemas, Electrónica e Industrial, que han
+                    tenido lugar desde el año 2013 al 2017, con la participación
+                    de investigadores de Ecuador, España, Cuba, Colombia, entre
+                    otros. El congreso es organizado por académicos e
+                    investigadores de la Facultad de Ingeniería en Sistemas,
+                    Electrónica e Industrial con el apoyo de investigadores de
+                    universidades de España, Colombia, Chile, México, USA,
+                    Japon. El Congreso de Ciencia de la Computación, Electrónica
+                    e Industrial pretende convertirse en un espacio para la
+                    actualización, entrenamiento y difusión científica en el
+                    área de la ciencia de la computación, la electrónica y la
+                    ingeniería industrial. En su primera edición, esperamos
+                    contar con la presencia de investigadores de diversas partes
+                    del mundo y prestigiosos conferencistas en las temáticas del
+                    congreso. Se consideran, como temas del congreso: desarrollo
+                    de software, inteligencia artificial, informática educativa,
+                    e-gestión, comunicaciones, sistemas integrados, sistemas
+                    interactivos, automatización de la producción, producción y
+                    operaciones y optimización basada en análisis numérico. En
+                    el marco de celebración del congreso, además de los cursos
+                    precongresos, el día 28 de octubre, las conferencias
+                    magistrales y las presentaciones de los artículos, tendremos
+                    paneles de discusión en las temáticas del congreso. Estas
+                    actividades permitirán conocer del avance científico y
+                    tecnológico en ciencia de la computación, electrónica e
+                    industrial. Este evento representa una especial oportunidad
+                    para el intercambio de ideas, establecer contactos
+                    profesionales y académicos y la organización del congreso se
+                    compromete a dar la más amplia difusión de los trabajos que
+                    sean aceptados, los mismos que serán indexados en Scopus.</P
+                  >
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>Lugar del evento</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of galeriaLugar">
+                  <p style="font-size: 20px; text-align: justify">
+                    {{ item.nombre }}
+                  </p>
+                  <img
+                    class="img-fluid z-depth-1"
+                    [src]="URL + item.imagen"
+                    alt="croquisUTAHUACHI"
+                  />
+                  <p style="font-size: 20px; text-align: left">
+                    Universidad Técnica de Ambato Facultad de Ingeniería en
+                    Sistemas, Electrónica e Industrial Campus Huachi - Av. Los
+                    Chasquis y Río Payamino Ambato - Ecuador e-mail:
+                    csei@uta.edu.ec Telf.: (03)-2851894 ext. 82120 / 0992947123
+                  </p>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>Información túristica</a>
+            <ng-template ngbNavContent>
+              <label>
+                La ciudad de Ambato, sede de CSEI 2021, representa un incentivo
+                a participar en este congreso. Ubicada en el valle andino
+                central del Ecuador, atravesada por el río homónimo, es la
+                capital de la provincia Tungurahua llamada “tierra de las flores
+                y las frutas” en Ecuador. Su cercanía al Balneario de la ciudad
+                Baños de Agua Santa y otros atractivos turísticos como el Parque
+                Nacional Cotopaxi y la Laguna Quilotoa, junto con una variedad
+                gastronómica, que se complementa con una moderna infraestructura
+                hotelera y de servicios como restaurantes, cafeterías y mercados
+                populares, donde podrá́ degustar sus platos típicos como: los
+                llapingachos, las afamadas gallinas y el pan de Pinllo. Todos
+                estos elementos hacen de esta una oportunidad única para conocer
+                y disfrutar de la sierra ecuatoriana y de su riqueza
+                multicultural y étnica.
+              </label>
+            
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a ngbNavLink>Conferencistas</a>
+      <ng-template ngbNavContent>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="row">
+              <div
+                class="col-4"
+                *ngFor="let item of investigadores"
+                (click)="abrirPDF(item.hoja_de_vida)"
+                style="cursor: pointer"
+              >
+                <img class="img-fluid z-depth-1" [src]="URL + item.foto" />
+                <hr />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="4">
+      <a ngbNavLink>Comite</a>
+      <ng-template ngbNavContent>
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="comite"
+          class="nav-tabs d-flex justify-content-center"
+        >
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>ORGANIZADOR</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-4" *ngFor="let item of comiteOrganizador">
+                      {{ item.nombre }}
+                      <br />
+                      {{ item.cargo }}
+                      <hr />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>CIENTIFICO</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-4" *ngFor="let item of comiteCientifico">
+                      {{ item.nombre }}
+                      <br />
+                      {{ item.instituto }}
+                      <br />
+                      {{ item.cargo }}
+                      <hr />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="5">
+      <a ngbNavLink>Envio de trabajos</a>
+      <ng-template ngbNavContent>
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="trabajos"
+          class="nav-tabs d-flex justify-content-center"
+        >
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>INFORMACION</a>
+            <ng-template ngbNavContent>
+              <p>
+                Elit voluptate culpa exercitation amet in ut laboris non labore.
+                Aute ipsum elit aute nisi ea excepteur consectetur sunt eu do
+                velit. Consectetur incididunt et aute occaecat adipisicing non
+                amet. Non et esse elit velit laborum minim aute amet ea qui
+                nostrud duis et. Qui mollit magna dolore dolore. Occaecat
+                reprehenderit laboris elit qui eiusmod nostrud aute amet amet
+                reprehenderit cupidatat ea est ullamco. Cupidatat nisi fugiat
+                nostrud reprehenderit reprehenderit aliqua. Excepteur do sunt
+                aute in et ad laborum laborum anim. Aute incididunt est duis
+                nulla culpa ullamco non exercitation sunt. Ad minim culpa esse
+                ea adipisicing aute tempor tempor magna et. Enim pariatur est
+                nostrud occaecat minim nisi adipisicing minim labore fugiat.
+                Exercitation mollit tempor voluptate minim ullamco tempor
+                excepteur. Esse tempor incididunt sunt anim occaecat do. Irure
+                veniam nostrud fugiat aliquip. Ad dolore aliqua voluptate id
+                velit nisi id non officia quis tempor aliquip.
+              </p>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>TEMARIO</a>
+            <ng-template ngbNavContent>
+              Labore id pariatur velit eiusmod eu labore ipsum enim veniam
+              dolore. Nulla enim dolore esse dolor irure commodo exercitation
+              laboris fugiat amet esse magna commodo. Ad ut commodo officia
+              aliqua dolore non veniam labore aliquip laboris commodo quis
+              officia. Quis nisi nisi nisi commodo ut eiusmod id commodo laboris
+              ad incididunt ut. Lorem sunt velit velit velit id commodo. Aute
+              nostrud ad quis deserunt aliqua esse aliquip esse. Labore amet
+              anim commodo consequat consectetur dolore est non Lorem sint et et
+              ut. Proident dolore ut ea aliquip laborum. Nisi id exercitation
+              ipsum adipisicing dolor anim culpa officia Lorem est quis non amet
+              eiusmod. Ipsum deserunt ad fugiat excepteur. Duis in fugiat nulla
+              do. Exercitation mollit ipsum qui officia sint enim elit consequat
+              proident dolor magna incididunt id. Est nostrud laboris et
+              occaecat velit pariatur deserunt. Culpa duis labore Lorem
+              excepteur sint aliquip. Cillum ipsum ea fugiat nostrud enim id
+              ipsum veniam dolore. Eu laborum dolore nostrud ut. Ad ex consequat
+              ad ea exercitation laboris. Ea aliquip duis do magna dolore
+              nostrud ipsum laborum deserunt. Laboris anim duis sint id
+              consectetur aute laborum voluptate veniam. Labore commodo et in
+              sit ullamco aliqua Lorem reprehenderit excepteur id amet sunt.
+              Ipsum exercitation mollit voluptate reprehenderit ullamco
+              cupidatat et ex ullamco tempor qui sint deserunt. Sunt
+              reprehenderit nulla voluptate laborum qui deserunt non enim dolore
+              pariatur ea tempor consequat. Mollit ipsum mollit cillum sunt
+              excepteur duis. Nostrud est pariatur velit duis eu.
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>FECHAS IMPORTANTES</a>
+            <ng-template ngbNavContent>
+              Labore id pariatur velit eiusmod eu labore ipsum enim veniam
+              dolore. Nulla enim dolore esse dolor irure commodo exercitation
+              laboris fugiat amet esse magna commodo. Ad ut commodo officia
+              aliqua dolore non veniam labore aliquip laboris commodo quis
+              officia. Quis nisi nisi nisi commodo ut eiusmod id commodo laboris
+              ad incididunt ut. Lorem sunt velit velit velit id commodo. Aute
+              nostrud ad quis deserunt aliqua esse aliquip esse. Labore amet
+              anim commodo consequat consectetur dolore est non Lorem sint et et
+              ut. Proident dolore ut ea aliquip laborum. Nisi id exercitation
+              ipsum adipisicing dolor anim culpa officia Lorem est quis non amet
+              eiusmod. Ipsum deserunt ad fugiat excepteur. Duis in fugiat nulla
+              do. Exercitation mollit ipsum qui officia sint enim elit consequat
+              proident dolor magna incididunt id. Est nostrud laboris et
+              occaecat velit pariatur deserunt. Culpa duis labore Lorem
+              excepteur sint aliquip. Cillum ipsum ea fugiat nostrud enim id
+              ipsum veniam dolore. Eu laborum dolore nostrud ut. Ad ex consequat
+              ad ea exercitation laboris. Ea aliquip duis do magna dolore
+              nostrud ipsum laborum deserunt. Laboris anim duis sint id
+              consectetur aute laborum voluptate veniam. Labore commodo et in
+              sit ullamco aliqua Lorem reprehenderit excepteur id amet sunt.
+              Ipsum exercitation mollit voluptate reprehenderit ullamco
+              cupidatat et ex ullamco tempor qui sint deserunt. Sunt
+              reprehenderit nulla voluptate laborum qui deserunt non enim dolore
+              pariatur ea tempor consequat. Mollit ipsum mollit cillum sunt
+              excepteur duis. Nostrud est pariatur velit duis eu.
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="4">
+            <a ngbNavLink>ENVIAR PROPUESTAS</a>
+            <ng-template ngbNavContent>
+              Labore id pariatur velit eiusmod eu labore ipsum enim veniam
+              dolore. Nulla enim dolore esse dolor irure commodo exercitation
+              laboris fugiat amet esse magna commodo. Ad ut commodo officia
+              aliqua dolore non veniam labore aliquip laboris commodo quis
+              officia. Quis nisi nisi nisi commodo ut eiusmod id commodo laboris
+              ad incididunt ut. Lorem sunt velit velit velit id commodo. Aute
+              nostrud ad quis deserunt aliqua esse aliquip esse. Labore amet
+              anim commodo consequat consectetur dolore est non Lorem sint et et
+              ut. Proident dolore ut ea aliquip laborum. Nisi id exercitation
+              ipsum adipisicing dolor anim culpa officia Lorem est quis non amet
+              eiusmod. Ipsum deserunt ad fugiat excepteur. Duis in fugiat nulla
+              do. Exercitation mollit ipsum qui officia sint enim elit consequat
+              proident dolor magna incididunt id. Est nostrud laboris et
+              occaecat velit pariatur deserunt. Culpa duis labore Lorem
+              excepteur sint aliquip. Cillum ipsum ea fugiat nostrud enim id
+              ipsum veniam dolore. Eu laborum dolore nostrud ut. Ad ex consequat
+              ad ea exercitation laboris. Ea aliquip duis do magna dolore
+              nostrud ipsum laborum deserunt. Laboris anim duis sint id
+              consectetur aute laborum voluptate veniam. Labore commodo et in
+              sit ullamco aliqua Lorem reprehenderit excepteur id amet sunt.
+              Ipsum exercitation mollit voluptate reprehenderit ullamco
+              cupidatat et ex ullamco tempor qui sint deserunt. Sunt
+              reprehenderit nulla voluptate laborum qui deserunt non enim dolore
+              pariatur ea tempor consequat. Mollit ipsum mollit cillum sunt
+              excepteur duis. Nostrud est pariatur velit duis eu.
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="6">
+      <a ngbNavLink>Contacto</a>
+      <ng-template ngbNavContent>
+        <!--  <div class="subtitle">
+          CONTACTENOS
+        </div> -->
+        <section class="form_wrap">
+          <section class="cantact_info">
+            <section class="info_items">
+              <p>
+                Gracias por su interés en el CONGRESO DE CIENCIA DE LA
+                COMPUTACION, ELECTRONICA E INDUSTRIAL. Proporcione la siguiente
+                información sobre sus necesidades para ayudarnos a brindarle un
+                mejor servicio. Esta información nos permitirá enviar su
+                solicitud a la persona adecuada. Debería recibir una respuesta
+                dentro de las 48 horas.
+              </p>
+              <p>Correo electrónico: csei@uta.edu.ec</p>
+            </section>
+          </section>
+
+          <form action="" class="form_contact">
+            <h2>Envia un mensaje</h2>
+            <div class="user_info">
+              <label for="names">Nombres *</label>
+              <input type="text" id="names" />
+
+              <label for="phone">Telefono / Celular</label>
+              <input type="text" id="phone" />
+              <label for="phone">Designación</label>
+              <input type="text" id="phone" />
+              <label for="phone">Nombre de la organización</label>
+              <input type="text" id="phone" />
+              <label for="phone">País</label>
+              <input type="text" id="phone" />
+              <label for="phone">Dirección de correo electró nico</label>
+              <input type="text" id="phone" />
+              <label for="email">Tema</label>
+              <input type="text" id="email" />
+
+              <label for="mensaje">Mensaje *</label>
+              <textarea id="mensaje"></textarea>
+              <button
+                class="btn"
+                style="background-color: #7a1e19; font-size: 18px"
+              >
+                Enviar
+              </button>
+            </div>
+          </form>
+        </section>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="7">
+      <a ngbNavLink>Ediciones anteriores</a>
+      <ng-template ngbNavContent>
+        <div class="row">
+          <div
+            class="col-md-4 mx-auto my-5"
+            *ngFor="let item of ediciones"
+            (click)="abrirPDF(item.pdf)"
+            style="cursor: pointer"
+          >
+            <a><img class="img-fluid z-depth-1" [src]="URL + item.imagen" /></a>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="8">
+      <a ngbNavLink>Galeria del evento</a>
+      <ng-template ngbNavContent>
+        <div class="row" style="text-align: center">
+          <div
+            class="col-md-3 mx-auto my-5"
+            *ngFor="let item of galeriaInformacion"
+            style="cursor: pointer"
+          >
+            <img class="img-fluid z-depth-1" [src]="URL + item.imagen" />
+            <br />
+            <label> {{ item.nombre }}</label>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+    <li>
+      <button
+        class="button-perso"
+        style="
+          top: 50%;
+          bottom: 50%;
+          width: 100%;
+          margin-top: 5px;
+          margin-left: 15%;
+          color: white;
+          border: 3px solid white;
+          border-radius: 5px;
+        "
+        [routerLink]="['/acerca-de']"
+        routerLinkActive="router-link-active"
+      >
+        REGISTRARME
+      </button>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+  <!-- Footer -->
+  <app-footer-inicio></app-footer-inicio>
+</div>

@@ -1,0 +1,17 @@
+hr {
+  background: #7A1E19;
+}
+
+.title {
+  margin-top: 5%;
+}
+
+.saludo {
+  text-align: center;
+  font-size: 20px;
+}
+
+.badge {
+  background: #7A1E19;
+  color: #fff;
+}
