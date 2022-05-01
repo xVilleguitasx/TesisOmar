@@ -289,21 +289,21 @@ export class TableroComponent implements OnInit {
   plantillaCertificado: string = "";
   plantillaTipo: string = "1";
   galeriaLugar: Galeria[] = [];
-  gleririaInformacion:Galeria[] = [];
+  gleririaInformacion: Galeria[] = [];
   ////////////////////////////////
   nombreGaleria = "";
   imagenGaleria = "";
   galeriaSeleccionada: Galeria = undefined;
   //
-  presentacion:Presentacion[]=[];
+  presentacion: Presentacion[] = [];
   //
-  lugarDelEvento:LugarDelEvento[]=[];
+  lugarDelEvento: LugarDelEvento[] = [];
   //
-  textoPresentacion="";
-  imagen_boton_1="";
-  link_boton_1="";
-  link_boton_2="";
-  imagen_boton_2="";
+  textoPresentacion = "";
+  imagen_boton_1 = "";
+  link_boton_1 = "";
+  link_boton_2 = "";
+  imagen_boton_2 = "";
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -324,7 +324,7 @@ export class TableroComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  
+
   ngOnInit(): void {
     this.getInscripciones();
     this.inscripcionesFiltradas = this.inscripciones;
@@ -347,22 +347,21 @@ export class TableroComponent implements OnInit {
     this.getLugarDelEvento();
   }
   getLugarDelEvento() {
-    this._lugarDelEventoService.getLugarDelEvento().subscribe((result)=>{
+    this._lugarDelEventoService.getLugarDelEvento().subscribe((result) => {
       this.lugarDelEvento = result;
-    })
+    });
   }
   getPresentacion() {
-   this._presentacionService.getPresentaciones().subscribe((result)=>{
-     this.presentacion=result;
-   })
+    this._presentacionService.getPresentaciones().subscribe((result) => {
+      this.presentacion = result;
+    });
   }
   getGaleriaInformacion() {
-   this._galeriaInformacionService.getGaleria().subscribe((result) => {
-     this.gleririaInformacion = result;
-   })
+    this._galeriaInformacionService.getGaleria().subscribe((result) => {
+      this.gleririaInformacion = result;
+    });
   }
 
- 
   getGaleriaLugar() {
     this._galeriaLugarService.getGaleria().subscribe((result) => {
       this.galeriaLugar = result;
@@ -2350,13 +2349,13 @@ export class TableroComponent implements OnInit {
     this._authService.logOut();
     this.router.navigate(["/admin"]);
   }
-  openGaleriaModal( content,galeria: Galeria) {
-    if(galeria != undefined){
-       this.galeriaSeleccionada=galeria 
-       this.nombreGaleria=galeria.nombre;
-       this.imagenGaleria=galeria.imagen;
-      }
-      this.modalRef = this._modalService.open(content, { size: "lg" });
+  openGaleriaModal(content, galeria: Galeria) {
+    if (galeria != undefined) {
+      this.galeriaSeleccionada = galeria;
+      this.nombreGaleria = galeria.nombre;
+      this.imagenGaleria = galeria.imagen;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
       (result) => {
         this.resetVariablesGaleria();
@@ -2370,7 +2369,7 @@ export class TableroComponent implements OnInit {
     this.nombreGaleria = "";
     this.imagenGaleria = "";
     this.galeriaSeleccionada = undefined;
-    this.file=undefined;
+    this.file = undefined;
   }
   selectImgGaleria(event) {
     this.file = event.target.files[0];
@@ -2381,13 +2380,29 @@ export class TableroComponent implements OnInit {
     if (this.nombreGaleria != "") {
       var data = new FormData();
       data.append("nombre", this.nombreGaleria);
-      this.file != undefined ? data.append("imagen", this.file) : "";
-      this._galeriaLugarService
-        .editGaleria(this.galeriaSeleccionada.id, data)
-        .subscribe(() => {
-          this.cerrarModal();
-          this.getGaleriaLugar();
-        });
+      if (this.galeriaSeleccionada === undefined) {
+        data.append("imagen", this.file);
+
+        if (this.file != undefined) {
+          this._galeriaLugarService.insertGaleria(data).subscribe(() => {
+            this.cerrarModal();
+            this.getGaleriaLugar();
+          });
+        } else {
+          this.error = true;
+          setTimeout(() => {
+            this.error = false;
+          }, 5000);
+        }
+      } else {
+        this.file != undefined ? data.append("imagen", this.file) : "";
+        this._galeriaLugarService
+          .editGaleria(this.galeriaSeleccionada.id, data)
+          .subscribe(() => {
+            this.cerrarModal();
+            this.getGaleriaLugar();
+          });
+      }
     } else {
       this.error = true;
       setTimeout(() => {
@@ -2395,30 +2410,26 @@ export class TableroComponent implements OnInit {
       }, 5000);
     }
   }
-  
+
   guardarGaleriaInfo() {
-    if(this.galeriaSeleccionada===undefined) {
-      
+    if (this.galeriaSeleccionada === undefined) {
     }
     if (this.nombreGaleria != "") {
       var data = new FormData();
       data.append("nombre", this.nombreGaleria);
-      if(this.galeriaSeleccionada===undefined) {
+      if (this.galeriaSeleccionada === undefined) {
         if (this.file != undefined) {
           data.append("imagen", this.file);
-          this._galeriaInformacionService
-            .insertGaleria(data)
-            .subscribe(() => {
-              this.cerrarModal();
-              this.getGaleriaInformacion();
-            });
-      }else{
-        this.error = true;
-        setTimeout(() => {
-          this.error = false;
-        }, 5000);
-      }
-     
+          this._galeriaInformacionService.insertGaleria(data).subscribe(() => {
+            this.cerrarModal();
+            this.getGaleriaInformacion();
+          });
+        } else {
+          this.error = true;
+          setTimeout(() => {
+            this.error = false;
+          }, 5000);
+        }
       } else {
         this.file != undefined ? data.append("imagen", this.file) : "";
         this._galeriaInformacionService
@@ -2435,25 +2446,25 @@ export class TableroComponent implements OnInit {
       }, 5000);
     }
   }
-  resetVariablesPresentacion(){
-    this.textoPresentacion="";
-    this.imagen_boton_1="";
-    this.link_boton_1="";
-    this.link_boton_2="";
-    this.imagen_boton_2="";
-    this.file=undefined;
-    this.file2=undefined;
-    this.error=false;
+  resetVariablesPresentacion() {
+    this.textoPresentacion = "";
+    this.imagen_boton_1 = "";
+    this.link_boton_1 = "";
+    this.link_boton_2 = "";
+    this.imagen_boton_2 = "";
+    this.file = undefined;
+    this.file2 = undefined;
+    this.error = false;
   }
-  
-  openPresentacion( content,presentacion: Presentacion) {
-    this.textoPresentacion=presentacion.texto;
-    this.imagen_boton_1=presentacion.imagen_boton_1;
-    this.link_boton_1=presentacion.link_boton_1;
-    this.link_boton_2=presentacion.link_boton_2;
-    this.imagen_boton_2=presentacion.imagen_boton_2;
 
-      this.modalRef = this._modalService.open(content, { size: "lg" });
+  openPresentacion(content, presentacion: Presentacion) {
+    this.textoPresentacion = presentacion.texto;
+    this.imagen_boton_1 = presentacion.imagen_boton_1;
+    this.link_boton_1 = presentacion.link_boton_1;
+    this.link_boton_2 = presentacion.link_boton_2;
+    this.imagen_boton_2 = presentacion.imagen_boton_2;
+
+    this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
       (result) => {
         this.resetVariablesPresentacion();
@@ -2468,47 +2479,47 @@ export class TableroComponent implements OnInit {
     this.imagen_boton_1 = this.file.name;
   }
   selectImg2Presentacion(event) {
-    this.file2 = event.target.files[0];  
+    this.file2 = event.target.files[0];
     this.imagen_boton_2 = this.file2.name;
   }
-  guardarPresentacion(){
-  if(this.textoPresentacion!=""){
+  guardarPresentacion() {
+    if (this.textoPresentacion != "") {
+      var data = new FormData();
 
-  
-    var data = new FormData();
-
-    data.append("texto", this.textoPresentacion);
-    this.file != undefined ? data.append("imagen_boton_1", this.file) : "";
-    this.file2 != undefined ? data.append("imagen_boton_2", this.file2) : "";
-    data.append("link_boton_1", this.nombrePatrocinador);
-    data.append("link_boton_2", this.nombrePatrocinador);
-    this._presentacionService.editPresentacion(1,data).subscribe((result)=>{
-      this.getPresentacion();
-      this.cerrarModal();
-    })
-
-  }else{
-    this.error = true;
-    setTimeout(() => {
-      this.error = false;
-    }, 5000);
-  }}
-  texto1LugarEvento="";
-  texto2LugarEvento="";
-  imagenLugarEvento="";
-  resetVariablesLugarDelEvento(){
-    this.texto1LugarEvento="";
-    this.texto2LugarEvento="";
-    this.imagenLugarEvento="";
-    this.file =undefined;
-    this.error=false
+      data.append("texto", this.textoPresentacion);
+      this.file != undefined ? data.append("imagen_boton_1", this.file) : "";
+      this.file2 != undefined ? data.append("imagen_boton_2", this.file2) : "";
+      data.append("link_boton_1", this.nombrePatrocinador);
+      data.append("link_boton_2", this.nombrePatrocinador);
+      this._presentacionService
+        .editPresentacion(1, data)
+        .subscribe((result) => {
+          this.getPresentacion();
+          this.cerrarModal();
+        });
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
   }
-  openLugarDelEvento( content,lugarDelEvento: LugarDelEvento) {
-    this.texto1LugarEvento=lugarDelEvento.texto_1;
-    this.texto2LugarEvento=lugarDelEvento.texto_2;
-    this.imagenLugarEvento=lugarDelEvento.imagen;
+  texto1LugarEvento = "";
+  texto2LugarEvento = "";
+  imagenLugarEvento = "";
+  resetVariablesLugarDelEvento() {
+    this.texto1LugarEvento = "";
+    this.texto2LugarEvento = "";
+    this.imagenLugarEvento = "";
+    this.file = undefined;
+    this.error = false;
+  }
+  openLugarDelEvento(content, lugarDelEvento: LugarDelEvento) {
+    this.texto1LugarEvento = lugarDelEvento.texto_1;
+    this.texto2LugarEvento = lugarDelEvento.texto_2;
+    this.imagenLugarEvento = lugarDelEvento.imagen;
 
-      this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
       (result) => {
         this.resetVariablesLugarDelEvento();
@@ -2519,29 +2530,27 @@ export class TableroComponent implements OnInit {
     );
   }
   selectImgLugarDelEvento(event) {
-    this.file = event.target.files[0];  
+    this.file = event.target.files[0];
     this.imagenLugarEvento = this.file.name;
   }
-  guardarLugarDelEvento(){
-    
+  guardarLugarDelEvento() {
     var data = new FormData();
-    if(this.texto1LugarEvento!="" && this.texto2LugarEvento!=""){
+    if (this.texto1LugarEvento != "" && this.texto2LugarEvento != "") {
+      data.append("texto_1", this.texto1LugarEvento);
+      data.append("texto_2", this.texto2LugarEvento);
+      this.file != undefined ? data.append("imagen", this.file) : "";
 
-  
-    data.append("texto_1", this.texto1LugarEvento);
-    data.append("texto_2", this.texto2LugarEvento);
-    this.file != undefined ? data.append("imagen", this.file) : "";
-   
-    this._lugarDelEventoService.editLugarDelEvento(1,data).subscribe((result)=>{
-      this.getLugarDelEvento();
-      this.cerrarModal();
-    })
-
-  }else{
-    this.error = true;
-    setTimeout(() => {
-      this.error = false;
-    }, 5000);
-  }
+      this._lugarDelEventoService
+        .editLugarDelEvento(1, data)
+        .subscribe((result) => {
+          this.getLugarDelEvento();
+          this.cerrarModal();
+        });
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
   }
 }

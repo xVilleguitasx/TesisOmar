@@ -9,7 +9,8 @@ import { Galeria } from "../models/galeria";
 export class GaleriaLugarService {
       api: string = environment.api;
       constructor(private http: HttpClient) {}
-      insertGaleria(galeria:Galeria): any{
+      insertGaleria(galeria:any): any{
+        console.log(galeria)
         return this.http.post<Galeria>(`${this.api}/galeriaLugar`,galeria);
       }
       getGaleria() {

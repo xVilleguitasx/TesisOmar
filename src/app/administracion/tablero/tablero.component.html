@@ -1749,7 +1749,9 @@
           <li [ngbNavItem]="15">
             <a ngbNavLink>Galeria Lugar</a>
             <ng-template ngbNavContent>
-              
+              <button class="btn" (click)="openGaleriaModal(galeriaLugarModal)">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Imagen
+              </button>
               <ul class="list-group">
                 <li class="list-group-item" *ngFor="let item of galeriaLugar">
                   <div class="row">
@@ -1761,6 +1763,9 @@
                       <br />
                       <button class="btn" (click)="openGaleriaModal(galeriaLugarModal,item)">
                         Editar
+                      </button>
+                      <button class="btn" (click)="EliminarGaleriaLugar(item.id)">
+                        Eliminar
                       </button>
                     </div>
                   </div>
@@ -1812,10 +1817,14 @@
                     Cancelar
                   </button>
             
-                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark" *ngIf="galeriaSeleccionada!=undefined"
                     (click)="guardarGaleriaLugar()">
                     Guardar Cambios
                   </button>
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark" *ngIf="galeriaSeleccionada===undefined"
+                  (click)="guardarGaleriaLugar()">
+                  Guardar 
+                </button>
                 </div>
               </ng-template>
             </ng-template>
@@ -2053,8 +2062,9 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Texto 1</label>
-                        <input type="text" class="form-control mt-2" [(ngModel)]="texto1LugarEvento"
-                          [ngModelOptions]="{ standalone: true }" />
+                       
+                          <textarea  id="" cols="60" rows="15" [(ngModel)]="texto1LugarEvento"
+                          [ngModelOptions]="{ standalone: true }"></textarea>
                       </div>
                     </div>
                   </div>
@@ -2079,8 +2089,8 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Texto 2</label>
-                        <input type="text" class="form-control mt-2" [(ngModel)]="texto2LugarEvento"
-                          [ngModelOptions]="{ standalone: true }" />
+                          <textarea  id="" cols="60" rows="15" [(ngModel)]="texto2LugarEvento"
+                          [ngModelOptions]="{ standalone: true }"></textarea>
                       </div>
                     </div>
                   </div>
