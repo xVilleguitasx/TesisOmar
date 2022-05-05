@@ -69,6 +69,8 @@ import { Presentacion } from "../../../app/models/presentacion.model";
 import { PresentacionService } from "../../../app/services/presentacion.service";
 import { LugarDelEvento } from "../../../app/models/lugarDelEvento.model";
 import { LugarDelEventoService } from "../../../app/services/lugar-del-evento.service";
+import { InformacionTuristica } from "../../../app/models/informacionTuristica.model";
+import { InformacionTuristicaService } from "../../../app/services/informacion-turistica.service";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -143,7 +145,8 @@ export class TableroComponent implements OnInit {
     private _galeriaLugarService: GaleriaLugarService,
     private _galeriaInformacionService: GaleriaInformacionService,
     private _presentacionService: PresentacionService,
-    private _lugarDelEventoService: LugarDelEventoService
+    private _lugarDelEventoService: LugarDelEventoService,
+    private _informacionTuristica: InformacionTuristicaService
   ) {}
   registros: string[] = [
     "Seleccione...",
@@ -304,6 +307,8 @@ export class TableroComponent implements OnInit {
   link_boton_1 = "";
   link_boton_2 = "";
   imagen_boton_2 = "";
+  textoInformacionTuristica="";
+informacionTuristica:InformacionTuristica[] = [];
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -345,6 +350,12 @@ export class TableroComponent implements OnInit {
     this.getGaleriaInformacion();
     this.getPresentacion();
     this.getLugarDelEvento();
+    this.getInformacionTuristica();
+  }
+  getInformacionTuristica() {
+    this._informacionTuristica.getInformacionTuristicas().subscribe(result => {
+      this.informacionTuristica=result;
+    })
   }
   getLugarDelEvento() {
     this._lugarDelEventoService.getLugarDelEvento().subscribe((result) => {
@@ -2552,5 +2563,58 @@ export class TableroComponent implements OnInit {
         this.error = false;
       }, 5000);
     }
+  }
+
+  openInformacionTuristica(content,item?:InformacionTuristica){
+    if(item!= undefined){
+      this.textoInformacionTuristica = item.texto;
+      this.imagen_boton_1 = item.boton1;
+      this.link_boton_1 = item.link1;
+      this.link_boton_2 = item.link2;
+      this.imagen_boton_2 = item.boton2;
+    }
+
+
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariablesInformacionTuristica();
+      },
+      (reason) => {
+        this.resetVariablesInformacionTuristica();
+      }
+    );
+  }
+  
+  guardarInformacionTuristica() {
+    if (this.textoInformacionTuristica != "") {
+      var data = new FormData();
+      data.append("texto", this.textoInformacionTuristica);
+      this.file != undefined ? data.append("boton1", this.file) : "";
+      this.file2 != undefined ? data.append("boton2", this.file2) : "";
+      data.append("link1", this.nombrePatrocinador);
+      data.append("link2", this.nombrePatrocinador);
+      this._informacionTuristica
+        .insertInformacionTuristica(data)
+        .subscribe((result) => {
+          this.getInformacionTuristica();
+          this.cerrarModal();
+        });
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  resetVariablesInformacionTuristica() {
+    this.textoInformacionTuristica = "";
+    this.imagen_boton_1 = "";
+    this.link_boton_1 = "";
+    this.link_boton_2 = "";
+    this.imagen_boton_2 = "";
+    this.file = undefined;
+    this.file2 = undefined;
+    this.error = false;
   }
 }

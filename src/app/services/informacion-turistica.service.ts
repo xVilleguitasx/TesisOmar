@@ -21,7 +21,7 @@ export class InformacionTuristicaService {
   insertInformacionTuristica(informacionTuristica:any): any{
     return this.http.post<InformacionTuristica>(`${this.api}/informacionTuristica`,informacionTuristica);
   }
-  editInformacionTuristica(id: string, informacionTuristica: any): any {
+  editInformacionTuristica(id: number, informacionTuristica: any): any {
     return this.http.put(`${environment.api}/informacionTuristica/${id}`, informacionTuristica);
   }
   deleteInformacionTuristica(id: string) {

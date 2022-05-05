@@ -2114,6 +2114,123 @@
               
             </ng-template>
           </li>
+          <li [ngbNavItem]="19">
+            <a ngbNavLink>Información turistica</a>
+            <ng-template ngbNavContent>
+              <button class="btn" (click)="openInformacionTuristica(informacionTuristicaModal)">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Información turistica
+              </button>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of informacionTuristica">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]=" URL + item.boton1" class="patrocinador-img" />
+                    </div>
+                    <div class="col-1" style="text-align: center">
+                      <img [src]=" URL + item.boton2" class="patrocinador-img" />
+                    </div>
+                    <div class="col-10">
+                      {{ item.texto }}
+                      <br />
+                      <button class="btn" (click)="openInformacionTuristica(informacionTuristicaModal,item)">
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>  
+              <ng-template #informacionTuristicaModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4 class="modal-title" id="modal-basic-title" style="font-weight: bold">
+                      Información Turistica
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto</label>
+                        <br>
+                          <textarea  id="" cols="60" rows="15"  [(ngModel)]="textoInformacionTuristica"
+                          [ngModelOptions]="{ standalone: true }"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link 1</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="link_boton_1"
+                          [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen 1</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImg1Presentacion($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagen_boton_1 }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link 2</label>
+                        <input type="text" class="form-control mt-2" [(ngModel)]="link_boton_2"
+                        [ngModelOptions]="{ standalone: true }" />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen 2</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input type="file" name="src-file1" aria-label="Archivo" (change)="selectImg2Presentacion($event)"
+                            accept="image/*" />
+                        </div>
+                        <br />
+                        {{ imagen_boton_2 }}
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div style="text-align: center">
+                    <ngb-toast style="margin: 0 auto" class="toast" *ngIf="error" [autohide]="false"
+                      (hidden)="show = false">
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button type="button" class="btn btn-outline-dark" (click)="cerrarModal()">
+                    Cancelar
+                  </button>
+            
+                  <button style="background: #b41e26" type="button" class="btn btn-outline-dark"
+                    (click)="guardarInformacionTuristica()">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+              
+            </ng-template>
+          </li>
         </ul>
 
         <div [ngbNavOutlet]="nav" class="mt-2"></div>
