@@ -71,6 +71,18 @@ import { LugarDelEvento } from "../../../app/models/lugarDelEvento.model";
 import { LugarDelEventoService } from "../../../app/services/lugar-del-evento.service";
 import { InformacionTuristica } from "../../../app/models/informacionTuristica.model";
 import { InformacionTuristicaService } from "../../../app/services/informacion-turistica.service";
+import { Programa } from "../../../app/models/programa.model";
+import { EnvioTrabajos } from "../../../app/models/envioTrabajos.model";
+import { EnvioTrabajosFormato } from "../../../app/models/envioTrabajosFormatos.model";
+import { EnvioTrabajosFechas } from "../../../app/models/envioTrabajosFechas.model";
+import { Temario } from "../../../app/models/temario.model";
+import { TemarioTemas } from "../../../app/models/temarioTemas.model";
+import { ProgramaService } from "../../../app/services/programa.service";
+import { EnvioTrabajosService } from "../../../app/services/envio-trabajos.service";
+import { EnvioTrabajosFechasService } from "../../../app/services/envio-trabajos-fechas.service";
+import { EnvioTrabajosFormatosService } from "../../../app/services/envio-trabajos-formatos.service";
+import { TemarioService } from "../../../app/services/temario.service";
+import { TemarioTemasService } from "../../../app/services/temario-temas.service";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -146,7 +158,13 @@ export class TableroComponent implements OnInit {
     private _galeriaInformacionService: GaleriaInformacionService,
     private _presentacionService: PresentacionService,
     private _lugarDelEventoService: LugarDelEventoService,
-    private _informacionTuristica: InformacionTuristicaService
+    private _informacionTuristica: InformacionTuristicaService,
+    private _programaService: ProgramaService,
+    private _envioTrabajosService: EnvioTrabajosService,
+    private _envioTrabajosFechasService: EnvioTrabajosFechasService,
+    private _envioTrabajosFormatosService: EnvioTrabajosFormatosService,
+    private _temarioService: TemarioService,
+    private _temarioTemasServices: TemarioTemasService
   ) {}
   registros: string[] = [
     "Seleccione...",
@@ -310,6 +328,15 @@ export class TableroComponent implements OnInit {
   textoInformacionTuristica = "";
   informacionTuristica: InformacionTuristica[] = [];
   informacionTuristicaSeleccionada: InformacionTuristica = undefined;
+  ////
+  programa:Programa[] = [];
+  envioTrabajos:EnvioTrabajos[] = [];
+  envioTrabajosFormatos:EnvioTrabajosFormato[] = [];
+  envioTrabajosFechas: EnvioTrabajosFechas[] = [];
+  temarios:Temario[] = [];
+  temarioTemas:TemarioTemas[] = [];
+
+
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -352,6 +379,42 @@ export class TableroComponent implements OnInit {
     this.getPresentacion();
     this.getLugarDelEvento();
     this.getInformacionTuristica();
+    this.getPrograma();
+    this.getEnvioTrabajos();
+    this.getEnvioTrabajosFormatos();
+    this.getEnvioTrabajosFechas();
+    this.getTemarios();
+    this.getTemariosTemas();
+  }
+  getEnvioTrabajosFechas() {
+    this._envioTrabajosFechasService.getEnvioTrabajoFechas().subscribe((result)=>{
+      this.envioTrabajosFechas= result;
+    })
+  }
+  getTemariosTemas() {
+   this._temarioTemasServices.getTemarioTemas().subscribe((result)=>{
+     this.temarioTemas = result;
+   })
+  }
+  getTemarios() {
+    this._temarioService.getTemarios().subscribe((result)=>{
+      this.temarios = result;
+    })
+  }
+  getEnvioTrabajosFormatos() {
+    this._envioTrabajosFormatosService.getEnvioTrabajoFormatos().subscribe((result)=>{
+      this.envioTrabajosFormatos = result;
+    })
+  }
+  getEnvioTrabajos() {
+    this._envioTrabajosService.getEnvioTrabajos().subscribe((result)=>{
+      this.envioTrabajos = result;
+    })
+  }
+  getPrograma() {
+    this._programaService.getPrograma().subscribe((result)=>{
+      this.programa = result;
+    })
   }
   getInformacionTuristica() {
     this._informacionTuristica

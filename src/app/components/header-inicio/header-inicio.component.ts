@@ -50,4 +50,9 @@ export class HeaderInicioComponent implements OnInit {
     }
     
   }
+  abrirEnlace(URL){
+    if (URL != null  && URL!= '') {
+      window.open(URL, "_blank");
+    }
+  }
 }
