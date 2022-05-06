@@ -307,8 +307,9 @@ export class TableroComponent implements OnInit {
   link_boton_1 = "";
   link_boton_2 = "";
   imagen_boton_2 = "";
-  textoInformacionTuristica="";
-informacionTuristica:InformacionTuristica[] = [];
+  textoInformacionTuristica = "";
+  informacionTuristica: InformacionTuristica[] = [];
+  informacionTuristicaSeleccionada: InformacionTuristica = undefined;
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -353,9 +354,11 @@ informacionTuristica:InformacionTuristica[] = [];
     this.getInformacionTuristica();
   }
   getInformacionTuristica() {
-    this._informacionTuristica.getInformacionTuristicas().subscribe(result => {
-      this.informacionTuristica=result;
-    })
+    this._informacionTuristica
+      .getInformacionTuristicas()
+      .subscribe((result) => {
+        this.informacionTuristica = result;
+      });
   }
   getLugarDelEvento() {
     this._lugarDelEventoService.getLugarDelEvento().subscribe((result) => {
@@ -2565,15 +2568,15 @@ informacionTuristica:InformacionTuristica[] = [];
     }
   }
 
-  openInformacionTuristica(content,item?:InformacionTuristica){
-    if(item!= undefined){
+  openInformacionTuristica(content, item?: InformacionTuristica) {
+    if (item != undefined) {
+      this.informacionTuristicaSeleccionada = item;
       this.textoInformacionTuristica = item.texto;
       this.imagen_boton_1 = item.boton1;
       this.link_boton_1 = item.link1;
       this.link_boton_2 = item.link2;
       this.imagen_boton_2 = item.boton2;
     }
-
 
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
@@ -2585,30 +2588,44 @@ informacionTuristica:InformacionTuristica[] = [];
       }
     );
   }
-  
+
   guardarInformacionTuristica() {
-    if (this.textoInformacionTuristica != "") {
-      var data = new FormData();
-      data.append("texto", this.textoInformacionTuristica);
-      this.file != undefined ? data.append("boton1", this.file) : "";
-      this.file2 != undefined ? data.append("boton2", this.file2) : "";
-      data.append("link1", this.nombrePatrocinador);
-      data.append("link2", this.nombrePatrocinador);
+    var data = new FormData();
+    data.append("texto", this.textoInformacionTuristica);
+    this.file != undefined ? data.append("boton1", this.file) : "";
+    this.file2 != undefined ? data.append("boton2", this.file2) : "";
+    this.link_boton_1!='' ? data.append("link1", this.link_boton_1) : "";
+    this.link_boton_2!='' ? data.append("link2", this.link_boton_2): "";
+    if (this.informacionTuristicaSeleccionada === undefined) {
+      if (this.textoInformacionTuristica != "") {
+        this._informacionTuristica
+          .insertInformacionTuristica(data)
+          .subscribe((result) => {
+            this.getInformacionTuristica();
+            this.cerrarModal();
+          });
+      } else {
+        this.error = true;
+        setTimeout(() => {
+          this.error = false;
+        }, 5000);
+      }
+    } else {
+      console.log(this.informacionTuristicaSeleccionada);
       this._informacionTuristica
-        .insertInformacionTuristica(data)
+        .editInformacionTuristica(
+          this.informacionTuristicaSeleccionada.id,
+          data
+        )
         .subscribe((result) => {
           this.getInformacionTuristica();
           this.cerrarModal();
         });
-    } else {
-      this.error = true;
-      setTimeout(() => {
-        this.error = false;
-      }, 5000);
     }
   }
   resetVariablesInformacionTuristica() {
     this.textoInformacionTuristica = "";
+    this.informacionTuristicaSeleccionada = undefined;
     this.imagen_boton_1 = "";
     this.link_boton_1 = "";
     this.link_boton_2 = "";
@@ -2617,4 +2634,26 @@ informacionTuristica:InformacionTuristica[] = [];
     this.file2 = undefined;
     this.error = false;
   }
+  eliminarInformacionTuristica(id:string){
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar información?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._informacionTuristica.deleteInformacionTuristica(id).subscribe((result) => {
+          this.getInformacionTuristica();
+        })
+      } else {
+      }
+    });
+  }
+  
 }

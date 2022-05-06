@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Comite } from "../models/comite.model";
 import { Edicion } from "../models/edicion.model";
 import { Galeria } from "../models/galeria";
+import { InformacionTuristica } from "../models/informacionTuristica.model";
 import { Investigador } from "../models/investigador.model";
 import { LugarDelEvento } from "../models/lugarDelEvento.model";
 import { Presentacion } from "../models/presentacion.model";
@@ -9,6 +10,7 @@ import { ComiteService } from "../services/comite.service";
 import { EdicionService } from "../services/edicion.service";
 import { GaleriaInformacionService } from "../services/galeria-informacion.service";
 import { GaleriaLugarService } from "../services/galeria-lugar.service";
+import { InformacionTuristicaService } from "../services/informacion-turistica.service";
 import { InvestigadoresService } from "../services/investigadores.service";
 import { LugarDelEventoService } from "../services/lugar-del-evento.service";
 import { PresentacionService } from "../services/presentacion.service";
@@ -30,6 +32,7 @@ export class InicioComponent implements OnInit {
   galeriaInformacion: Galeria[] = [];
   presentacion:Presentacion[] = [];
   lugarDelEvento: LugarDelEvento[] = [];
+  informacionTuristica:InformacionTuristica[] = [];
   URL = "http://localhost:3000/";
   constructor(
     private _comiteService: ComiteService,
@@ -38,7 +41,8 @@ export class InicioComponent implements OnInit {
     private _galeriaLugarService: GaleriaLugarService,
     private _galeriaInformacionService: GaleriaInformacionService,
     private _presentacionService: PresentacionService,
-    private _lugarDelEventoService: LugarDelEventoService
+    private _lugarDelEventoService: LugarDelEventoService,
+    private _informacionTuristicaService: InformacionTuristicaService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +50,12 @@ export class InicioComponent implements OnInit {
     this.getEdiciones();
     this.getInvestigadores();
     this.getSobreElEvento();
+    this.getInformacionTuristica();
+  }
+  getInformacionTuristica() {
+  this._informacionTuristicaService.getInformacionTuristicas().subscribe((result) => {
+this.informacionTuristica=result;
+  })
   }
   getSobreElEvento() {
 

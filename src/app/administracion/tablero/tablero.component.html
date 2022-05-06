@@ -1589,7 +1589,7 @@
                       <button class="btn" (click)="editImgPortada(item, imgPortada)">
                         Editar
                       </button>
-                      <button class="btn btn-eliminar" (click)="eliminarInfoCongresi(item.id)">
+                      <button class="btn btn-eliminar"  style="background:#802417" (click)="eliminarInfoCongresi(item.id)">
                         Eliminar
                       </button>
                     </div>
@@ -2117,7 +2117,7 @@
           <li [ngbNavItem]="19">
             <a ngbNavLink>Información turistica</a>
             <ng-template ngbNavContent>
-              <button class="btn" (click)="openInformacionTuristica(informacionTuristicaModal)">
+              <button class="btn" (click)="openInformacionTuristica(informacionTuristicaModal)" *ngIf="informacionTuristica.length===0">
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Información turistica
               </button>
               <ul class="list-group">
@@ -2135,6 +2135,10 @@
                       <button class="btn" (click)="openInformacionTuristica(informacionTuristicaModal,item)">
                         Editar
                       </button>
+                      <button style="background: #b41e26" type="button" class="btn btn-outline-dark" *ngIf="informacionTuristica.length!=0"
+                      (click)="eliminarInformacionTuristica(item.id)">
+                      Eliminar
+                    </button>
                     </div>
                   </div>
                 </li>

@@ -107,22 +107,25 @@
           <li [ngbNavItem]="3">
             <a ngbNavLink>Información túristica</a>
             <ng-template ngbNavContent>
-              <label>
-                La ciudad de Ambato, sede de CSEI 2021, representa un incentivo
-                a participar en este congreso. Ubicada en el valle andino
-                central del Ecuador, atravesada por el río homónimo, es la
-                capital de la provincia Tungurahua llamada “tierra de las flores
-                y las frutas” en Ecuador. Su cercanía al Balneario de la ciudad
-                Baños de Agua Santa y otros atractivos turísticos como el Parque
-                Nacional Cotopaxi y la Laguna Quilotoa, junto con una variedad
-                gastronómica, que se complementa con una moderna infraestructura
-                hotelera y de servicios como restaurantes, cafeterías y mercados
-                populares, donde podrá́ degustar sus platos típicos como: los
-                llapingachos, las afamadas gallinas y el pan de Pinllo. Todos
-                estos elementos hacen de esta una oportunidad única para conocer
-                y disfrutar de la sierra ecuatoriana y de su riqueza
-                multicultural y étnica.
-              </label>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of informacionTuristica">
+                  <P style="font-size: 20px; text-align: justify">
+                 {{item.texto}}
+                   </P>
+                   
+                   <div class="row">
+                     <div class="col-md-2"></div>
+                   <div class="col-md-3 mx-auto my-5" style="cursor: pointer" *ngIf="item.boton1 !='' && item.boton1 !=null">
+                   <img class="img-fluid z-depth-1" [src]="URL + item.iboton1"  (click)="abrirEnlace(item.link1)"/>
+                 </div>
+                 <div class="col-md-2"></div>
+                 <div class="col-md-3 mx-auto my-5" style="cursor: pointer" *ngIf="item.boton2 !='' && item.boton2 !=null">
+                  <img class="img-fluid z-depth-1" [src]="URL + item.boton2" (click)="abrirEnlace(item.link2)" />
+                  <div class="col-md-2"></div>
+                </div>
+              </div>
+                </li>
+              </ul>
               <ul class="list-group">
              
                   <h3 class="titulo">Galeria de fotos</h3>
