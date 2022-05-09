@@ -3345,7 +3345,7 @@
             <ng-template ngbNavContent>
               <button
                 class="btn"
-                (click)="openInformacionTuristica(informacionTuristicaModal)"
+                (click)="openPrograma(programaModal)"
                 *ngIf="programa.length === 0"
               >
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Programa
@@ -3362,12 +3362,13 @@
                       <br />
                       {{ item.programa }}
                       <br />
-                      <button class="btn">Editar</button>
+                      <button class="btn"  (click)="openPrograma(programaModal,item)">Editar</button>
                       <button
                         style="background: #b41e26"
                         type="button"
                         class="btn btn-outline-dark"
                         *ngIf="programa.length != 0"
+                        (click)="eliminarPrograma(item.id)"
                       >
                         Eliminar
                       </button>
@@ -3375,6 +3376,127 @@
                   </div>
                 </li>
               </ul>
+              <ng-template #programaModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Programa
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Descripción</label>
+
+                        <textarea
+                          id=""
+                          cols="60"
+                          rows="15"
+                          [(ngModel)]="descripcionPrograma"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Boton</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="botonPrograma"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="linkPrograma"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectImgLugarDelEvento($event)"
+                            accept="image/*"
+                          />
+                        </div>
+                        <br />
+                        {{ imagenPrograma }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Programa</label>
+                        <textarea
+                          id=""
+                          cols="60"
+                          rows="15"
+                          [(ngModel)]="programaPrograma"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarPrograma()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
             </ng-template>
           </li>
           <li [ngbNavItem]="21">
@@ -3383,7 +3505,7 @@
               <h3>Información</h3>
               <button
                 class="btn"
-                (click)="openInformacionTuristica(informacionTuristicaModal)"
+                (click)="openEnvioTrabajos(envioTrabajosModal)"
                 *ngIf="envioTrabajos.length === 0"
               >
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Envio
@@ -3401,12 +3523,13 @@
                       <br />
                       {{ item.link }}
                       <br />
-                      <button class="btn">Editar</button>
+                      <button class="btn"    (click)="openEnvioTrabajos(envioTrabajosModal,item)">Editar</button>
                       <button
                         style="background: #b41e26"
                         type="button"
                         class="btn btn-outline-dark"
                         *ngIf="envioTrabajos.length != 0"
+                        (click)="eliminarEnvioTrabajos(item.id)"
                       >
                         Eliminar
                       </button>
@@ -3414,11 +3537,102 @@
                   </div>
                 </li>
               </ul>
+              <ng-template #envioTrabajosModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Envio Trabajos
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="textoEnvioTrabajos"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="linkEnvioTrabajos"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Boton</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectImgEnvioTrabajos($event)"
+                            accept="image/*"
+                          />
+                        </div>
+                        <br />
+                        {{ botonEnvioTrabajos }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarEnvioTrabajo()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
               <h3>Formatos</h3>
               <button
                 class="btn"
-                (click)="openInformacionTuristica(informacionTuristicaModal)"
-                *ngIf="envioTrabajosFormatos.length === 0"
+                (click)="openEnvioTrabajosFormatos(envioTrabajosFormatosModal)"
+               
               >
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Formato
               </button>
@@ -3437,12 +3651,12 @@
                       <br />
                       {{ item.link }}
                       <br />
-                      <button class="btn">Editar</button>
+                      <button class="btn"  (click)="openEnvioTrabajosFormatos(envioTrabajosFormatosModal,item)">Editar</button>
                       <button
                         style="background: #b41e26"
                         type="button"
                         class="btn btn-outline-dark"
-                        *ngIf="envioTrabajosFormatos.length != 0"
+                        (click)="eliminarEnvioTrabajosFormatos(item.id)"
                       >
                         Eliminar
                       </button>
@@ -3450,11 +3664,102 @@
                   </div>
                 </li>
               </ul>
+              <ng-template #envioTrabajosFormatosModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Envio Trabajos
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="textoEnvioTrabajos"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Link</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="linkEnvioTrabajos"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Boton</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectImgEnvioTrabajos($event)"
+                            accept="image/*"
+                          />
+                        </div>
+                        <br />
+                        {{ botonEnvioTrabajos }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarEnvioTrabajoFormato()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
               <h3>Fechas</h3>
               <button
                 class="btn"
-                (click)="openInformacionTuristica(informacionTuristicaModal)"
-                *ngIf="envioTrabajosFechas.length === 0"
+                (click)="openEnvioTrabajosFechas(envioTrabajosFechasModal)"
+              
               >
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Formato
               </button>
@@ -3469,12 +3774,12 @@
                       <br />
                       Actividad: {{ item.actividad }}
                       <br />
-                      <button class="btn">Editar</button>
+                      <button class="btn"  (click)="openEnvioTrabajosFechas(envioTrabajosFechasModal,item)">Editar</button>
                       <button
                         style="background: #b41e26"
                         type="button"
                         class="btn btn-outline-dark"
-                        *ngIf="envioTrabajosFechas.length != 0"
+                        (click)="eliminarEnvioTrabajosFechas(item.id)"
                       >
                         Eliminar
                       </button>
@@ -3482,6 +3787,77 @@
                   </div>
                 </li>
               </ul>
+              <ng-template #envioTrabajosFechasModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Envio trabajos fechas
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Fecha</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="fechaEnvioTrabajoFecha"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Actividad</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="actividadEnvioTrabajoFecha"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarEnvioTrabajoFecha()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
             </ng-template>
           </li>
           <li [ngbNavItem]="22">

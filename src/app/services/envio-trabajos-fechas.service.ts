@@ -9,7 +9,7 @@ export class EnvioTrabajosFechasService {
 
   api: string = environment.api;
   constructor(private http: HttpClient) {}
-  insertEnvioTrabajoFecha(item:EnvioTrabajosFechas): any{
+  insertEnvioTrabajoFecha(item:any): any{
     return this.http.post<EnvioTrabajosFechas>(`${this.api}/envioTrabajosFechas`,item);
   }
   getEnvioTrabajoFechas() {
@@ -19,8 +19,8 @@ export class EnvioTrabajosFechasService {
     return this.http.get<EnvioTrabajosFechas>(`${this.api}/envioTrabajosFechas/${id}`);
   }
 
-  editEnvioTrabajoFecha( item: EnvioTrabajosFechas) {
-    return this.http.put(`${environment.api}/envioTrabajosFechas/${item.id}`, item);
+  editEnvioTrabajoFecha(id:number, item: any) {
+    return this.http.put(`${environment.api}/envioTrabajosFechas/${id}`, item);
   }
   deleteEnvioTrabajoFecha(id: string) {
     return this.http.delete(`${environment.api}/envioTrabajosFechas/${id}`); 

@@ -56,16 +56,36 @@
               <ul class="list-group">
                 <li class="list-group-item" *ngFor="let item of presentacion">
                   <P style="font-size: 20px; text-align: justify">
-                 {{item.texto}}
-                   </P>
-                   <div class="row">
-                   <div class="col-md-6 mx-auto my-5" style="cursor: pointer" *ngIf="item.imagen_boton_1 !='' && item.imagen_boton_1 !=null">
-                   <img class="img-fluid z-depth-1" [src]="URL + item.imagen_boton_1"  (click)="abrirEnlace(item.link_boton_1)"/>
-                 </div>
-                 <div class="col-md-6 mx-auto my-5" style="cursor: pointer" *ngIf="item.imagen_boton_2 !='' && item.imagen_boton_2 !=null">
-                  <img class="img-fluid z-depth-1" [src]="URL + item.imagen_boton_2" (click)="abrirEnlace(item.link_boton_2)" />
-                </div>
-              </div>
+                    {{ item.texto }}
+                  </P>
+                  <div class="row">
+                    <div
+                      class="col-md-6 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="
+                        item.imagen_boton_1 != '' && item.imagen_boton_1 != null
+                      "
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.imagen_boton_1"
+                        (click)="abrirEnlace(item.link_boton_1)"
+                      />
+                    </div>
+                    <div
+                      class="col-md-6 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="
+                        item.imagen_boton_2 != '' && item.imagen_boton_2 != null
+                      "
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.imagen_boton_2"
+                        (click)="abrirEnlace(item.link_boton_2)"
+                      />
+                    </div>
+                  </div>
                 </li>
               </ul>
             </ng-template>
@@ -76,7 +96,7 @@
               <ul class="list-group">
                 <li class="list-group-item" *ngFor="let item of lugarDelEvento">
                   <p style="font-size: 20px; text-align: justify">
-                    {{ item.texto_1}}
+                    {{ item.texto_1 }}
                   </p>
                   <img
                     class="img-fluid z-depth-1"
@@ -84,23 +104,31 @@
                     alt="croquisUTAHUACHI"
                   />
                   <p style="font-size: 20px; text-align: left">
-                    Universidad Técnica de Ambato 
-                    Facultad de Ingeniería en Sistemas, Electrónica e Industrial 
-                    Campus Huachi - Av. Los Chasquis y Río Payamino Ambato 
-                    Ecuador e-mail: csei@uta.edu.ec 
-                    Telf.: (03)-2851894 ext. 82120 / 0992947123
+                    Universidad Técnica de Ambato Facultad de Ingeniería en
+                    Sistemas, Electrónica e Industrial Campus Huachi - Av. Los
+                    Chasquis y Río Payamino Ambato Ecuador e-mail:
+                    csei@uta.edu.ec Telf.: (03)-2851894 ext. 82120 / 0992947123
                   </p>
                   <h3 class="titulo">Galeria de fotos</h3>
-                    <div class="row">
-                      <div class="col-md-4 mx-auto my-5" style="cursor: pointer; text-align: center" *ngFor="let item of galeriaLugar">
-                        <img class="img-fluid z-depth-1" [src]="URL + item.imagen" style="width:250px !important; height:250px !important;" />
-                        <br>
-                        <label >{{item.nombre}}</label>
-                      </div>
-                    
+                  <div class="row">
+                    <div
+                      class="col-md-4 mx-auto my-5"
+                      style="cursor: pointer; text-align: center"
+                      *ngFor="let item of galeriaLugar"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.imagen"
+                        style="
+                          width: 250px !important;
+                          height: 250px !important;
+                        "
+                      />
+                      <br />
+                      <label>{{ item.nombre }}</label>
+                    </div>
                   </div>
                 </li>
-              
               </ul>
             </ng-template>
           </li>
@@ -108,34 +136,60 @@
             <a ngbNavLink>Información túristica</a>
             <ng-template ngbNavContent>
               <ul class="list-group">
-                <li class="list-group-item" *ngFor="let item of informacionTuristica">
+                <li
+                  class="list-group-item"
+                  *ngFor="let item of informacionTuristica"
+                >
                   <P style="font-size: 20px; text-align: justify">
-                 {{item.texto}}
-                   </P>
-                   
-                   <div class="row">
-                     <div class="col-md-2"></div>
-                   <div class="col-md-3 mx-auto my-5" style="cursor: pointer" *ngIf="item.boton1 !='' && item.boton1 !=null">
-                   <img class="img-fluid z-depth-1" [src]="URL + item.iboton1"  (click)="abrirEnlace(item.link1)"/>
-                 </div>
-                 <div class="col-md-2"></div>
-                 <div class="col-md-3 mx-auto my-5" style="cursor: pointer" *ngIf="item.boton2 !='' && item.boton2 !=null">
-                  <img class="img-fluid z-depth-1" [src]="URL + item.boton2" (click)="abrirEnlace(item.link2)" />
-                  <div class="col-md-2"></div>
-                </div>
-              </div>
+                    {{ item.texto }}
+                  </P>
+
+                  <div class="row">
+                    <div class="col-md-2"></div>
+                    <div
+                      class="col-md-3 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="item.boton1 != '' && item.boton1 != null"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.iboton1"
+                        (click)="abrirEnlace(item.link1)"
+                      />
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div
+                      class="col-md-3 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="item.boton2 != '' && item.boton2 != null"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.boton2"
+                        (click)="abrirEnlace(item.link2)"
+                      />
+                      <div class="col-md-2"></div>
+                    </div>
+                  </div>
                 </li>
               </ul>
               <ul class="list-group">
-             
-                  <h3 class="titulo">Galeria de fotos</h3>
-                    <div class="row">
-                      <div class="col-md-4 mx-auto my-5" style="cursor: pointer; text-align: center" *ngFor="let item of galeriaInformacion">
-                        <img class="img-fluid z-depth-1" [src]="URL + item.imagen" style="width:250px !important; height:250px !important;" />
-                        <br>
-                        <label >{{item.nombre}}</label>
-                      </div>
-                    </div>
+                <h3 class="titulo">Galeria de fotos</h3>
+                <div class="row">
+                  <div
+                    class="col-md-4 mx-auto my-5"
+                    style="cursor: pointer; text-align: center"
+                    *ngFor="let item of galeriaInformacion"
+                  >
+                    <img
+                      class="img-fluid z-depth-1"
+                      [src]="URL + item.imagen"
+                      style="width: 250px !important; height: 250px !important"
+                    />
+                    <br />
+                    <label>{{ item.nombre }}</label>
+                  </div>
+                </div>
               </ul>
             </ng-template>
           </li>
@@ -218,8 +272,24 @@
     <li [ngbNavItem]="5">
       <a ngbNavLink>Programa</a>
       <ng-template ngbNavContent>
-      
-   
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let item of programa">
+            <P style="font-size: 20px; text-align: justify">
+              {{ item.descripcion }}
+            </P>
+            <label style="cursor: pointer" (click)="abrirEnlace(item.link)">
+              {{ item.boton }}
+            </label>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6 mx-auto my-5">
+                <img class="img-fluid z-depth-1" [src]="URL + item.imagen" />
+              </div>
+              <div class="col-md-3"></div>
+              <p>{{ item.programa }}</p>
+            </div>
+          </li>
+        </ul>
       </ng-template>
     </li>
     <li [ngbNavItem]="6">
@@ -234,24 +304,18 @@
           <li [ngbNavItem]="1">
             <a ngbNavLink>INFORMACION</a>
             <ng-template ngbNavContent>
-              <p>
-                Elit voluptate culpa exercitation amet in ut laboris non labore.
-                Aute ipsum elit aute nisi ea excepteur consectetur sunt eu do
-                velit. Consectetur incididunt et aute occaecat adipisicing non
-                amet. Non et esse elit velit laborum minim aute amet ea qui
-                nostrud duis et. Qui mollit magna dolore dolore. Occaecat
-                reprehenderit laboris elit qui eiusmod nostrud aute amet amet
-                reprehenderit cupidatat ea est ullamco. Cupidatat nisi fugiat
-                nostrud reprehenderit reprehenderit aliqua. Excepteur do sunt
-                aute in et ad laborum laborum anim. Aute incididunt est duis
-                nulla culpa ullamco non exercitation sunt. Ad minim culpa esse
-                ea adipisicing aute tempor tempor magna et. Enim pariatur est
-                nostrud occaecat minim nisi adipisicing minim labore fugiat.
-                Exercitation mollit tempor voluptate minim ullamco tempor
-                excepteur. Esse tempor incididunt sunt anim occaecat do. Irure
-                veniam nostrud fugiat aliquip. Ad dolore aliqua voluptate id
-                velit nisi id non officia quis tempor aliquip.
-              </p>
+              <div class="row" *ngFor="let item of envioTrabajos">
+                <div class="col-md-6 mx-auto my-5">
+                  {{ item.texto }}
+                </div>
+                <div class="col-md-6 mx-auto my-5">
+                  <img
+                    class="img-fluid z-depth-1"
+                    [src]="URL + item.boton"
+                    (click)="abrirEnlace(item.link)"
+                  />
+                </div>
+              </div>
             </ng-template>
           </li>
           <li [ngbNavItem]="2">
@@ -287,34 +351,44 @@
           <li [ngbNavItem]="3">
             <a ngbNavLink>FECHAS IMPORTANTES</a>
             <ng-template ngbNavContent>
-              Labore id pariatur velit eiusmod eu labore ipsum enim veniam
-              dolore. Nulla enim dolore esse dolor irure commodo exercitation
-              laboris fugiat amet esse magna commodo. Ad ut commodo officia
-              aliqua dolore non veniam labore aliquip laboris commodo quis
-              officia. Quis nisi nisi nisi commodo ut eiusmod id commodo laboris
-              ad incididunt ut. Lorem sunt velit velit velit id commodo. Aute
-              nostrud ad quis deserunt aliqua esse aliquip esse. Labore amet
-              anim commodo consequat consectetur dolore est non Lorem sint et et
-              ut. Proident dolore ut ea aliquip laborum. Nisi id exercitation
-              ipsum adipisicing dolor anim culpa officia Lorem est quis non amet
-              eiusmod. Ipsum deserunt ad fugiat excepteur. Duis in fugiat nulla
-              do. Exercitation mollit ipsum qui officia sint enim elit consequat
-              proident dolor magna incididunt id. Est nostrud laboris et
-              occaecat velit pariatur deserunt. Culpa duis labore Lorem
-              excepteur sint aliquip. Cillum ipsum ea fugiat nostrud enim id
-              ipsum veniam dolore. Eu laborum dolore nostrud ut. Ad ex consequat
-              ad ea exercitation laboris. Ea aliquip duis do magna dolore
-              nostrud ipsum laborum deserunt. Laboris anim duis sint id
-              consectetur aute laborum voluptate veniam. Labore commodo et in
-              sit ullamco aliqua Lorem reprehenderit excepteur id amet sunt.
-              Ipsum exercitation mollit voluptate reprehenderit ullamco
-              cupidatat et ex ullamco tempor qui sint deserunt. Sunt
-              reprehenderit nulla voluptate laborum qui deserunt non enim dolore
-              pariatur ea tempor consequat. Mollit ipsum mollit cillum sunt
-              excepteur duis. Nostrud est pariatur velit duis eu.
+              <div class="scrollme">
+                <table class="table table-striped mt-3" style="text-align:center">
+                  <thead>
+                    <tr style="font-weight: bold; font-size: 12px">
+                      <td scope="col">Fecha</td>
+                      <td scope="col">Actividad</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let item of envioTrabajosFechas"
+                      style="font-size: 10px"
+                    >
+                      <td scope="col">{{ item.fecha }}</td>
+                      <td scope="col">{{ item.actividad }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </ng-template>
           </li>
           <li [ngbNavItem]="4">
+            <a ngbNavLink>FORMATOS</a>
+            <ng-template ngbNavContent>
+              <div class="row">
+                <div
+                  class="col-md-4 mx-auto my-5"
+                  *ngFor="let item of envioTrabajosFormatos"
+                  (click)="abrirEnlace(item.link)"
+                  style="cursor: pointer; text-align: center"
+                >
+                  <a><img class="img-fluid z-depth-1" [src]="URL + item.boton" /></a>
+                  <label> {{item.texto}} </label>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="5">
             <a ngbNavLink>ENVIAR PROPUESTAS</a>
             <ng-template ngbNavContent>
               Labore id pariatur velit eiusmod eu labore ipsum enim veniam
@@ -378,7 +452,7 @@
 
               <label for="phone">Telefono / Celular</label>
               <input type="text" id="phone" />
-            
+
               <label for="phone">Dirección de correo electrónico</label>
               <input type="text" id="phone" />
 
@@ -410,22 +484,7 @@
         </div>
       </ng-template>
     </li>
-    <li [ngbNavItem]="9">
-      <a ngbNavLink>Galeria del evento</a>
-      <ng-template ngbNavContent>
-        <div class="row" style="text-align: center">
-          <div
-            class="col-md-3 mx-auto my-5"
-            *ngFor="let item of galeriaInformacion"
-            style="cursor: pointer"
-          >
-            <img class="img-fluid z-depth-1" [src]="URL + item.imagen" />
-            <br />
-            <label> {{ item.nombre }}</label>
-          </div>
-        </div>
-      </ng-template>
-    </li>
+
     <li>
       <button
         class="button-perso"

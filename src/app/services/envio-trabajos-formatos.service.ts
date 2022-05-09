@@ -9,7 +9,8 @@ export class EnvioTrabajosFormatosService {
 
   api: string = environment.api;
   constructor(private http: HttpClient) {}
-  insertEnvioTrabajoFormato(item:EnvioTrabajosFormato): any{
+  insertEnvioTrabajoFormato(item:any): any{
+    console.log(item)
     return this.http.post<EnvioTrabajosFormato>(`${this.api}/envioTrabajosFormatos`,item);
   }
   getEnvioTrabajoFormatos() {
@@ -19,8 +20,8 @@ export class EnvioTrabajosFormatosService {
     return this.http.get<EnvioTrabajosFormato>(`${this.api}/envioTrabajosFormatos/${id}`);
   }
 
-  editEnvioTrabajoFormato( item: EnvioTrabajosFormato) {
-    return this.http.put(`${environment.api}/envioTrabajosFormatos/${item.id}`, item);
+  editEnvioTrabajoFormato( id:number,item: any) {
+    return this.http.put(`${environment.api}/envioTrabajosFormatos/${id}`, item);
   }
   deleteEnvioTrabajoFormato(id: string) {
     return this.http.delete(`${environment.api}/envioTrabajosFormatos/${id}`); 

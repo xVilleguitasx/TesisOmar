@@ -329,14 +329,25 @@ export class TableroComponent implements OnInit {
   informacionTuristica: InformacionTuristica[] = [];
   informacionTuristicaSeleccionada: InformacionTuristica = undefined;
   ////
-  programa:Programa[] = [];
-  envioTrabajos:EnvioTrabajos[] = [];
-  envioTrabajosFormatos:EnvioTrabajosFormato[] = [];
+  programa: Programa[] = [];
+  envioTrabajos: EnvioTrabajos[] = [];
+  envioTrabajosFormatos: EnvioTrabajosFormato[] = [];
   envioTrabajosFechas: EnvioTrabajosFechas[] = [];
-  temarios:Temario[] = [];
-  temarioTemas:TemarioTemas[] = [];
+  temarios: Temario[] = [];
+  temarioTemas: TemarioTemas[] = [];
+  //
+  programaSeleccionaado: Programa = undefined;
+  descripcionPrograma = "";
+  botonPrograma = "";
+  linkPrograma = "";
+  imagenPrograma = "";
+  programaPrograma = "";
+///
 
-
+textoEnvioTrabajos: string = "";
+botonEnvioTrabajos: string = "";
+linkEnvioTrabajos: string = "";
+envioTrabajoSeleccionado: EnvioTrabajos = undefined;
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -387,34 +398,39 @@ export class TableroComponent implements OnInit {
     this.getTemariosTemas();
   }
   getEnvioTrabajosFechas() {
-    this._envioTrabajosFechasService.getEnvioTrabajoFechas().subscribe((result)=>{
-      this.envioTrabajosFechas= result;
-    })
+    this._envioTrabajosFechasService
+      .getEnvioTrabajoFechas()
+      .subscribe((result) => {
+        this.envioTrabajosFechas = result;
+      });
   }
   getTemariosTemas() {
-   this._temarioTemasServices.getTemarioTemas().subscribe((result)=>{
-     this.temarioTemas = result;
-   })
+    this._temarioTemasServices.getTemarioTemas().subscribe((result) => {
+      this.temarioTemas = result;
+    });
   }
   getTemarios() {
-    this._temarioService.getTemarios().subscribe((result)=>{
+    this._temarioService.getTemarios().subscribe((result) => {
       this.temarios = result;
-    })
+    });
   }
   getEnvioTrabajosFormatos() {
-    this._envioTrabajosFormatosService.getEnvioTrabajoFormatos().subscribe((result)=>{
-      this.envioTrabajosFormatos = result;
-    })
+    this._envioTrabajosFormatosService
+      .getEnvioTrabajoFormatos()
+      .subscribe((result) => {
+        this.envioTrabajosFormatos = result;
+      });
   }
   getEnvioTrabajos() {
-    this._envioTrabajosService.getEnvioTrabajos().subscribe((result)=>{
+    this._envioTrabajosService.getEnvioTrabajos().subscribe((result) => {
       this.envioTrabajos = result;
-    })
+    });
   }
   getPrograma() {
-    this._programaService.getPrograma().subscribe((result)=>{
+    this._programaService.getProgramas().subscribe((result) => {
+      
       this.programa = result;
-    })
+    });
   }
   getInformacionTuristica() {
     this._informacionTuristica
@@ -2566,8 +2582,8 @@ export class TableroComponent implements OnInit {
       data.append("texto", this.textoPresentacion);
       this.file != undefined ? data.append("imagen_boton_1", this.file) : "";
       this.file2 != undefined ? data.append("imagen_boton_2", this.file2) : "";
-      data.append("link_boton_1", this.nombrePatrocinador);
-      data.append("link_boton_2", this.nombrePatrocinador);
+      data.append("link_boton_1", this.link_boton_1);
+      data.append("link_boton_2", this.link_boton_2);
       this._presentacionService
         .editPresentacion(1, data)
         .subscribe((result) => {
@@ -2657,8 +2673,8 @@ export class TableroComponent implements OnInit {
     data.append("texto", this.textoInformacionTuristica);
     this.file != undefined ? data.append("boton1", this.file) : "";
     this.file2 != undefined ? data.append("boton2", this.file2) : "";
-    this.link_boton_1!='' ? data.append("link1", this.link_boton_1) : "";
-    this.link_boton_2!='' ? data.append("link2", this.link_boton_2): "";
+    this.link_boton_1 != "" ? data.append("link1", this.link_boton_1) : "";
+    this.link_boton_2 != "" ? data.append("link2", this.link_boton_2) : "";
     if (this.informacionTuristicaSeleccionada === undefined) {
       if (this.textoInformacionTuristica != "") {
         this._informacionTuristica
@@ -2697,7 +2713,7 @@ export class TableroComponent implements OnInit {
     this.file2 = undefined;
     this.error = false;
   }
-  eliminarInformacionTuristica(id:string){
+  eliminarInformacionTuristica(id: string) {
     Swal.fire({
       title: "Los datos se eliminaran permanentemente",
       text: "Eliminar información?",
@@ -2711,12 +2727,333 @@ export class TableroComponent implements OnInit {
       cancelButtonText: "NO",
     }).then((result) => {
       if (result.value) {
-        this._informacionTuristica.deleteInformacionTuristica(id).subscribe((result) => {
-          this.getInformacionTuristica();
-        })
+        this._informacionTuristica
+          .deleteInformacionTuristica(id)
+          .subscribe((result) => {
+            this.getInformacionTuristica();
+          });
       } else {
       }
     });
   }
-  
+
+  openPrograma(content, item?: Programa): void {
+    if (item != undefined) {
+      this.programaSeleccionaado = item;
+      this.descripcionPrograma = item.descripcion;
+      this.botonPrograma = item.boton;
+      this.linkPrograma = item.link;
+      this.imagenPrograma = item.imagen;
+      this.programaPrograma = item.programa;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariablesInformacionTuristica();
+      },
+      (reason) => {
+        this.resetVariablesInformacionTuristica();
+      }
+    );
+  }
+  resetVariablesPrograma(): void {
+    this.programaSeleccionaado = undefined;
+    this.descripcionPrograma = "";
+    this.botonPrograma = "";
+    this.linkPrograma = "";
+    this.imagenPrograma = "";
+    this.programaPrograma = "";
+    this.file = undefined;
+  }
+  selectImgPrograma(event) {
+    this.file = event.target.files[0];
+    this.imagenPrograma = this.file.name;
+  }
+  guardarPrograma() {
+    if (this.descripcionPrograma != "" && this.programaPrograma != "") {
+      var data = new FormData();
+      data.append("descripcion", this.descripcionPrograma);
+      data.append("boton", this.botonPrograma);
+      data.append("link", this.linkPrograma);
+      data.append("programa", this.programaPrograma);
+      this.file != undefined ? data.append("imagen", this.file) : "";
+      if (this.programaSeleccionaado === undefined) {
+        this._programaService.insertPrograma(data).subscribe((result) => {
+          this.cerrarModal();
+          this.getPrograma();
+        });
+      } else {
+        console.log(this.programaSeleccionaado);
+        this._programaService
+          .editPrograma(this.programaSeleccionaado.id, data)
+          .subscribe((result) => {
+            this.cerrarModal();
+            this.getPrograma();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarPrograma(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar programa?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._programaService.deletePrograma(id).subscribe((result) => {
+          this.getPrograma();
+        });
+      } else {
+      }
+    });
+  }
+  openEnvioTrabajos(content, item?: EnvioTrabajos) {
+    if (item != undefined) {
+      this.envioTrabajoSeleccionado = item;
+      this.textoEnvioTrabajos = item.texto;
+      this.botonEnvioTrabajos = item.boton;
+      this.linkEnvioTrabajos = item.link;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariablesEnvioTrabajos();
+      },
+      (reason) => {
+        this.resetVariablesEnvioTrabajos();
+      }
+    );
+  }
+  resetVariablesEnvioTrabajos() {
+    this.textoEnvioTrabajos = "";
+    this.botonEnvioTrabajos = "";
+    this.linkEnvioTrabajos = "";
+    this.file = undefined;
+    this.envioTrabajoSeleccionado = undefined;
+  }
+  selectImgEnvioTrabajos(event) {
+    this.file = event.target.files[0];
+    this.botonEnvioTrabajos = this.file.name;
+  }
+  guardarEnvioTrabajo() {
+    if (
+      this.textoEnvioTrabajos != "" &&
+      this.botonEnvioTrabajos != "" &&
+      this.linkEnvioTrabajos != ""
+    ) {
+      var data = new FormData();
+      data.append("texto", this.textoEnvioTrabajos);
+      this.file != undefined ? data.append("boton", this.file) : "";
+      data.append("link", this.linkEnvioTrabajos);
+      if (this.envioTrabajoSeleccionado === undefined) {
+        this._envioTrabajosService
+          .insertEnvioTrabajo(data)
+          .subscribe((result) => {
+            this.getEnvioTrabajos();
+            this.cerrarModal();
+          });
+      } else {
+        this._envioTrabajosService
+          .editEnvioTrabajo(this.envioTrabajoSeleccionado.id, data)
+          .subscribe((result) => {
+            this.getEnvioTrabajos();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarEnvioTrabajos(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar Envio Trabajo?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._envioTrabajosService
+          .deleteEnvioTrabajo(id)
+          .subscribe((result) => {
+            this.getEnvioTrabajos();
+          });
+      } else {
+      }
+    });
+  }
+  openEnvioTrabajosFormatos(content, item?: EnvioTrabajosFormato) {
+    if (item != undefined) {
+      this.envioTrabajoSeleccionado = item;
+      this.textoEnvioTrabajos = item.texto;
+      this.botonEnvioTrabajos = item.boton;
+      this.linkEnvioTrabajos = item.link;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariablesEnvioTrabajos();
+      },
+      (reason) => {
+        this.resetVariablesEnvioTrabajos();
+      }
+    );
+  }
+  guardarEnvioTrabajoFormato() {
+    if (
+      this.textoEnvioTrabajos != "" &&
+      this.botonEnvioTrabajos != "" &&
+      this.linkEnvioTrabajos != ""
+    ) {
+      var data = new FormData();
+      data.append("texto", this.textoEnvioTrabajos);
+      this.file != undefined ? data.append("boton", this.file) : "";
+      data.append("link", this.linkEnvioTrabajos);
+      if (this.envioTrabajoSeleccionado === undefined) {
+        this._envioTrabajosFormatosService
+          .insertEnvioTrabajoFormato(data)
+          .subscribe((result) => {
+            this.getEnvioTrabajosFormatos();
+            this.cerrarModal();
+          });
+      } else {
+        this._envioTrabajosFormatosService
+          .editEnvioTrabajoFormato(this.envioTrabajoSeleccionado.id, data)
+          .subscribe((result) => {
+            this.getEnvioTrabajosFormatos();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarEnvioTrabajosFormatos(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar envio trabajo formato?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._envioTrabajosFormatosService
+          .deleteEnvioTrabajoFormato(id)
+          .subscribe((result) => {
+            this.getEnvioTrabajosFormatos();
+          });
+      } else {
+      }
+    });
+  }
+
+  actividadEnvioTrabajoFecha:string = "";
+  fechaEnvioTrabajoFecha:string = ""
+  envioTrabajoFechaSeleccionado:EnvioTrabajosFechas=undefined;
+  resetVariablesEnvioTrabajoFechas(){
+    this.actividadEnvioTrabajoFecha = "";
+    this.fechaEnvioTrabajoFecha = ""
+    this.envioTrabajoFechaSeleccionado=undefined;
+  }
+  openEnvioTrabajosFechas(content, item?:EnvioTrabajosFechas){
+    if(item != undefined){
+      this.envioTrabajoFechaSeleccionado= item;
+      this.fechaEnvioTrabajoFecha= item.fecha;
+      this.actividadEnvioTrabajoFecha = item.actividad;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariablesEnvioTrabajoFechas();
+      },
+      (reason) => {
+        this.resetVariablesEnvioTrabajoFechas();
+      }
+    );
+  }
+  guardarEnvioTrabajoFecha() {
+    if (
+      this.fechaEnvioTrabajoFecha != "" &&
+      this.actividadEnvioTrabajoFecha != ""
+    ) {
+      const enviar={
+        fecha:this.fechaEnvioTrabajoFecha,
+        actividad:this.actividadEnvioTrabajoFecha
+      }
+ 
+      if (this.envioTrabajoFechaSeleccionado === undefined) {
+        this._envioTrabajosFechasService
+          .insertEnvioTrabajoFecha(enviar)
+          .subscribe((result) => {
+            this.getEnvioTrabajosFechas();
+            this.cerrarModal();
+          });
+      } else {
+        this._envioTrabajosFechasService
+          .editEnvioTrabajoFecha(this.envioTrabajoFechaSeleccionado.id, enviar)
+          .subscribe((result) => {
+            this.getEnvioTrabajosFechas();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarEnvioTrabajosFechas(id: string) {
+    console.log(id)
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar fecha?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._envioTrabajosFechasService
+          .deleteEnvioTrabajoFecha(id)
+          .subscribe((result) => {
+            this.getEnvioTrabajosFechas();
+          });
+      } else {
+      }
+    });
+  }
+
 }

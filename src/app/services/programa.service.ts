@@ -9,18 +9,18 @@ export class ProgramaService {
 
   api: string = environment.api;
   constructor(private http: HttpClient) {}
-  insertPrograma(item:Programa): any{
+  insertPrograma(item:any): any{
     return this.http.post<Programa>(`${this.api}/programa`,item);
   }
-  getPrograma() {
+  getProgramas() {
     return this.http.get<Programa[]>(`${this.api}/programa`);
   }
-  getIProgramas(id: string) {
+  getPrograma(id: string) {
     return this.http.get<Programa>(`${this.api}/programa/${id}`);
   }
 
-  editPrograma( item: Programa) {
-    return this.http.put(`${environment.api}/programa/${item.id}`, item);
+  editPrograma(id:number, item: any) {
+    return this.http.put(`${environment.api}/programa/${id}`, item);
   }
   deletePrograma(id: string) {
     return this.http.delete(`${environment.api}/programa/${id}`); 
