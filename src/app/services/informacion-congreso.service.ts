@@ -26,4 +26,5 @@ export class InformacionCongresoService {
   deleteInfo(id: string) {
     return this.http.delete(`${environment.api}/informacionCongreso/${id}`);
   }
+  
 }

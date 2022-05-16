@@ -12,7 +12,7 @@ export class ConfiCertificadosService {
   api: string = environment.api;
   constructor(private http: HttpClient) {}
   
-  getConfiCertificados() {
+ /*  getConfiCertificados() {
     return this.http.get<ConfiCertificados[]>(`${this.api}/confiCertificados`);
   }
   getConfiCertificado(id: string) {
@@ -27,5 +27,5 @@ export class ConfiCertificadosService {
   }
   deleteConfiCertificados(id: string) {
     return this.http.delete(`${environment.api}/confiCertificados/${id}`);
-  }
+  } */
 }

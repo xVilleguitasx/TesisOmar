@@ -1,13 +1,23 @@
 <hr>
 
-<div class="d-flex justify-content-between" style="background-color: #802417; color: #fff">
+<div  style="background-color: #802417; color: #fff">
 
   <div style="margin-top: 5px; margin-left: 10px;">
-    <label> {{infoCongreso.fecha}}</label>
-    <br>
-    <label style="font-weight: bold; font-size:1.5rem"> {{infoCongreso.nombre}}</label>
-    <br>
-    <label> {{infoCongreso.titulo}} </label>
+    <div class="row" style="border-color: green;">
+      <div class="col-md-10" >
+        <label> {{infoCongreso.fecha}}</label>
+        <br>
+        <label style="font-weight: bold; font-size:1.5rem"> {{infoCongreso.nombre}}</label>
+        <br>
+        <label> {{infoCongreso.titulo}} </label>
+      </div>
+      <div class="col-md-2" style="text-align: right;">
+          <img [src]='URL+infoCongreso.logo'  class="img-fluid" style="cursor:pointer" style="max-width: 100px; max-height: 100px">
+  
+      </div>
+    </div>
+   
+  
   </div>
 
 </div>

@@ -10,6 +10,8 @@ import { Investigador } from "../models/investigador.model";
 import { LugarDelEvento } from "../models/lugarDelEvento.model";
 import { Presentacion } from "../models/presentacion.model";
 import { Programa } from "../models/programa.model";
+import { Temario } from "../models/temario.model";
+import { TemarioTemas } from "../models/temarioTemas.model";
 import { ComiteService } from "../services/comite.service";
 import { EdicionService } from "../services/edicion.service";
 import { EnvioTrabajosFechasService } from "../services/envio-trabajos-fechas.service";
@@ -22,6 +24,8 @@ import { InvestigadoresService } from "../services/investigadores.service";
 import { LugarDelEventoService } from "../services/lugar-del-evento.service";
 import { PresentacionService } from "../services/presentacion.service";
 import { ProgramaService } from "../services/programa.service";
+import { TemarioTemasService } from "../services/temario-temas.service";
+import { TemarioService } from "../services/temario.service";
 
 @Component({
   selector: "app-inicio",
@@ -45,6 +49,8 @@ export class InicioComponent implements OnInit {
   envioTrabajos:EnvioTrabajos[] = [];
   envioTrabajosFechas:EnvioTrabajosFechas[] = [];
   envioTrabajosFormatos: EnvioTrabajosFormato[] = [];
+  temarios:Temario[] = [];
+  temarioTemas:TemarioTemas[] = [];
   URL = "http://localhost:3000/";
   constructor(
     private _comiteService: ComiteService,
@@ -58,7 +64,9 @@ export class InicioComponent implements OnInit {
     private _programaService: ProgramaService,
     private _envioTrabajosService: EnvioTrabajosService,
     private _envioTrabajosFechasService: EnvioTrabajosFechasService,
-    private _envioTrabajosFormatosService: EnvioTrabajosFormatosService
+    private _envioTrabajosFormatosService: EnvioTrabajosFormatosService,
+    private _temarioService: TemarioService,
+    private _temarioTemasServices: TemarioTemasService
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +79,18 @@ export class InicioComponent implements OnInit {
     this.getEnvioTrabajos();
     this.getEnvioTrabajosFechas();
     this.getEnvioTrabajosFormatos();
+    this.getTemarios();
+    this.getTemarioTemas();
+  }
+  getTemarioTemas() {
+    this._temarioTemasServices.getTemarioTemas().subscribe((result)=>{
+      this.temarioTemas= result;
+    })
+  }
+  getTemarios() {
+    this._temarioService.getTemarios().subscribe((result)=>{
+      this.temarios= result;
+    })
   }
   getEnvioTrabajosFormatos() {
     this._envioTrabajosFormatosService.getEnvioTrabajoFormatos().subscribe((result)=>{

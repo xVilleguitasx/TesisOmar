@@ -19,7 +19,6 @@ import { TipoInscripcionService } from "../../../app/services/tipo-inscripcion.s
 import { AdminInscripService } from "../../../app/services/admin-inscrip.service";
 import { AdminsInscrip } from "../../../app/models/adminInscrip.model";
 import jsPDF from "jspdf";
-import * as autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
 import $ from "jquery";
 import {
@@ -49,9 +48,7 @@ import { Edicion } from "../../../app/models/edicion.model";
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { Investigador } from "../../../app/models/investigador.model";
 import { InvestigadoresService } from "../../../app/services/investigadores.service";
-////
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+
 import { InformacionCongresoService } from "../../../app/services/informacion-congreso.service";
 import { InformacionCongreso } from "../../../app/models/informacionCongreso.model";
 import { ImagenPortadaService } from "../../../app/services/imagen-portada.service";
@@ -83,7 +80,7 @@ import { EnvioTrabajosFechasService } from "../../../app/services/envio-trabajos
 import { EnvioTrabajosFormatosService } from "../../../app/services/envio-trabajos-formatos.service";
 import { TemarioService } from "../../../app/services/temario.service";
 import { TemarioTemasService } from "../../../app/services/temario-temas.service";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
 @Component({
   selector: "app-tablero",
@@ -114,6 +111,7 @@ export class TableroComponent implements OnInit {
   tipoComite: TipoComite[] = [];
   tipoComiteLista: string[] = ["Tipo Comite"];
   tipoComiteMostrar = "Tipo Comite";
+  validarComite:boolean=true;
   ////
   tituloReporte = "";
   informacionCongreso: InformacionCongreso[] = [];
@@ -128,7 +126,6 @@ export class TableroComponent implements OnInit {
   ////////////
   confiCertificados: ConfiCertificados[] = [];
   ////////////////////////////////
-
   constructor(
     private router: Router,
     private _authService: AuthService,
@@ -279,6 +276,7 @@ export class TableroComponent implements OnInit {
   tituloCongreso = "";
   fechaCongreso = "";
   logoCongreso = "";
+  faviconCongreso="";
   ////////////////////////////////////////////////////////////////
 
   fechaCreacionReporte = null;
@@ -461,9 +459,9 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     });
   }
   getConfiCertificados() {
-    this._confi_certificados.getConfiCertificados().subscribe((result) => {
+  /*   this._confi_certificados.getConfiCertificados().subscribe((result) => {
       this.confiCertificados = result;
-    });
+    }); */
   }
 
   getImagenesPortada() {
@@ -1477,18 +1475,21 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     this.EdicionComite = "";
     this.idComite = null;
     this.idTipoComite = null;
+    this.validarComite=true;
   }
   actualziarTipoComite(item: TipoComite) {
     this.TipoComite = item.tipo;
     this.idTipoComite = item.id;
   }
+  cambiarEstadoDelComite(){
+this.validarComite=!this.validarComite;
+  }
   guardarComite() {
-    console.log("ssss");
     if (
       this.idTipoComite != null &&
       this.nombreComte != "" &&
       this.InstitutoComite != "" &&
-      this.PaisComite != ""
+      this.PaisComite != "" 
     ) {
       var fecha = new Date();
       var year = fecha.getFullYear();
@@ -1500,6 +1501,7 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
         instituto: this.InstitutoComite,
         pais: this.PaisComite,
         edicion: year,
+        validacion:this.validarComite
       };
       console.log(this.idComite);
       if (this.idComite === null) {
@@ -1533,6 +1535,7 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     this.CargoComite = item.cargo;
     this.InstitutoComite = item.instituto;
     this.PaisComite = item.pais;
+    this.validarComite=item.validacion;
     this.openComite(content);
   }
 
@@ -2006,13 +2009,20 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     this.tituloCongreso = "";
     this.fechaCongreso = "";
     this.logoCongreso = "";
+    this.faviconCongreso="";
     this.error = false;
     this.idCongreso = null;
     this.file = undefined;
+    this.file2 = undefined;
   }
   selectLogoCongreso(event) {
     this.file = event.target.files[0];
     this.logoCongreso = this.file.name;
+  }
+ 
+  selectFaviconCongreso(event) {
+    this.file2 = event.target.files[0];
+    this.faviconCongreso = this.file.name;
   }
   openInfoCongreso(content) {
     this.modalRef = this._modalService.open(content, { size: "lg" });
@@ -2031,6 +2041,7 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     this.tituloCongreso = item.titulo;
     this.fechaCongreso = item.fecha;
     this.logoCongreso = item.logo;
+    this.faviconCongreso=item.favicon;
     this.openInfoCongreso(content);
   }
   guardarInformacionRegistro() {
@@ -2045,6 +2056,9 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
       data.append("fecha", this.fechaCongreso);
       if (this.file != undefined) {
         data.append("logo", this.file);
+      }
+      if (this.file2 != undefined) {
+        data.append("favicon", this.file2);
       }
       this._informacionCongresoService
         .editInfo(this.idCongreso, data)
@@ -2402,7 +2416,7 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     this.file = event.target.files[0];
     this.plantillaCertificado = this.file.name;
   }
-  guardarConfiCertificado() {
+ /*  guardarConfiCertificado() {
     if (this.nombreCertificado != "") {
       var data = new FormData();
       data.append("nombre", this.nombreCertificado);
@@ -2437,7 +2451,7 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
         this.error = false;
       }, 5000);
     }
-  }
+  } */
   onLogOut() {
     this._authService.logOut();
     this.router.navigate(["/admin"]);
@@ -3053,6 +3067,15 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
           });
       } else {
       }
+    });
+  }
+  cambiarEstadoComite(item:Comite){
+   const enviar = {
+     id:item.id, 
+     validacion : !item.validacion
+   }
+    this._comiteService.editComite(enviar).subscribe((result)=>{
+      
     });
   }
 

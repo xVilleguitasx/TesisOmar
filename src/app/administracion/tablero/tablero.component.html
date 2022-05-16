@@ -2,16 +2,22 @@
 <div style="padding-left: 20px; padding-right: 20px; width: 100%; height: 100%">
   <hr />
 
-  <div
-    class="d-flex justify-content-between"
-    style="width: 100%; height: 100%; background-color: #802417"
-  >
-    <div>
-      <img class="logo" src="./assets/img/logo-fisei.png" alt="" />
+  <div style="margin-top: 5px; margin-left: 10px;"  style="background-color: #802417; color: #fff">
+    <div class="row">
+      <div class="col-md-10" >
+        <label> {{informacionCongreso[0].fecha}}</label>
+        <br>
+        <label style="font-weight: bold; font-size:1.5rem"> {{informacionCongreso[0].nombre}}</label>
+        <br>
+        <label> {{informacionCongreso[0].titulo}} </label>
+      </div>
+      <div class="col-md-2" style="text-align: right;">
+          <img [src]='URL+informacionCongreso[0].logo'  class="img-fluid" style="cursor:pointer" style="max-width: 100px; max-height: 100px">
+  
+      </div>
     </div>
-    <div>
-      <img class="logo" src="./assets/img/dide.png" alt="" />
-    </div>
+   
+  
   </div>
   <hr />
   <button (click)="onLogOut()" class="btn btn-danger">Salir</button>
@@ -1808,257 +1814,7 @@
               </div>
             </ng-template>
           </li>
-          <li [ngbNavItem]="10">
-            <a ngbNavLink>Comité</a>
-            <ng-template ngbNavContent>
-              <button
-                (click)="openComite(comite)"
-                class="btn"
-                style="margin-right: 15px"
-              >
-                <i class="fa fa-plus" aria-hidden="true"></i> Nuevo Comité
-              </button>
-              <div class="filtros-comite">
-                <div
-                  class="d-inline-block"
-                  ngbDropdown
-                  #dropTipoComite="ngbDropdown"
-                  style="margin-right: 15px"
-                >
-                  <button
-                    style="color: black"
-                    type="button"
-                    class="btn btn-outline btn-block btn-neutral border"
-                    id="dropdownManual"
-                    ngbDropdownAnchor
-                    (focus)="dropTipoComite.open()"
-                  >
-                    {{ tipoComiteMostrar }}
-                  </button>
-                  <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                    <button
-                      ngbDropdownItem
-                      *ngFor="let item of tipoComiteLista"
-                      (click)="cambiarTipoComite(item)"
-                    >
-                      {{ item }}
-                    </button>
-                  </div>
-                </div>
-                <!--  <div class="box mt-3 mb-3">
-                  <div class="container-3">
-                    
-                    <input type="search" class="form-control "  placeholder="Buscar por nombre..." (keyup)="filtroComite()"
-                      style="border: 1px solid #802417" [(ngModel)]="nombreComiteBuscar" />
-                  </div>
-                </div> -->
-              </div>
-              <div class="scrollme">
-                <table class="table table-striped mt-3">
-                  <thead>
-                    <tr style="font-weight: bold; font-size: 12px">
-                      <td scope="col">Id</td>
-                      <td scope="col">Tipo</td>
-                      <td scope="col">Nombre</td>
-                      <td scope="col">Cargo</td>
-                      <td scope="col">Instituto</td>
-                      <td scope="col">País</td>
-                      <td scope="col">Edición</td>
-                      <td scope="col">Opciones</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      *ngFor="
-                        let item of comiteFiltrado
-                          | slice
-                            : (pageComite - 1) * pageSizeComite
-                            : pageComite * pageSizeComite
-                      "
-                      style="font-size: 10px"
-                    >
-                      <td scope="col">{{ item.id }}</td>
-                      <td scope="col">{{ item.tipo }}</td>
-                      <td scope="col">{{ item.nombre }}</td>
-                      <td scope="col">{{ item.cargo }}</td>
-                      <td scope="col">{{ item.instituto }}</td>
-                      <td scope="col">{{ item.pais }}</td>
 
-                      <td scope="col">{{ item.edicion }}</td>
-                      <td>
-                        <button
-                          class="btn"
-                          (click)="editarComision(item, comite)"
-                          style="margin-right: 5px"
-                        >
-                          <i class="fa fa-pencil"></i>
-                        </button>
-                        <button
-                          class="btn"
-                          (click)="alertComite(item.id)"
-                          style="background: #7a1e19"
-                        >
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <ngb-pagination
-                  [collectionSize]="comiteFiltrado.length"
-                  [pageSize]="pageSizeComite"
-                  [(page)]="pageComite"
-                  [maxSize]="20"
-                  [rotate]="true"
-                  [ellipses]="false"
-                  [boundaryLinks]="true"
-                >
-                </ngb-pagination>
-              </div>
-              <ng-template #comite let-modal>
-                <div class="modal-header">
-                  <div style="text-align: center !important; width: 100%">
-                    <h4
-                      class="modal-title"
-                      id="modal-basic-title"
-                      style="font-weight: bold"
-                    >
-                      Comité
-                    </h4>
-                  </div>
-                </div>
-                <div class="modal-body" style="text-align: center">
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Nombre</label>
-                        <input
-                          type="text"
-                          class="form-control mt-2"
-                          [(ngModel)]="nombreComte"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Tipo Comité</label>
-                        <br />
-                        <div
-                          class="d-inline-block"
-                          ngbDropdown
-                          #drop="ngbDropdown"
-                        >
-                          <button
-                            style="color: black"
-                            type="button"
-                            class="btn btn-outline btn-block btn-neutral border"
-                            id="dropdownManual"
-                            ngbDropdownAnchor
-                            (focus)="drop.open()"
-                          >
-                            {{ TipoComite }}
-                          </button>
-                          <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                            <button
-                              ngbDropdownItem
-                              *ngFor="let item of tipoComite"
-                              (click)="actualziarTipoComite(item)"
-                            >
-                              {{ item.tipo }}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Cargo</label>
-                        <input
-                          type="text"
-                          class="form-control mt-2"
-                          [(ngModel)]="CargoComite"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Instituto</label>
-                        <input
-                          type="text"
-                          class="form-control mt-2"
-                          [(ngModel)]="InstitutoComite"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>País</label>
-                        <input
-                          type="text"
-                          class="form-control mt-2"
-                          [(ngModel)]="PaisComite"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style="text-align: center">
-                    <ngb-toast
-                      style="margin: 0 auto"
-                      class="toast"
-                      *ngIf="error"
-                      [autohide]="false"
-                      (hidden)="show = false"
-                    >
-                      Completar todos los datos
-                    </ngb-toast>
-                  </div>
-                  <button
-                    type="button"
-                    class="btn btn-outline-dark"
-                    (click)="cerrarModal()"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    style="background: #b41e26"
-                    type="button"
-                    class="btn btn-outline-dark"
-                    (click)="guardarComite()"
-                    *ngIf="idComite === null"
-                  >
-                    Agregar
-                  </button>
-                  <button
-                    style="background: #b41e26"
-                    type="button"
-                    class="btn btn-outline-dark"
-                    (click)="guardarComite()"
-                    *ngIf="idComite != null"
-                  >
-                    Guardar Cambios
-                  </button>
-                </div>
-              </ng-template>
-            </ng-template>
-          </li>
           <li [ngbNavItem]="11">
             <a ngbNavLink>Conferencistas</a>
             <ng-template ngbNavContent>
@@ -2342,6 +2098,26 @@
                         </div>
                         <br />
                         <label>{{ logoCongreso }}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Favicon</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectFaviconCongreso($event)"
+                            accept="image/*"
+                          />
+                        </div>
+                        <br />
+                        <label>{{ faviconCongreso }}</label>
                       </div>
                     </div>
                   </div>
@@ -3886,6 +3662,317 @@
         </ul>
 
         <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="5">
+      <a ngbNavLink>Comité</a>
+      <ng-template ngbNavContent>
+        <button
+          (click)="openComite(comite)"
+          class="btn"
+          style="margin-right: 15px"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i> Nuevo Comité
+        </button>
+        <div class="filtros-comite">
+          <div
+            class="d-inline-block"
+            ngbDropdown
+            #dropTipoComite="ngbDropdown"
+            style="margin-right: 15px"
+          >
+            <button
+              style="color: black"
+              type="button"
+              class="btn btn-outline btn-block btn-neutral border"
+              id="dropdownManual"
+              ngbDropdownAnchor
+              (focus)="dropTipoComite.open()"
+            >
+              {{ tipoComiteMostrar }}
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownManual">
+              <button
+                ngbDropdownItem
+                *ngFor="let item of tipoComiteLista"
+                (click)="cambiarTipoComite(item)"
+              >
+                {{ item }}
+              </button>
+            </div>
+          </div>
+          <!--  <div class="box mt-3 mb-3">
+            <div class="container-3">
+              
+              <input type="search" class="form-control "  placeholder="Buscar por nombre..." (keyup)="filtroComite()"
+                style="border: 1px solid #802417" [(ngModel)]="nombreComiteBuscar" />
+            </div>
+          </div> -->
+        </div>
+        <div class="scrollme">
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr style="font-weight: bold; font-size: 12px">
+                <td scope="col">Id</td>
+                <td scope="col">Validación</td>
+                <td scope="col">Tipo</td>
+                <td scope="col">Nombre</td>
+                <td scope="col">Cargo</td>
+                <td scope="col">Instituto</td>
+                <td scope="col">País</td>
+                <td scope="col">Edición</td>
+                <td scope="col">Opciones</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let item of comiteFiltrado
+                    | slice
+                      : (pageComite - 1) * pageSizeComite
+                      : pageComite * pageSizeComite
+                "
+                style="font-size: 10px"
+              >
+                <td scope="col">{{ item.id }}</td>
+                <td scope="col " *ngIf="!item.validacion">
+                  <label class="container" id="c2">
+                  
+                    <input
+                      type="checkbox"
+                      (click)="cambiarEstadoComite(item)"
+                      class="chek"
+                    />
+                   
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                <td scope="col " *ngIf="item.validacion">
+                  <label class="container" id="c2">
+                    <input
+                      type="checkbox"
+                      checked="checked"
+                      (click)="cambiarEstadoComite(item)"
+                      class="chek"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                <td scope="col">{{ item.tipo }}</td>
+                <td scope="col">{{ item.nombre }}</td>
+                <td scope="col">{{ item.cargo }}</td>
+                <td scope="col">{{ item.instituto }}</td>
+                <td scope="col">{{ item.pais }}</td>
+
+                <td scope="col">{{ item.edicion }}</td>
+                <td>
+                  <button
+                    class="btn"
+                    (click)="editarComision(item, comite)"
+                    style="margin-right: 5px"
+                  >
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button
+                    class="btn"
+                    (click)="alertComite(item.id)"
+                    style="background: #7a1e19"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ngb-pagination
+            [collectionSize]="comiteFiltrado.length"
+            [pageSize]="pageSizeComite"
+            [(page)]="pageComite"
+            [maxSize]="20"
+            [rotate]="true"
+            [ellipses]="false"
+            [boundaryLinks]="true"
+          >
+          </ngb-pagination>
+        </div>
+        <ng-template #comite let-modal>
+          <div class="modal-header">
+            <div style="text-align: center !important; width: 100%">
+              <h4
+                class="modal-title"
+                id="modal-basic-title"
+                style="font-weight: bold"
+              >
+                Comité
+              </h4>
+            </div>
+          </div>
+          <div class="modal-body" style="text-align: center">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    [(ngModel)]="nombreComte"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tipo Comité</label>
+                  <br />
+                  <div
+                    class="d-inline-block"
+                    ngbDropdown
+                    #drop="ngbDropdown"
+                  >
+                    <button
+                      style="color: black"
+                      type="button"
+                      class="btn btn-outline btn-block btn-neutral border"
+                      id="dropdownManual"
+                      ngbDropdownAnchor
+                      (focus)="drop.open()"
+                    >
+                      {{ TipoComite }}
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                      <button
+                        ngbDropdownItem
+                        *ngFor="let item of tipoComite"
+                        (click)="actualziarTipoComite(item)"
+                      >
+                        {{ item.tipo }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Cargo</label>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    [(ngModel)]="CargoComite"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Instituto</label>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    [(ngModel)]="InstitutoComite"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>País</label>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    [(ngModel)]="PaisComite"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Estado</label>
+                  <label class="content-input" style="margin-left: 45%">
+                    <input
+                      type="checkbox"
+                      checked
+                      *ngIf="validarComite"
+                      (click)="cambiarEstadoDelComite()"
+                    />
+                    <input
+                      type="checkbox"
+                      *ngIf="!validarComite"
+                      (click)="cambiarEstadoDelComite()"
+                    />
+                    <i></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: center">
+              <ngb-toast
+                style="margin: 0 auto"
+                class="toast"
+                *ngIf="error"
+                [autohide]="false"
+                (hidden)="show = false"
+              >
+                Completar todos los datos
+              </ngb-toast>
+            </div>
+            <button
+              type="button"
+              class="btn btn-outline-dark"
+              (click)="cerrarModal()"
+            >
+              Cancelar
+            </button>
+            <button
+              style="background: #b41e26"
+              type="button"
+              class="btn btn-outline-dark"
+              (click)="guardarComite()"
+              *ngIf="idComite === null"
+            >
+              Agregar
+            </button>
+            <button
+              style="background: #b41e26"
+              type="button"
+              class="btn btn-outline-dark"
+              (click)="guardarComite()"
+              *ngIf="idComite != null"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        </ng-template>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="6">
+      <a ngbNavLink>Usuarios</a>
+
+      <ng-template ngbNavContent>
+        <div>
+          <h2>Reportes de inscritos</h2>
+          <button class="btn" (click)="openModalReportes(reporteGeneral)">
+            <i class="fa fa-plus" aria-hidden="true"></i> Reporte General
+          </button>
+          <button class="btn" (click)="openModalReportes(reporteInscritos)">
+            <i class="fa fa-plus" aria-hidden="true"></i> Generar Reporte
+          </button>
+        </div>
       </ng-template>
     </li>
   </ul>

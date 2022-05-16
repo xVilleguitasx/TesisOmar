@@ -10,7 +10,6 @@ import { AppRoutingModule } from "./app.routing";
 import { ComponentsModule } from "./components/components.module";
 import  {  PdfViewerModule  }  from  'ng2-pdf-viewer';
 import { AppComponent } from "./app.component";
-
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 import { ValidacionAdminComponent } from "./validacion-admin/validacion-admin.component";
 import { AdministracionComponent } from "./administracion/administracion.component";

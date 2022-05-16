@@ -6,4 +6,5 @@ export interface Comite {
   instituto?: string;
   pais?: string;
   edicion: string;
+  validacion:boolean;
 }

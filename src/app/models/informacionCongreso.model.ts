@@ -4,4 +4,5 @@ export interface InformacionCongreso {
   titulo: string;
   fecha: string;
   logo: string;
+  favicon?:string;
 }
