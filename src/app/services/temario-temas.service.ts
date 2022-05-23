@@ -10,7 +10,7 @@ export class TemarioTemasService {
 
   api: string = environment.api;
   constructor(private http: HttpClient) {}
-  insertTemarioTemas(item:TemarioTemas): any{
+  insertTemarioTemas(item:any): any{
     return this.http.post<TemarioTemas>(`${this.api}/temarioTemas`,item);
   }
   getTemarioTemas() {
@@ -20,7 +20,7 @@ export class TemarioTemasService {
     return this.http.get<TemarioTemas>(`${this.api}/temarioTemas/${id}`);
   }
 
-  editTemarioTemas( item: TemarioTemas) {
+  editTemarioTemas(id:number, item: any) {
     return this.http.put(`${environment.api}/temarioTemas/${item.id}`, item);
   }
   deleteTemarioTemas(id: string) {

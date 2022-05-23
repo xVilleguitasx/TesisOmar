@@ -58,7 +58,7 @@
                   <P style="font-size: 20px; text-align: justify">
                     {{ item.texto }}
                   </P>
-                  <div class="row">
+                  <div class="row" style="display: flex">
                     <div
                       class="col-md-6 mx-auto my-5"
                       style="cursor: pointer"
@@ -74,7 +74,7 @@
                     </div>
                     <div
                       class="col-md-6 mx-auto my-5"
-                      style="cursor: pointer"
+                      style="cursor: pointer; text-align: right"
                       *ngIf="
                         item.imagen_boton_2 != '' && item.imagen_boton_2 != null
                       "
@@ -109,7 +109,10 @@
                     Chasquis y Río Payamino Ambato Ecuador e-mail:
                     csei@uta.edu.ec Telf.: (03)-2851894 ext. 82120 / 0992947123
                   </p>
-                  <h3 class="titulo">Galeria de fotos</h3>
+                  <h3 class="titulo" style="color: #7a1e19">
+                    GALERIA DE FOTOS
+                  </h3>
+                  <hr />
                   <div class="row">
                     <div
                       class="col-md-4 mx-auto my-5"
@@ -153,7 +156,7 @@
                     >
                       <img
                         class="img-fluid z-depth-1"
-                        [src]="URL + item.iboton1"
+                        [src]="URL + item.boton1"
                         (click)="abrirEnlace(item.link1)"
                       />
                     </div>
@@ -171,25 +174,33 @@
                       <div class="col-md-2"></div>
                     </div>
                   </div>
+                  <ul class="list-group">
+                    <h3 class="titulo" style="color: #7a1e19">
+                      GALERIA DE FOTOS
+                    </h3>
+                    <div>
+                      <hr />
+                    </div>
+                    <div class="row">
+                      <div
+                        class="col-md-4 mx-auto my-5"
+                        style="cursor: pointer; text-align: center"
+                        *ngFor="let item of galeriaInformacion"
+                      >
+                        <img
+                          class="img-fluid z-depth-1"
+                          [src]="URL + item.imagen"
+                          style="
+                            width: 250px !important;
+                            height: 250px !important;
+                          "
+                        />
+                        <br />
+                        <label>{{ item.nombre }}</label>
+                      </div>
+                    </div>
+                  </ul>
                 </li>
-              </ul>
-              <ul class="list-group">
-                <h3 class="titulo">Galeria de fotos</h3>
-                <div class="row">
-                  <div
-                    class="col-md-4 mx-auto my-5"
-                    style="cursor: pointer; text-align: center"
-                    *ngFor="let item of galeriaInformacion"
-                  >
-                    <img
-                      class="img-fluid z-depth-1"
-                      [src]="URL + item.imagen"
-                      style="width: 250px !important; height: 250px !important"
-                    />
-                    <br />
-                    <label>{{ item.nombre }}</label>
-                  </div>
-                </div>
               </ul>
             </ng-template>
           </li>
@@ -325,10 +336,14 @@
                 <div class="row">
                   <div class="col-md-3"></div>
                   <div class="col-md-6">
-                    <table class="table table-striped mt-3" style="text-align:center" *ngFor="let temario of temarios">
+                    <table
+                      class="table table-striped mt-3"
+                      style="text-align: center; border: 1px solid black"
+                      *ngFor="let temario of temarios"
+                    >
                       <thead>
                         <tr style="font-weight: bold; font-size: 14px">
-                          <td scope="col">{{temario.titulo}}</td>
+                          <td scope="col">{{ temario.titulo }}</td>
                         </tr>
                       </thead>
                       <tbody>
@@ -336,14 +351,18 @@
                           *ngFor="let temarioTema of temarioTemas"
                           style="font-size: 10px"
                         >
-                          <td scope="col" *ngIf="temario.id==temarioTema.id_tema_per">{{ temarioTema.tema }}</td>
+                          <td
+                            scope="col"
+                            *ngIf="temario.id == temarioTema.id_tema_per"
+                          >
+                            {{ temarioTema.tema }}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                   <div class="col-md-3"></div>
                 </div>
-               
               </div>
             </ng-template>
           </li>
@@ -351,7 +370,10 @@
             <a ngbNavLink>FECHAS IMPORTANTES</a>
             <ng-template ngbNavContent>
               <div class="scrollme">
-                <table class="table table-striped mt-3" style="text-align:center">
+                <table
+                  class="table table-striped mt-3"
+                  style="text-align: center"
+                >
                   <thead>
                     <tr style="font-weight: bold; font-size: 12px">
                       <td scope="col">Fecha</td>
@@ -381,40 +403,12 @@
                   (click)="abrirEnlace(item.link)"
                   style="cursor: pointer; text-align: center"
                 >
-                  <a><img class="img-fluid z-depth-1" [src]="URL + item.boton" /></a>
-                  <label> {{item.texto}} </label>
+                  <a
+                    ><img class="img-fluid z-depth-1" [src]="URL + item.boton"
+                  /></a>
+                  <label style="text-align: justify"> {{ item.texto }} </label>
                 </div>
               </div>
-            </ng-template>
-          </li>
-          <li [ngbNavItem]="5">
-            <a ngbNavLink>ENVIAR PROPUESTAS</a>
-            <ng-template ngbNavContent>
-              Labore id pariatur velit eiusmod eu labore ipsum enim veniam
-              dolore. Nulla enim dolore esse dolor irure commodo exercitation
-              laboris fugiat amet esse magna commodo. Ad ut commodo officia
-              aliqua dolore non veniam labore aliquip laboris commodo quis
-              officia. Quis nisi nisi nisi commodo ut eiusmod id commodo laboris
-              ad incididunt ut. Lorem sunt velit velit velit id commodo. Aute
-              nostrud ad quis deserunt aliqua esse aliquip esse. Labore amet
-              anim commodo consequat consectetur dolore est non Lorem sint et et
-              ut. Proident dolore ut ea aliquip laborum. Nisi id exercitation
-              ipsum adipisicing dolor anim culpa officia Lorem est quis non amet
-              eiusmod. Ipsum deserunt ad fugiat excepteur. Duis in fugiat nulla
-              do. Exercitation mollit ipsum qui officia sint enim elit consequat
-              proident dolor magna incididunt id. Est nostrud laboris et
-              occaecat velit pariatur deserunt. Culpa duis labore Lorem
-              excepteur sint aliquip. Cillum ipsum ea fugiat nostrud enim id
-              ipsum veniam dolore. Eu laborum dolore nostrud ut. Ad ex consequat
-              ad ea exercitation laboris. Ea aliquip duis do magna dolore
-              nostrud ipsum laborum deserunt. Laboris anim duis sint id
-              consectetur aute laborum voluptate veniam. Labore commodo et in
-              sit ullamco aliqua Lorem reprehenderit excepteur id amet sunt.
-              Ipsum exercitation mollit voluptate reprehenderit ullamco
-              cupidatat et ex ullamco tempor qui sint deserunt. Sunt
-              reprehenderit nulla voluptate laborum qui deserunt non enim dolore
-              pariatur ea tempor consequat. Mollit ipsum mollit cillum sunt
-              excepteur duis. Nostrud est pariatur velit duis eu.
             </ng-template>
           </li>
         </ul>

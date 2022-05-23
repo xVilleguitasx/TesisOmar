@@ -9,10 +9,10 @@
         <br>
         <label style="font-weight: bold; font-size:1.5rem"> {{informacionCongreso[0].nombre}}</label>
         <br>
-        <label> {{informacionCongreso[0].titulo}} </label>
+        <label> {{informacionCongreso[0].titulo}}</label>
       </div>
-      <div class="col-md-2" style="text-align: right;">
-          <img [src]='URL+informacionCongreso[0].logo'  class="img-fluid" style="cursor:pointer" style="max-width: 100px; max-height: 100px">
+      <div class="col-md-2" style="text-align: right">
+          <img [src]='URL+informacionCongreso[0].logo'  class="img-fluid" style="cursor:pointer" style="max-width: 100px; max-height: 100px; margin-right:25px">
   
       </div>
     </div>
@@ -3639,24 +3639,178 @@
           <li [ngbNavItem]="22">
             <a ngbNavLink>Temario</a>
             <ng-template ngbNavContent>
+              <button
+              class="btn"
+              (click)="openTemario(temarioModal)"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i> Agregar Título
+            </button>
               <li class="list-group-item" *ngFor="let item of temarios">
                 <div class="row">
                   <div class="col-10">
-                    {{ item.titulo }}
+                  <label style="font-weight: bold">Título: </label>   {{ item.titulo }}
+<br>
 
-                    <br />
-                    <button class="btn">Editar</button>
+                  
+                    <button class="btn"
+                    (click)="openTemario(temarioModal,item)"
+                    >Editar</button>
                     <button
                       style="background: #b41e26"
                       type="button"
                       class="btn btn-outline-dark"
-                      *ngIf="envioTrabajosFechas.length != 0"
+                     (click)="eliminarTemario(item.id)"
                     >
                       Eliminar
                     </button>
+                    <hr>
                   </div>
                 </div>
+                <div class="row">
+                  <button
+                  class="btn"
+                  (click)="openTemarioTema(temarioTemaModal,item.id)"
+                >
+                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Tema
+                </button>
+                <br>
+                  <div class="col-md-12" *ngFor="let temarioTema of temarioTemas">
+                   <label *ngIf="temarioTema.id_tema_per===item.id"> <label style="font-weight: bold;">Tema: </label> {{temarioTema.tema}}
+<br>
+
+                    <button class="btn"
+                    (click)="openTemarioTema(temarioTemaModal,item.id,temarioTema)">Editar</button>
+                    <button
+                      style="background: #b41e26"
+                      type="button"
+                      class="btn btn-outline-dark"
+                      (click)="eliminarTemarioTema(temarioTema.id)"
+                    >
+                      Eliminar
+                    </button>
+                    <hr>
+                   </label> 
+                  
+                  </div>
+                  
+                </div>
               </li>
+              <ng-template #temarioModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Título temario
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                 
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Título</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="tituloTemario"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarTemario()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+              <ng-template #temarioTemaModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Tema
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                 
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Tema</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="tituloTemario"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarTemarioTema()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
             </ng-template>
           </li>
         </ul>

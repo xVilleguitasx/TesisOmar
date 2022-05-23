@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { NgbAccordionConfig } from "@ng-bootstrap/ng-bootstrap";
 import { Comite } from "../models/comite.model";
 import { Edicion } from "../models/edicion.model";
 import { EnvioTrabajos } from "../models/envioTrabajos.model";
@@ -66,8 +67,13 @@ export class InicioComponent implements OnInit {
     private _envioTrabajosFechasService: EnvioTrabajosFechasService,
     private _envioTrabajosFormatosService: EnvioTrabajosFormatosService,
     private _temarioService: TemarioService,
-    private _temarioTemasServices: TemarioTemasService
-  ) {}
+    private _temarioTemasServices: TemarioTemasService,
+    config: NgbAccordionConfig
+  ) {
+    config.closeOthers = true;
+  config.type = 'info';
+  }
+  
 
   ngOnInit(): void {
     this.getComite();

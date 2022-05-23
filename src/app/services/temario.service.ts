@@ -20,8 +20,8 @@ export class TemarioService {
     return this.http.get<Temario>(`${this.api}/temario/${id}`);
   }
 
-  editTemarios( item: Temario) {
-    return this.http.put(`${environment.api}/temario/${item.id}`, item);
+  editTemarios(id:number, item: Temario) {
+    return this.http.put(`${environment.api}/temario/${id}`, item);
   }
   deleteTemario(id: string) {
     return this.http.delete(`${environment.api}/temario/${id}`); 

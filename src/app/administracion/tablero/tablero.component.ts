@@ -3078,5 +3078,152 @@ this.validarComite=!this.validarComite;
       
     });
   }
-
+  tituloTemario:string='';
+  temarioSeleccionado:Temario=undefined;
+  temarioTemaSeleccionado:TemarioTemas=undefined;
+  idTemarioPertenece=null;
+    openTemario(content, tamerio?:Temario){
+    if(tamerio != undefined ){
+     this.temarioSeleccionado=tamerio;
+     this.tituloTemario=tamerio.titulo;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariableTemario();
+      },
+      (reason) => {
+        this.resetVariableTemario();
+      }
+    );
+  }
+  resetVariableTemario() {
+    this.tituloTemario='';
+    this.temarioSeleccionado=undefined;
+    this.temarioTemaSeleccionado=undefined;
+    this.idTemarioPertenece=null;
+  }
+  guardarTemario() {
+    if (
+      this.tituloTemario != ""
+    ) {
+      const enviar={
+        titulo:this.tituloTemario
+      }
+ 
+      if (this.temarioSeleccionado === undefined) {
+        this._temarioService
+          .insertTemario(enviar)
+          .subscribe((result) => {
+            this.getTemarios();
+            this.cerrarModal();
+          });
+      } else {
+        this._temarioService
+          .editTemarios(this.temarioSeleccionado.id, enviar)
+          .subscribe((result) => {
+            this.getTemarios();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarTemario(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar Tema?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._temarioService
+          .deleteTemario(id)
+          .subscribe((result) => {
+            this.getTemarios();
+          });
+      } else {
+      }
+    });
+  }
+  openTemarioTema(content,idTemario:number, tema?:TemarioTemas){
+    this.idTemarioPertenece=idTemario;
+    if(tema != undefined ){
+     this.temarioTemaSeleccionado=tema;
+     this.tituloTemario=tema.tema;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariableTemario();
+      },
+      (reason) => {
+        this.resetVariableTemario();
+      }
+    );
+  }
+  guardarTemarioTema() {
+    if (
+      this.tituloTemario != ""
+    ) {
+      const enviar={
+        id_tema_per:this.idTemarioPertenece,
+        tema:this.tituloTemario
+      }
+ 
+      if (this.temarioTemaSeleccionado === undefined) {
+        this._temarioTemasServices
+          .insertTemarioTemas(enviar)
+          .subscribe((result) => {
+            this.getTemariosTemas();
+            this.cerrarModal();
+          });
+      } else {
+        this._temarioTemasServices
+          .editTemarioTemas(this.temarioTemaSeleccionado.id, enviar)
+          .subscribe((result) => {
+            this.getTemariosTemas();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarTemarioTema(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar Tema?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._temarioTemasServices
+          .deleteTemarioTemas(id)
+          .subscribe((result) => {
+            this.getTemariosTemas();
+          });
+      } else {
+      }
+    });
+  }
 }
