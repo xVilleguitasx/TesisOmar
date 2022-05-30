@@ -1,3 +1,4 @@
+import { ThisReceiver } from "@angular/compiler";
 import { Component, OnInit } from "@angular/core";
 import { NgbAccordionConfig } from "@ng-bootstrap/ng-bootstrap";
 import { Comite } from "../models/comite.model";
@@ -7,10 +8,15 @@ import { EnvioTrabajosFechas } from "../models/envioTrabajosFechas.model";
 import { EnvioTrabajosFormato } from "../models/envioTrabajosFormatos.model";
 import { Galeria } from "../models/galeria";
 import { InformacionTuristica } from "../models/informacionTuristica.model";
+import { Inicio } from "../models/inicio.model";
+import { InicioGaleria } from "../models/inicioGaleria.model";
 import { Investigador } from "../models/investigador.model";
 import { LugarDelEvento } from "../models/lugarDelEvento.model";
 import { Presentacion } from "../models/presentacion.model";
 import { Programa } from "../models/programa.model";
+import { ProgramaDetalle } from "../models/programaDetalle.model";
+import { ProgramaDias } from "../models/programaDias.model";
+import { ProgramaJornada } from "../models/programaJornada.model";
 import { Temario } from "../models/temario.model";
 import { TemarioTemas } from "../models/temarioTemas.model";
 import { ComiteService } from "../services/comite.service";
@@ -21,9 +27,14 @@ import { EnvioTrabajosService } from "../services/envio-trabajos.service";
 import { GaleriaInformacionService } from "../services/galeria-informacion.service";
 import { GaleriaLugarService } from "../services/galeria-lugar.service";
 import { InformacionTuristicaService } from "../services/informacion-turistica.service";
+import { InicioGaleriaService } from "../services/inicio-galeria.service";
+import { InicioService } from "../services/inicio.service";
 import { InvestigadoresService } from "../services/investigadores.service";
 import { LugarDelEventoService } from "../services/lugar-del-evento.service";
 import { PresentacionService } from "../services/presentacion.service";
+import { ProgramaDetalleService } from "../services/programa-detalle.service";
+import { ProgramaDiasService } from "../services/programa-dias.service";
+import { ProgramaJornadaService } from "../services/programa-jornada.service";
 import { ProgramaService } from "../services/programa.service";
 import { TemarioTemasService } from "../services/temario-temas.service";
 import { TemarioService } from "../services/temario.service";
@@ -52,6 +63,13 @@ export class InicioComponent implements OnInit {
   envioTrabajosFormatos: EnvioTrabajosFormato[] = [];
   temarios:Temario[] = [];
   temarioTemas:TemarioTemas[] = [];
+  inicio:Inicio[] = [];
+  inicioGaleria:InicioGaleria[] = [];
+  programaJornada:ProgramaJornada[] = [];
+  programaDias:ProgramaDias[] = [];
+  DiasMatutina:ProgramaDias[] = [];
+  DiasVespertina:ProgramaDias[] = [];
+  programaDetalle:ProgramaDetalle[] = [];
   URL = "http://localhost:3000/";
   constructor(
     private _comiteService: ComiteService,
@@ -68,6 +86,11 @@ export class InicioComponent implements OnInit {
     private _envioTrabajosFormatosService: EnvioTrabajosFormatosService,
     private _temarioService: TemarioService,
     private _temarioTemasServices: TemarioTemasService,
+    private _inicioService: InicioService,
+    private _inicioGaleriaService: InicioGaleriaService,
+    private _programaJornadaService: ProgramaJornadaService,
+    private _programaDiasService: ProgramaDiasService,
+    private _programaDetalleService: ProgramaDetalleService,
     config: NgbAccordionConfig
   ) {
     config.closeOthers = true;
@@ -87,6 +110,43 @@ export class InicioComponent implements OnInit {
     this.getEnvioTrabajosFormatos();
     this.getTemarios();
     this.getTemarioTemas();
+    this.getInicio();
+    this.getInicioGaleria();
+    this.getProgramaJornada();
+    this.getProgramaDias();
+    this.getProgramaDetalle();
+  }
+  getProgramaDetalle() {
+    this._programaDetalleService.getProgramaDetalle().subscribe((result) => {
+      this.programaDetalle = result;
+     
+    })
+  }
+  getProgramaDias() {
+    this._programaDiasService.getProgramaDias().subscribe((result)=>{
+      this.programaDias= result;
+      result.forEach((dia)=>{
+        dia.jornada_per===1 ? this.DiasMatutina.push(dia) : this.DiasVespertina.push(dia);
+      })
+    })
+   
+  }
+  getProgramaJornada() {
+    this._programaJornadaService.getProgramaJornada().subscribe((result)=>{
+      this.programaJornada=result;
+      console.log("Detalle" , result);
+    })
+  }
+  getInicioGaleria() {
+    this._inicioGaleriaService.getInicioGaleria().subscribe((result) => {
+      this.inicioGaleria=result;
+    })
+  }
+  getInicio() {
+    this._inicioService.getInicio().subscribe((result)=>{
+      this.inicio=result;
+      console.log(result);
+    })
   }
   getTemarioTemas() {
     this._temarioTemasServices.getTemarioTemas().subscribe((result)=>{

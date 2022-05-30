@@ -12,31 +12,30 @@
       <a ngbNavLink>Inicio</a>
       <ng-template ngbNavContent>
         <div class="row">
-          <div class="col-md-4 mx-auto my-5">
-            <a
-              ><img
-                class="img-fluid z-depth-1"
-                src="https://csei.uta.edu.ec/csei2021/images/indice.jpeg"
-                alt="video"
-            /></a>
+          <div class="col-md-6 mx-auto my-5">
+            <div class="row">
+              <div class="col-md-12" *ngFor="let item of inicio">
+                <label>{{ item.texto_llamado }}</label>
+                <img
+                  [src]="URL + item.imagen_llamado"
+                  alt=""
+                  (click)="abrirEnlace(item.link_llamado)"
+                  style="cursor: pointer"
+                />
+              </div>
+            </div>
           </div>
 
-          <div class="col-md-4 mx-auto my-5">
-            <a
-              ><img
-                class="img-fluid z-depth-1"
-                src="https://csei.uta.edu.ec/csei2021/images/mpdi6.jpg"
-                alt="video"
-            /></a>
-          </div>
-
-          <div class="col-md-4 mx-auto my-5">
-            <a
-              ><img
-                class="img-fluid z-depth-1"
-                src="https://csei.uta.edu.ec/csei2021/images/springerBook.jpg"
-                alt="video"
-            /></a>
+          <div class="col-md-6 mx-auto my-5">
+            <div class="row">
+              <div class="col-md-6" *ngFor="let item of inicioGaleria">
+                <img
+                  class="img-fluid z-depth-1"
+                  [src]="URL + item.imagen"
+                  (click)="abrirEnlace(item.link)"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </ng-template>
@@ -291,6 +290,7 @@
             <label style="cursor: pointer" (click)="abrirEnlace(item.link)">
               {{ item.boton }}
             </label>
+
             <div class="row">
               <div class="col-md-3"></div>
               <div class="col-md-6 mx-auto my-5">
@@ -299,6 +299,56 @@
               <div class="col-md-3"></div>
               <p>{{ item.programa }}</p>
             </div>
+         
+            <div class="scrollme">
+            <table
+              class="table table-striped mt-3 expand" style="width: 100%"
+              *ngFor="let jornada of programaJornada"
+            >
+              <thead>
+                <tr class="row" style="font-weight: bold;text-align: center;">
+                  <td class="col"  >{{ jornada.nombre }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <div *ngIf="jornada.id === 1">
+                  <tr class="row">
+                    <td  scope="col" *ngFor="let dias of DiasMatutina" class="col" style="text-align: center;">
+                      {{ dias.fecha }}
+                      <hr>
+                      <div *ngFor="let detalle of programaDetalle">
+                        <div *ngIf="dias.id === detalle.dia_per">
+                          <label>
+                            {{detalle.hora}}
+                            <br>
+                            {{ detalle.actividad }}
+                          </label>
+                          <hr>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </div>
+
+                <div *ngIf="jornada.id != 1">
+                  <tr class="row">
+                    <td *ngFor="let dias of DiasVespertina" class="col" style="text-align: center;">
+                      {{ dias.fecha }}
+                      <hr />
+                      <div *ngFor="let detalle of programaDetalle">
+                        <div *ngIf="dias.id === detalle.dia_per">
+                          <label>
+                            {{ detalle.actividad }}
+                          </label>
+                          <hr />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </div>
+              </tbody>
+            </table>
+          </div>
           </li>
         </ul>
       </ng-template>
@@ -380,6 +430,7 @@
                       <td scope="col">Actividad</td>
                     </tr>
                   </thead>
+                  *ngFor="let dia of programaDias"
                   <tbody>
                     <tr
                       *ngFor="let item of envioTrabajosFechas"
