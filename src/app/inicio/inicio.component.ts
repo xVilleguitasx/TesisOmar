@@ -108,7 +108,7 @@ export class InicioComponent implements OnInit {
     this.getEnvioTrabajos();
     this.getEnvioTrabajosFechas();
     this.getEnvioTrabajosFormatos();
-    this.getTemarios();
+    this.getTemarios(); 
     this.getTemarioTemas();
     this.getInicio();
     this.getInicioGaleria();

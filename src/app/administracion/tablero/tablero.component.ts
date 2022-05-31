@@ -80,7 +80,16 @@ import { EnvioTrabajosFechasService } from "../../../app/services/envio-trabajos
 import { EnvioTrabajosFormatosService } from "../../../app/services/envio-trabajos-formatos.service";
 import { TemarioService } from "../../../app/services/temario.service";
 import { TemarioTemasService } from "../../../app/services/temario-temas.service";
-
+import { Inicio } from "../../../app/models/inicio.model";
+import { InicioGaleria } from "../../../app/models/inicioGaleria.model";
+import { ProgramaJornada } from "../../../app/models/programaJornada.model";
+import { ProgramaDias } from "../../../app/models/programaDias.model";
+import { ProgramaDetalle } from "../../../app/models/programaDetalle.model";
+import { InicioService } from "../../../app/services/inicio.service";
+import { InicioGaleriaService } from "../../../app/services/inicio-galeria.service";
+import { ProgramaJornadaService } from "../../../app/services/programa-jornada.service";
+import { ProgramaDiasService } from "../../../app/services/programa-dias.service";
+import { ProgramaDetalleService } from "../../../app/services/programa-detalle.service";
 
 @Component({
   selector: "app-tablero",
@@ -111,7 +120,7 @@ export class TableroComponent implements OnInit {
   tipoComite: TipoComite[] = [];
   tipoComiteLista: string[] = ["Tipo Comite"];
   tipoComiteMostrar = "Tipo Comite";
-  validarComite:boolean=true;
+  validarComite: boolean = true;
   ////
   tituloReporte = "";
   informacionCongreso: InformacionCongreso[] = [];
@@ -161,7 +170,12 @@ export class TableroComponent implements OnInit {
     private _envioTrabajosFechasService: EnvioTrabajosFechasService,
     private _envioTrabajosFormatosService: EnvioTrabajosFormatosService,
     private _temarioService: TemarioService,
-    private _temarioTemasServices: TemarioTemasService
+    private _temarioTemasServices: TemarioTemasService,
+    private _inicioService: InicioService,
+    private _inicioGaleriaService: InicioGaleriaService,
+    private _programaJornadaService: ProgramaJornadaService,
+    private _programaDiasService: ProgramaDiasService,
+    private _programaDetalleService: ProgramaDetalleService
   ) {}
   registros: string[] = [
     "Seleccione...",
@@ -276,7 +290,7 @@ export class TableroComponent implements OnInit {
   tituloCongreso = "";
   fechaCongreso = "";
   logoCongreso = "";
-  faviconCongreso="";
+  faviconCongreso = "";
   ////////////////////////////////////////////////////////////////
 
   fechaCreacionReporte = null;
@@ -340,12 +354,20 @@ export class TableroComponent implements OnInit {
   linkPrograma = "";
   imagenPrograma = "";
   programaPrograma = "";
-///
+  ///
 
-textoEnvioTrabajos: string = "";
-botonEnvioTrabajos: string = "";
-linkEnvioTrabajos: string = "";
-envioTrabajoSeleccionado: EnvioTrabajos = undefined;
+  textoEnvioTrabajos: string = "";
+  botonEnvioTrabajos: string = "";
+  linkEnvioTrabajos: string = "";
+  envioTrabajoSeleccionado: EnvioTrabajos = undefined;
+  inicio: Inicio[] = [];
+  inicioGaleria: InicioGaleria[] = [];
+  programaJornada: ProgramaJornada[] = [];
+  programaDias: ProgramaDias[] = [];
+  DiasMatutina: ProgramaDias[] = [];
+  DiasVespertina: ProgramaDias[] = [];
+  programaDetalle: ProgramaDetalle[] = [];
+  inicioSeleccionado: Inicio = undefined;
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -394,6 +416,42 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     this.getEnvioTrabajosFechas();
     this.getTemarios();
     this.getTemariosTemas();
+    this.getInicio();
+    this.getInicioGaleria();
+    this.getProgramaJornada();
+    this.getProgramaDias();
+    this.getProgramaDetalle();
+  }
+  getProgramaDetalle() {
+    this._programaDetalleService.getProgramaDetalle().subscribe((result) => {
+      this.programaDetalle = result;
+    });
+  }
+  getProgramaDias() {
+    this._programaDiasService.getProgramaDias().subscribe((result) => {
+      this.programaDias = result;
+      result.forEach((dia) => {
+        dia.jornada_per === 1
+          ? this.DiasMatutina.push(dia)
+          : this.DiasVespertina.push(dia);
+      });
+    });
+  }
+  getProgramaJornada() {
+    this._programaJornadaService.getProgramaJornada().subscribe((result) => {
+      this.programaJornada = result;
+      console.log("Detalle", result);
+    });
+  }
+  getInicioGaleria() {
+    this._inicioGaleriaService.getInicioGaleria().subscribe((result) => {
+      this.inicioGaleria = result;
+    });
+  }
+  getInicio() {
+    this._inicioService.getInicio().subscribe((result) => {
+      this.inicio = result;
+    });
   }
   getEnvioTrabajosFechas() {
     this._envioTrabajosFechasService
@@ -426,7 +484,6 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
   }
   getPrograma() {
     this._programaService.getProgramas().subscribe((result) => {
-      
       this.programa = result;
     });
   }
@@ -459,7 +516,7 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     });
   }
   getConfiCertificados() {
-  /*   this._confi_certificados.getConfiCertificados().subscribe((result) => {
+    /*   this._confi_certificados.getConfiCertificados().subscribe((result) => {
       this.confiCertificados = result;
     }); */
   }
@@ -1475,21 +1532,21 @@ envioTrabajoSeleccionado: EnvioTrabajos = undefined;
     this.EdicionComite = "";
     this.idComite = null;
     this.idTipoComite = null;
-    this.validarComite=true;
+    this.validarComite = true;
   }
   actualziarTipoComite(item: TipoComite) {
     this.TipoComite = item.tipo;
     this.idTipoComite = item.id;
   }
-  cambiarEstadoDelComite(){
-this.validarComite=!this.validarComite;
+  cambiarEstadoDelComite() {
+    this.validarComite = !this.validarComite;
   }
   guardarComite() {
     if (
       this.idTipoComite != null &&
       this.nombreComte != "" &&
       this.InstitutoComite != "" &&
-      this.PaisComite != "" 
+      this.PaisComite != ""
     ) {
       var fecha = new Date();
       var year = fecha.getFullYear();
@@ -1501,7 +1558,7 @@ this.validarComite=!this.validarComite;
         instituto: this.InstitutoComite,
         pais: this.PaisComite,
         edicion: year,
-        validacion:this.validarComite
+        validacion: this.validarComite,
       };
       console.log(this.idComite);
       if (this.idComite === null) {
@@ -1535,7 +1592,7 @@ this.validarComite=!this.validarComite;
     this.CargoComite = item.cargo;
     this.InstitutoComite = item.instituto;
     this.PaisComite = item.pais;
-    this.validarComite=item.validacion;
+    this.validarComite = item.validacion;
     this.openComite(content);
   }
 
@@ -2009,7 +2066,7 @@ this.validarComite=!this.validarComite;
     this.tituloCongreso = "";
     this.fechaCongreso = "";
     this.logoCongreso = "";
-    this.faviconCongreso="";
+    this.faviconCongreso = "";
     this.error = false;
     this.idCongreso = null;
     this.file = undefined;
@@ -2019,7 +2076,7 @@ this.validarComite=!this.validarComite;
     this.file = event.target.files[0];
     this.logoCongreso = this.file.name;
   }
- 
+
   selectFaviconCongreso(event) {
     this.file2 = event.target.files[0];
     this.faviconCongreso = this.file.name;
@@ -2041,7 +2098,7 @@ this.validarComite=!this.validarComite;
     this.tituloCongreso = item.titulo;
     this.fechaCongreso = item.fecha;
     this.logoCongreso = item.logo;
-    this.faviconCongreso=item.favicon;
+    this.faviconCongreso = item.favicon;
     this.openInfoCongreso(content);
   }
   guardarInformacionRegistro() {
@@ -2416,7 +2473,7 @@ this.validarComite=!this.validarComite;
     this.file = event.target.files[0];
     this.plantillaCertificado = this.file.name;
   }
- /*  guardarConfiCertificado() {
+  /*  guardarConfiCertificado() {
     if (this.nombreCertificado != "") {
       var data = new FormData();
       data.append("nombre", this.nombreCertificado);
@@ -2989,18 +3046,18 @@ this.validarComite=!this.validarComite;
     });
   }
 
-  actividadEnvioTrabajoFecha:string = "";
-  fechaEnvioTrabajoFecha:string = ""
-  envioTrabajoFechaSeleccionado:EnvioTrabajosFechas=undefined;
-  resetVariablesEnvioTrabajoFechas(){
+  actividadEnvioTrabajoFecha: string = "";
+  fechaEnvioTrabajoFecha: string = "";
+  envioTrabajoFechaSeleccionado: EnvioTrabajosFechas = undefined;
+  resetVariablesEnvioTrabajoFechas() {
     this.actividadEnvioTrabajoFecha = "";
-    this.fechaEnvioTrabajoFecha = ""
-    this.envioTrabajoFechaSeleccionado=undefined;
+    this.fechaEnvioTrabajoFecha = "";
+    this.envioTrabajoFechaSeleccionado = undefined;
   }
-  openEnvioTrabajosFechas(content, item?:EnvioTrabajosFechas){
-    if(item != undefined){
-      this.envioTrabajoFechaSeleccionado= item;
-      this.fechaEnvioTrabajoFecha= item.fecha;
+  openEnvioTrabajosFechas(content, item?: EnvioTrabajosFechas) {
+    if (item != undefined) {
+      this.envioTrabajoFechaSeleccionado = item;
+      this.fechaEnvioTrabajoFecha = item.fecha;
       this.actividadEnvioTrabajoFecha = item.actividad;
     }
     this.modalRef = this._modalService.open(content, { size: "lg" });
@@ -3018,11 +3075,11 @@ this.validarComite=!this.validarComite;
       this.fechaEnvioTrabajoFecha != "" &&
       this.actividadEnvioTrabajoFecha != ""
     ) {
-      const enviar={
-        fecha:this.fechaEnvioTrabajoFecha,
-        actividad:this.actividadEnvioTrabajoFecha
-      }
- 
+      const enviar = {
+        fecha: this.fechaEnvioTrabajoFecha,
+        actividad: this.actividadEnvioTrabajoFecha,
+      };
+
       if (this.envioTrabajoFechaSeleccionado === undefined) {
         this._envioTrabajosFechasService
           .insertEnvioTrabajoFecha(enviar)
@@ -3046,7 +3103,7 @@ this.validarComite=!this.validarComite;
     }
   }
   eliminarEnvioTrabajosFechas(id: string) {
-    console.log(id)
+    console.log(id);
     Swal.fire({
       title: "Los datos se eliminaran permanentemente",
       text: "Eliminar fecha?",
@@ -3069,23 +3126,21 @@ this.validarComite=!this.validarComite;
       }
     });
   }
-  cambiarEstadoComite(item:Comite){
-   const enviar = {
-     id:item.id, 
-     validacion : !item.validacion
-   }
-    this._comiteService.editComite(enviar).subscribe((result)=>{
-      
-    });
+  cambiarEstadoComite(item: Comite) {
+    const enviar = {
+      id: item.id,
+      validacion: !item.validacion,
+    };
+    this._comiteService.editComite(enviar).subscribe((result) => {});
   }
-  tituloTemario:string='';
-  temarioSeleccionado:Temario=undefined;
-  temarioTemaSeleccionado:TemarioTemas=undefined;
-  idTemarioPertenece=null;
-    openTemario(content, tamerio?:Temario){
-    if(tamerio != undefined ){
-     this.temarioSeleccionado=tamerio;
-     this.tituloTemario=tamerio.titulo;
+  tituloTemario: string = "";
+  temarioSeleccionado: Temario = undefined;
+  temarioTemaSeleccionado: TemarioTemas = undefined;
+  idTemarioPertenece = null;
+  openTemario(content, tamerio?: Temario) {
+    if (tamerio != undefined) {
+      this.temarioSeleccionado = tamerio;
+      this.tituloTemario = tamerio.titulo;
     }
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
@@ -3098,26 +3153,22 @@ this.validarComite=!this.validarComite;
     );
   }
   resetVariableTemario() {
-    this.tituloTemario='';
-    this.temarioSeleccionado=undefined;
-    this.temarioTemaSeleccionado=undefined;
-    this.idTemarioPertenece=null;
+    this.tituloTemario = "";
+    this.temarioSeleccionado = undefined;
+    this.temarioTemaSeleccionado = undefined;
+    this.idTemarioPertenece = null;
   }
   guardarTemario() {
-    if (
-      this.tituloTemario != ""
-    ) {
-      const enviar={
-        titulo:this.tituloTemario
-      }
- 
+    if (this.tituloTemario != "") {
+      const enviar = {
+        titulo: this.tituloTemario,
+      };
+
       if (this.temarioSeleccionado === undefined) {
-        this._temarioService
-          .insertTemario(enviar)
-          .subscribe((result) => {
-            this.getTemarios();
-            this.cerrarModal();
-          });
+        this._temarioService.insertTemario(enviar).subscribe((result) => {
+          this.getTemarios();
+          this.cerrarModal();
+        });
       } else {
         this._temarioService
           .editTemarios(this.temarioSeleccionado.id, enviar)
@@ -3147,20 +3198,18 @@ this.validarComite=!this.validarComite;
       cancelButtonText: "NO",
     }).then((result) => {
       if (result.value) {
-        this._temarioService
-          .deleteTemario(id)
-          .subscribe((result) => {
-            this.getTemarios();
-          });
+        this._temarioService.deleteTemario(id).subscribe((result) => {
+          this.getTemarios();
+        });
       } else {
       }
     });
   }
-  openTemarioTema(content,idTemario:number, tema?:TemarioTemas){
-    this.idTemarioPertenece=idTemario;
-    if(tema != undefined ){
-     this.temarioTemaSeleccionado=tema;
-     this.tituloTemario=tema.tema;
+  openTemarioTema(content, idTemario: number, tema?: TemarioTemas) {
+    this.idTemarioPertenece = idTemario;
+    if (tema != undefined) {
+      this.temarioTemaSeleccionado = tema;
+      this.tituloTemario = tema.tema;
     }
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
@@ -3173,14 +3222,12 @@ this.validarComite=!this.validarComite;
     );
   }
   guardarTemarioTema() {
-    if (
-      this.tituloTemario != ""
-    ) {
-      const enviar={
-        id_tema_per:this.idTemarioPertenece,
-        tema:this.tituloTemario
-      }
- 
+    if (this.tituloTemario != "") {
+      const enviar = {
+        id_tema_per: this.idTemarioPertenece,
+        tema: this.tituloTemario,
+      };
+
       if (this.temarioTemaSeleccionado === undefined) {
         this._temarioTemasServices
           .insertTemarioTemas(enviar)
@@ -3221,6 +3268,90 @@ this.validarComite=!this.validarComite;
           .deleteTemarioTemas(id)
           .subscribe((result) => {
             this.getTemariosTemas();
+          });
+      } else {
+      }
+    });
+  }
+
+  openInicio(content, inicio: Inicio) {
+    this.inicioSeleccionado = inicio;
+    if (this.inicioSeleccionado != undefined) {
+      this.texto_llamado_inicio=this.inicioSeleccionado.texto_llamado;
+      this.imagen_llamado_inicio=this.inicioSeleccionado.imagen_llamado;
+      this.link_llamado_inicio=this.inicioSeleccionado.link_llamado;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariablesInicio();
+      },
+      (reason) => {
+        this.resetVariablesInicio();
+      }
+    );
+  }
+  texto_llamado_inicio = "";
+  imagen_llamado_inicio = "";
+  link_llamado_inicio = "";
+  resetVariablesInicio() {
+    this.texto_llamado_inicio = "";
+    this.imagen_llamado_inicio = "";
+    this.link_llamado_inicio = "";
+    this.file = undefined;
+    this.inicioSeleccionado=undefined;
+  }
+  selectImgLlamadoInicio(event) {
+    this.file = event.target.files[0];
+    this.imagen_llamado_inicio = this.file.name;
+  }
+  guardarInicio() {
+    if (this.texto_llamado_inicio != "") {
+      var data = new FormData();
+      data.append("texto_llamado", this.texto_llamado_inicio);
+    this.file!=undefined ?  data.append("imagen_llamado", this.file) : "";
+    data.append("link_llamado", this.link_llamado_inicio);
+
+      if (this.inicioSeleccionado === undefined) {
+        this._inicioService
+          .insertInicio(data)
+          .subscribe((result) => {
+            this.getInicio();
+            this.cerrarModal();
+          });
+      } else {
+        this._inicioService
+          .editInicio(this.inicioSeleccionado.id,data)
+          .subscribe((result) => {
+            this.getInicio();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarInicio(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar Inicio?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._inicioService
+          .deleteInicio(id)
+          .subscribe((result) => {
+            this.getInicio();
           });
       } else {
       }

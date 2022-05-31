@@ -3813,6 +3813,384 @@
               </ng-template>
             </ng-template>
           </li>
+          <li [ngbNavItem]="23">
+            <a ngbNavLink>Inicio</a>
+            <ng-template ngbNavContent>
+              <button
+              class="btn"
+              (click)="openInicio(inicioModal)"
+              *ngIf="inicio.length===0"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i> Agregar Inicio
+            </button>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of inicio">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.imagen_llamado" class="patrocinador-img" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.texto_llamado }}
+                      <br />
+                      <br />
+                      {{ item.link_llamado }}
+                      <br />
+                      <button
+                        class="btn"
+                        (click)="openInicio(inicioModal,item)"
+                      >
+                        Editar
+                      </button>
+                      <button
+                      *ngIf="inicio.length===1"
+                      style="background: #802417; margin-right: 15px"
+                      type="button"
+                      class="btn btn-outline-dark btn-eliminar"
+                      (click)="eliminarInicio(item.id)"
+                    >
+                      Eliminar
+                    </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ng-template #inicioModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Inicio
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 1</label>
+
+                        <textarea
+                          id=""
+                          cols="50"
+                          rows="9"
+                          [(ngModel)]="texto_llamado_inicio"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectImgLlamadoInicio($event)"
+                            accept="image/*"
+                          />
+                        </div>
+                        <br />
+                        {{ imagen_llamado_inicio }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 2</label>
+                        <input
+                          type="text"
+                          class="form-control mt-2"
+                          [(ngModel)]="link_llamado_inicio"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarInicio()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="24">
+            <a ngbNavLink>Galeria Inicio</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of lugarDelEvento">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.imagen" class="patrocinador-img" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.texto_1 }}
+                      <br />
+                      <br />
+                      {{ item.texto_2 }}
+                      <br />
+                      <button
+                        class="btn"
+                        (click)="openLugarDelEvento(LugarDelEventoModal, item)"
+                      >
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ng-template #LugarDelEventoModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Lugar del evento
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 1</label>
+
+                        <textarea
+                          id=""
+                          cols="60"
+                          rows="15"
+                          [(ngModel)]="texto1LugarEvento"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectImgLugarDelEvento($event)"
+                            accept="image/*"
+                          />
+                        </div>
+                        <br />
+                        {{ imagenLugarEvento }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 2</label>
+                        <textarea
+                          id=""
+                          cols="60"
+                          rows="15"
+                          [(ngModel)]="texto2LugarEvento"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarLugarDelEvento()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="25">
+            <a ngbNavLink>Cronograma</a>
+            <ng-template ngbNavContent>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of lugarDelEvento">
+                  <div class="row">
+                    <div class="col-1" style="text-align: center">
+                      <img [src]="URL + item.imagen" class="patrocinador-img" />
+                    </div>
+                    <div class="col-11">
+                      {{ item.texto_1 }}
+                      <br />
+                      <br />
+                      {{ item.texto_2 }}
+                      <br />
+                      <button
+                        class="btn"
+                        (click)="openLugarDelEvento(LugarDelEventoModal, item)"
+                      >
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ng-template #LugarDelEventoModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Lugar del evento
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 1</label>
+
+                        <textarea
+                          id=""
+                          cols="60"
+                          rows="15"
+                          [(ngModel)]="texto1LugarEvento"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Imagen</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectImgLugarDelEvento($event)"
+                            accept="image/*"
+                          />
+                        </div>
+                        <br />
+                        {{ imagenLugarEvento }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Texto 2</label>
+                        <textarea
+                          id=""
+                          cols="60"
+                          rows="15"
+                          [(ngModel)]="texto2LugarEvento"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarLugarDelEvento()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+            </ng-template>
+          </li>
         </ul>
 
         <div [ngbNavOutlet]="nav" class="mt-2"></div>
@@ -4118,15 +4496,7 @@
       <a ngbNavLink>Usuarios</a>
 
       <ng-template ngbNavContent>
-        <div>
-          <h2>Reportes de inscritos</h2>
-          <button class="btn" (click)="openModalReportes(reporteGeneral)">
-            <i class="fa fa-plus" aria-hidden="true"></i> Reporte General
-          </button>
-          <button class="btn" (click)="openModalReportes(reporteInscritos)">
-            <i class="fa fa-plus" aria-hidden="true"></i> Generar Reporte
-          </button>
-        </div>
+       
       </ng-template>
     </li>
   </ul>

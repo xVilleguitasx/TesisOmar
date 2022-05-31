@@ -11,7 +11,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
-  declarations: [ AdministracionComponent],
+  declarations: [ /* AdministracionComponent */],
   imports: [
     CommonModule,
     NgbNavModule,

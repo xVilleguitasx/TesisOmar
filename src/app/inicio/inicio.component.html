@@ -306,16 +306,16 @@
               *ngFor="let jornada of programaJornada"
             >
               <thead>
-                <tr class="row" style="font-weight: bold;text-align: center;">
-                  <td class="col"  >{{ jornada.nombre }}</td>
+                <tr class="row" style="font-weight: bold;text-align: center;" >
+                  <td class="col"  style="text-align: center; background-color:white; font-size: 20 px">{{ jornada.nombre }}</td>
                 </tr>
               </thead>
               <tbody>
                 <div *ngIf="jornada.id === 1">
-                  <tr class="row">
-                    <td  scope="col" *ngFor="let dias of DiasMatutina" class="col" style="text-align: center;">
+                  <tr class="row" style="border: 1px solid #7A1E19"> 
+                    <td  scope="col" *ngFor="let dias of DiasMatutina" class="col" style="text-align: center; background-color:white">
                       {{ dias.fecha }}
-                      <hr>
+                      <hr style="background-color:#7A1E19">
                       <div *ngFor="let detalle of programaDetalle">
                         <div *ngIf="dias.id === detalle.dia_per">
                           <label>
@@ -323,7 +323,7 @@
                             <br>
                             {{ detalle.actividad }}
                           </label>
-                          <hr>
+                          <hr style="background-color:#7A1E19"> 
                         </div>
                       </div>
                     </td>
@@ -331,16 +331,16 @@
                 </div>
 
                 <div *ngIf="jornada.id != 1">
-                  <tr class="row">
-                    <td *ngFor="let dias of DiasVespertina" class="col" style="text-align: center;">
+                  <tr class="row" style="border: 1px solid #7A1E19">
+                    <td *ngFor="let dias of DiasVespertina" class="col" style="text-align: center; background-color:white">
                       {{ dias.fecha }}
-                      <hr />
+                      <hr style="background-color:#7A1E19">
                       <div *ngFor="let detalle of programaDetalle">
                         <div *ngIf="dias.id === detalle.dia_per">
                           <label>
                             {{ detalle.actividad }}
                           </label>
-                          <hr />
+                          <hr style="background-color:#7A1E19">
                         </div>
                       </div>
                     </td>
