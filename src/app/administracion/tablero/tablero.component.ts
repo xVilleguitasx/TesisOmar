@@ -368,6 +368,21 @@ export class TableroComponent implements OnInit {
   DiasVespertina: ProgramaDias[] = [];
   programaDetalle: ProgramaDetalle[] = [];
   inicioSeleccionado: Inicio = undefined;
+  ////////////////////////////////
+  inicioGaleriaImagen:string = "";
+inicioGaleriaLink:string = "";
+/////////////
+texto_llamado_inicio = "";
+imagen_llamado_inicio = "";
+link_llamado_inicio = "";
+////////////
+cronogramaDetalleActividad:string = "";
+cronogramaDetalleHora:string = "";
+cronogramaDiaSeleccinado:ProgramaDias=undefined;
+cronogramaDetalleSeleccionado:ProgramaDetalle=undefined;
+//
+cronogramaJornadaSeleccinado:ProgramaJornada=undefined;
+cronogramaDiaFecha:string = "";
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -2837,19 +2852,23 @@ export class TableroComponent implements OnInit {
     this.imagenPrograma = "";
     this.programaPrograma = "";
     this.file = undefined;
+    this.file2 = undefined;
   }
   selectImgPrograma(event) {
     this.file = event.target.files[0];
     this.imagenPrograma = this.file.name;
   }
+  pdfPrograma:string = "";
+  selectPDFPrograma(event) {
+    this.file2 = event.target.files[0];
+    this.pdfPrograma = this.file2.name;
+  }
   guardarPrograma() {
-    if (this.descripcionPrograma != "" && this.programaPrograma != "") {
+    if (this.descripcionPrograma != "") {
       var data = new FormData();
       data.append("descripcion", this.descripcionPrograma);
-      data.append("boton", this.botonPrograma);
-      data.append("link", this.linkPrograma);
-      data.append("programa", this.programaPrograma);
-      this.file != undefined ? data.append("imagen", this.file) : "";
+      this.file!= undefined ? data.append("imagen", this.file) : "";
+      this.file2!= undefined ? data.append("triptico", this.file2) : "";
       if (this.programaSeleccionaado === undefined) {
         this._programaService.insertPrograma(data).subscribe((result) => {
           this.cerrarModal();
@@ -3293,9 +3312,7 @@ export class TableroComponent implements OnInit {
       }
     );
   }
-  texto_llamado_inicio = "";
-  imagen_llamado_inicio = "";
-  link_llamado_inicio = "";
+
   resetVariablesInicio() {
     this.texto_llamado_inicio = "";
     this.imagen_llamado_inicio = "";
@@ -3388,13 +3405,7 @@ export class TableroComponent implements OnInit {
       }
     );
   }
-  cronogramaDetalleActividad:string = "";
-  cronogramaDetalleHora:string = "";
-  cronogramaDiaSeleccinado:ProgramaDias=undefined;
-  cronogramaDetalleSeleccionado:ProgramaDetalle=undefined;
-  //
-  cronogramaJornadaSeleccinado:ProgramaJornada=undefined;
-  cronogramaDiaFecha:string = "";
+
   resetVariablesCronogramaDetalle(){
     this.cronogramaDetalleActividad = "";
   this.cronogramaDetalleHora = "";
@@ -3531,4 +3542,87 @@ export class TableroComponent implements OnInit {
       }
     });
   }
+
+inicioGaleriaSeleccionado:InicioGaleria=undefined;
+  selectImgInicioGaleria(event){
+    this.file = event.target.files[0];
+    this.inicioGaleriaImagen = this.file.name;
+  }
+  resertVariablesInicioGaleria(){
+    this.inicioGaleriaImagen = "";
+    this.inicioGaleriaLink = "";
+    this.file = undefined;
+    this.inicioGaleriaSeleccionado=undefined;  
+  }
+  openInicioGaleria(content, inicioGaleria:InicioGaleria ) {
+   
+    
+    if(inicioGaleria!= undefined){
+      this.inicioGaleriaSeleccionado=inicioGaleria; 
+      this.inicioGaleriaImagen=inicioGaleria.imagen;
+      this.inicioGaleriaLink=inicioGaleria.link;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+      this.resertVariablesInicioGaleria();
+      },
+      (reason) => {
+        this.resertVariablesInicioGaleria();
+      }
+    );
+  }
+  guardarInicioGaleria(){
+    if (this.inicioGaleriaImagen != ""  && this.file!= undefined) {
+      var data = new FormData();
+        data.append("imagen", this.file);
+        data.append("link", this.inicioGaleriaLink);
+      if (this.inicioGaleriaSeleccionado === undefined) {
+      
+        this._inicioGaleriaService
+          .insertInicioGaleria(data)
+          .subscribe((result) => {
+            this.getInicioGaleria();
+            this.cerrarModal();
+          });
+      } else {
+        
+        this._inicioGaleriaService
+          .editInicioGaleria(this.inicioGaleriaSeleccionado.id,data)
+          .subscribe((result) => {
+            this.getInicioGaleria();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarGaleriaInicio(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar imagen?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._inicioGaleriaService
+          .deleteInicioGaleria(id)
+          .subscribe((result) => {
+            this.getInicioGaleria();
+          });
+      } else {
+      }
+    });
+  }
+  
 }

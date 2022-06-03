@@ -38,7 +38,8 @@ import { ProgramaJornadaService } from "../services/programa-jornada.service";
 import { ProgramaService } from "../services/programa.service";
 import { TemarioTemasService } from "../services/temario-temas.service";
 import { TemarioService } from "../services/temario.service";
-
+import emailjs, { EmailJSResponseStatus } from "@emailjs/browser";
+import Swal from "sweetalert2";
 @Component({
   selector: "app-inicio",
   templateUrl: "./inicio.component.html",
@@ -54,22 +55,26 @@ export class InicioComponent implements OnInit {
   investigadores: Investigador[] = [];
   galeriaLugar: Galeria[] = [];
   galeriaInformacion: Galeria[] = [];
-  presentacion:Presentacion[] = [];
+  presentacion: Presentacion[] = [];
   lugarDelEvento: LugarDelEvento[] = [];
-  informacionTuristica:InformacionTuristica[] = [];
+  informacionTuristica: InformacionTuristica[] = [];
   programa: Programa[] = [];
-  envioTrabajos:EnvioTrabajos[] = [];
-  envioTrabajosFechas:EnvioTrabajosFechas[] = [];
+  envioTrabajos: EnvioTrabajos[] = [];
+  envioTrabajosFechas: EnvioTrabajosFechas[] = [];
   envioTrabajosFormatos: EnvioTrabajosFormato[] = [];
-  temarios:Temario[] = [];
-  temarioTemas:TemarioTemas[] = [];
-  inicio:Inicio[] = [];
-  inicioGaleria:InicioGaleria[] = [];
-  programaJornada:ProgramaJornada[] = [];
-  programaDias:ProgramaDias[] = [];
-  DiasMatutina:ProgramaDias[] = [];
-  DiasVespertina:ProgramaDias[] = [];
-  programaDetalle:ProgramaDetalle[] = [];
+  temarios: Temario[] = [];
+  temarioTemas: TemarioTemas[] = [];
+  inicio: Inicio[] = [];
+  inicioGaleria: InicioGaleria[] = [];
+  programaJornada: ProgramaJornada[] = [];
+  programaDias: ProgramaDias[] = [];
+  DiasMatutina: ProgramaDias[] = [];
+  DiasVespertina: ProgramaDias[] = [];
+  programaDetalle: ProgramaDetalle[] = [];
+  nombreContacto: string = "";
+  telefonoContacto: string = "";
+  correoContacto: string = "";
+  mensajeContacto: string = "";
   URL = "http://localhost:3000/";
   constructor(
     private _comiteService: ComiteService,
@@ -94,9 +99,8 @@ export class InicioComponent implements OnInit {
     config: NgbAccordionConfig
   ) {
     config.closeOthers = true;
-  config.type = 'info';
+    config.type = "info";
   }
-  
 
   ngOnInit(): void {
     this.getComite();
@@ -108,7 +112,7 @@ export class InicioComponent implements OnInit {
     this.getEnvioTrabajos();
     this.getEnvioTrabajosFechas();
     this.getEnvioTrabajosFormatos();
-    this.getTemarios(); 
+    this.getTemarios();
     this.getTemarioTemas();
     this.getInicio();
     this.getInicioGaleria();
@@ -119,81 +123,85 @@ export class InicioComponent implements OnInit {
   getProgramaDetalle() {
     this._programaDetalleService.getProgramaDetalle().subscribe((result) => {
       this.programaDetalle = result;
-     
-    })
+    });
   }
   getProgramaDias() {
-    this._programaDiasService.getProgramaDias().subscribe((result)=>{
-      this.programaDias= result;
-      result.forEach((dia)=>{
-        dia.jornada_per===1 ? this.DiasMatutina.push(dia) : this.DiasVespertina.push(dia);
-      })
-    })
-   
+    this._programaDiasService.getProgramaDias().subscribe((result) => {
+      this.programaDias = result;
+      result.forEach((dia) => {
+        dia.jornada_per === 1
+          ? this.DiasMatutina.push(dia)
+          : this.DiasVespertina.push(dia);
+      });
+    });
   }
   getProgramaJornada() {
-    this._programaJornadaService.getProgramaJornada().subscribe((result)=>{
-      this.programaJornada=result;
-      console.log("Detalle" , result);
-    })
+    this._programaJornadaService.getProgramaJornada().subscribe((result) => {
+      this.programaJornada = result;
+      console.log("Detalle", result);
+    });
   }
   getInicioGaleria() {
     this._inicioGaleriaService.getInicioGaleria().subscribe((result) => {
-      this.inicioGaleria=result;
-    })
+      this.inicioGaleria = result;
+    });
   }
   getInicio() {
-    this._inicioService.getInicio().subscribe((result)=>{
-      this.inicio=result;
+    this._inicioService.getInicio().subscribe((result) => {
+      this.inicio = result;
       console.log(result);
-    })
+    });
   }
   getTemarioTemas() {
-    this._temarioTemasServices.getTemarioTemas().subscribe((result)=>{
-      this.temarioTemas= result;
-    })
+    this._temarioTemasServices.getTemarioTemas().subscribe((result) => {
+      this.temarioTemas = result;
+    });
   }
   getTemarios() {
-    this._temarioService.getTemarios().subscribe((result)=>{
-      this.temarios= result;
-    })
+    this._temarioService.getTemarios().subscribe((result) => {
+      this.temarios = result;
+    });
   }
   getEnvioTrabajosFormatos() {
-    this._envioTrabajosFormatosService.getEnvioTrabajoFormatos().subscribe((result)=>{
-      this.envioTrabajosFormatos= result;
-    })
+    this._envioTrabajosFormatosService
+      .getEnvioTrabajoFormatos()
+      .subscribe((result) => {
+        this.envioTrabajosFormatos = result;
+      });
   }
   getEnvioTrabajosFechas() {
-    this._envioTrabajosFechasService.getEnvioTrabajoFechas().subscribe((result) => {
-      this.envioTrabajosFechas= result;
-    })
+    this._envioTrabajosFechasService
+      .getEnvioTrabajoFechas()
+      .subscribe((result) => {
+        this.envioTrabajosFechas = result;
+      });
   }
   getEnvioTrabajos() {
-   this._envioTrabajosService.getEnvioTrabajos().subscribe((result)=>{
-     this.envioTrabajos= result;
-   })
+    this._envioTrabajosService.getEnvioTrabajos().subscribe((result) => {
+      this.envioTrabajos = result;
+    });
   }
   getPrograma() {
-   this._programaService.getProgramas().subscribe((result)=>{
-
-    this.programa= result;
-   })
+    this._programaService.getProgramas().subscribe((result) => {
+      this.programa = result;
+    });
   }
   getInformacionTuristica() {
-  this._informacionTuristicaService.getInformacionTuristicas().subscribe((result) => {
-this.informacionTuristica=result;
-  })
+    this._informacionTuristicaService
+      .getInformacionTuristicas()
+      .subscribe((result) => {
+        this.informacionTuristica = result;
+      });
   }
   getSobreElEvento() {
-
     //Presentacion
-this._presentacionService.getPresentaciones().subscribe((result) => {
-  this.presentacion = result;
-})
-//Lugar del Luga del evento 
-this._lugarDelEventoService.getLugarDelEvento().subscribe((result) => {
-  this.lugarDelEvento=result;
-})
+    this._presentacionService.getPresentaciones().subscribe((result) => {
+      this.presentacion = result;
+    });
+    //Lugar del Luga del evento
+    this._lugarDelEventoService.getLugarDelEvento().subscribe((result) => {
+      this.lugarDelEvento = result;
+    });
     //Galeria del lugar
     this._galeriaLugarService.getGaleria().subscribe((result) => {
       this.galeriaLugar = result;
@@ -202,7 +210,6 @@ this._lugarDelEventoService.getLugarDelEvento().subscribe((result) => {
     this._galeriaInformacionService.getGaleria().subscribe((result) => {
       this.galeriaInformacion = result;
     });
-    
   }
 
   getComite() {
@@ -226,13 +233,49 @@ this._lugarDelEventoService.getLugarDelEvento().subscribe((result) => {
     });
   }
   abrirPDF(URL) {
-    if (URL != null  && URL!= '') {
+    if (URL != null && URL != "") {
       window.open(this.URL + URL, "_blank");
     }
   }
-  abrirEnlace(URL){
-    if (URL != null  && URL!= '') {
+  abrirEnlace(URL) {
+    if (URL != null && URL != "") {
       window.open(URL, "_blank");
     }
+  }
+  public sendEmail(e: Event) {
+    e.preventDefault();
+    emailjs
+      .sendForm(
+        "service_61nw55v",
+        "template_2psxoxg",
+        e.target as HTMLFormElement,
+        "eRmeO7EXOVVDcz4cY"
+      )
+      .then(
+        (result: EmailJSResponseStatus) => {
+          console.log(result.text);
+          this.resetContacto();
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  }
+  resetContacto() {
+    this.nombreContacto = "";
+    this.telefonoContacto = "";
+    this.correoContacto = "";
+    this.mensajeContacto = "";
+    this.confirmacionEmail();
+  }
+  confirmacionEmail() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Correo enviado',
+      text:'Pronto nos pondremos en contacto contigo',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
 }

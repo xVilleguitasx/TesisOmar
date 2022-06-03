@@ -3144,7 +3144,7 @@
                       {{ item.descripcion }}
                       <br />
                       {{ item.programa }}
-                      <br />
+                      <br />                      
                       <button
                         class="btn"
                         (click)="openPrograma(programaModal, item)"
@@ -3197,34 +3197,6 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Boton</label>
-                        <input
-                          type="text"
-                          class="form-control mt-2"
-                          [(ngModel)]="botonPrograma"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Link</label>
-                        <input
-                          type="text"
-                          class="form-control mt-2"
-                          [(ngModel)]="linkPrograma"
-                          [ngModelOptions]="{ standalone: true }"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
                         <label>Imagen</label>
                         <br />
                         <div class="file-select" id="src-file1">
@@ -3232,7 +3204,7 @@
                             type="file"
                             name="src-file1"
                             aria-label="Archivo"
-                            (change)="selectImgLugarDelEvento($event)"
+                            (change)="selectImgPrograma($event)"
                             accept="image/*"
                           />
                         </div>
@@ -3241,18 +3213,24 @@
                       </div>
                     </div>
                   </div>
+                  
                   <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Programa</label>
-                        <textarea
-                          id=""
-                          cols="60"
-                          rows="15"
-                          [(ngModel)]="programaPrograma"
-                          [ngModelOptions]="{ standalone: true }"
-                        ></textarea>
+                        <label>Pdf</label>
+                        <br />
+                        <div class="file-select" id="src-file1">
+                          <input
+                            type="file"
+                            name="src-file1"
+                            aria-label="Archivo"
+                            (change)="selectPDFPrograma($event)"
+                            accept="application/pdf"
+                          />
+                        </div>
+                        <br />
+                        {{ pdfPrograma }}
                       </div>
                     </div>
                   </div>
@@ -4001,6 +3979,12 @@
           <li [ngbNavItem]="24">
             <a ngbNavLink>Galeria Inicio</a>
             <ng-template ngbNavContent>
+              <button
+              class="btn"
+              (click)="openInicioGaleria(inicioGaleriaModal)"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i> Agregar Galeria
+            </button>
               <ul class="list-group">
                 <li class="list-group-item" *ngFor="let item of inicioGaleria">
                   <div class="row">
@@ -4013,7 +3997,7 @@
                       <br />
                       <button
                         class="btn"
-                        (click)="openLugarDelEvento(LugarDelEventoModal, item)"
+                        (click)="openInicioGaleria(inicioGaleriaModal,item)"
                       >
                         Editar
                       </button>
@@ -4021,7 +4005,7 @@
                       style="background: #b41e26"
                       type="button"
                       class="btn btn-outline-dark"
-                    
+                    (click)="eliminarGaleriaInicio(item.id)"
                     >
                       Eliminar
                     </button>
@@ -4029,7 +4013,7 @@
                   </div>
                 </li>
               </ul>
-              <ng-template #LugarDelEventoModal let-modal>
+              <ng-template #inicioGaleriaModal let-modal>
                 <div class="modal-header">
                   <div style="text-align: center !important; width: 100%">
                     <h4
@@ -4046,15 +4030,9 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Texto 1</label>
-
-                        <textarea
-                          id=""
-                          cols="60"
-                          rows="15"
-                          [(ngModel)]="texto1LugarEvento"
-                          [ngModelOptions]="{ standalone: true }"
-                        ></textarea>
+                        <label>Link</label>
+                        <input  class="form-control " [(ngModel)]="inicioGaleriaLink"  />
+                        
                       </div>
                     </div>
                   </div>
@@ -4070,30 +4048,16 @@
                             type="file"
                             name="src-file1"
                             aria-label="Archivo"
-                            (change)="selectImgLugarDelEvento($event)"
+                            (change)="selectImgInicioGaleria($event)"
                             accept="image/*"
                           />
                         </div>
                         <br />
-                        {{ imagenLugarEvento }}
+                        {{ inicioGaleriaImagen }}
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Texto 2</label>
-                        <textarea
-                          id=""
-                          cols="60"
-                          rows="15"
-                          [(ngModel)]="texto2LugarEvento"
-                          [ngModelOptions]="{ standalone: true }"
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
+                 
                   <div style="text-align: center">
                     <ngb-toast
                       style="margin: 0 auto"
@@ -4117,7 +4081,7 @@
                     style="background: #b41e26"
                     type="button"
                     class="btn btn-outline-dark"
-                    (click)="guardarLugarDelEvento()"
+                    (click)="guardarInicioGaleria()"
                   >
                     Guardar Cambios
                   </button>
@@ -4299,7 +4263,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Jornada</label>
-                        <input type="search" class="form-control "  />
+                        <input  class="form-control "  />
                       </div>
                     </div>
                   </div>

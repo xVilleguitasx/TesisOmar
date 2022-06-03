@@ -295,10 +295,9 @@
             <div class="row">
               <div class="col-md-3"></div>
               <div class="col-md-6 mx-auto my-5">
-                <img class="img-fluid z-depth-1" [src]="URL + item.imagen" />
+                <img (click)="abrirPDF(item.triptico)" class="img-fluid z-depth-1" [src]="URL + item.imagen" />
               </div>
               <div class="col-md-3"></div>
-              <p>{{ item.programa }}</p>
             </div>
          
             <div class="scrollme">
@@ -489,23 +488,24 @@
             </section>
           </section>
 
-          <form action="" class="form_contact">
+          <form action="" class="form_contact"  (submit)="sendEmail($event)">
             <h2>Envia un mensaje</h2>
             <div class="user_info">
               <label for="names">Nombres *</label>
-              <input type="text" id="names" />
+              <input type="text" id="names" name="nombre" [(ngModel)]="nombreContacto" />
 
               <label for="phone">Telefono / Celular</label>
-              <input type="text" id="phone" />
+              <input type="text" id="phone" name="numero"  [(ngModel)]="telefonoContacto" />
 
               <label for="phone">Dirección de correo electrónico</label>
-              <input type="text" id="phone" />
+              <input type="text" id="phone" name="correo" [(ngModel)]="correoContacto" />
 
               <label for="mensaje">Mensaje *</label>
-              <textarea id="mensaje"></textarea>
+              <textarea id="mensaje" name="mensaje"  [(ngModel)]="mensajeContacto" ></textarea>
               <button
                 class="btn"
                 style="background-color: #7a1e19; font-size: 18px"
+                type="submit" value="Send"
               >
                 Enviar
               </button>

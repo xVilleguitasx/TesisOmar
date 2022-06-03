@@ -19,7 +19,7 @@ export class InicioGaleriaService {
   insertInicioGaleria(inicioGaleria:any): any{
     return this.http.post<InicioGaleria>(`${this.api}/inicioGaleria`,inicioGaleria);
   }
-  editInicioGaleria(id: string, inicioGaleria: any): any {
+  editInicioGaleria(id: any, inicioGaleria: any): any {
     return this.http.put(`${environment.api}/inicioGaleria/${id}`,inicioGaleria);
   }
   deleteInicioGaleria(id: string) {

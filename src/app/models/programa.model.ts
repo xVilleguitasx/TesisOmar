@@ -5,4 +5,5 @@ export interface Programa {
   link: string;
   imagen: string;
   programa: string;
+  pdf:string;
 }
