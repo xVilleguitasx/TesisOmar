@@ -428,6 +428,8 @@ export class TableroComponent implements OnInit {
     });
   }
   getProgramaDias() {
+    this.DiasMatutina=[];
+    this.DiasVespertina=[];
     this._programaDiasService.getProgramaDias().subscribe((result) => {
       this.programaDias = result;
       result.forEach((dia) => {
@@ -3352,6 +3354,178 @@ export class TableroComponent implements OnInit {
           .deleteInicio(id)
           .subscribe((result) => {
             this.getInicio();
+          });
+      } else {
+      }
+    });
+  }
+  openCronogramaJornada(content, inicio: Inicio) {
+
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+       
+      },
+      (reason) => {
+       
+      }
+    );
+  }
+  openCronogramaDias(content,cronogramaJornada:ProgramaJornada, cronogramaDia?:ProgramaDias) {
+    this.cronogramaJornadaSeleccinado=cronogramaJornada;
+    if(cronogramaDia != undefined){
+      this.cronogramaDiaSeleccinado= cronogramaDia;
+      this.cronogramaDiaFecha= cronogramaDia.fecha;
+    }
+
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+      this.resetVariablesCronogramaDia();
+      },
+      (reason) => {
+        this.resetVariablesCronogramaDia();
+      }
+    );
+  }
+  cronogramaDetalleActividad:string = "";
+  cronogramaDetalleHora:string = "";
+  cronogramaDiaSeleccinado:ProgramaDias=undefined;
+  cronogramaDetalleSeleccionado:ProgramaDetalle=undefined;
+  //
+  cronogramaJornadaSeleccinado:ProgramaJornada=undefined;
+  cronogramaDiaFecha:string = "";
+  resetVariablesCronogramaDetalle(){
+    this.cronogramaDetalleActividad = "";
+  this.cronogramaDetalleHora = "";
+  this.cronogramaDiaSeleccinado=undefined;
+  this.cronogramaDetalleSeleccionado=undefined;
+  }
+  resetVariablesCronogramaDia(){
+  this.cronogramaDiaFecha = "";
+  this.cronogramaDiaSeleccinado=undefined;
+  this.cronogramaJornadaSeleccinado=undefined;
+  }
+  openCronogramaDetalle(content, cronogramaDiaSeleccinado: ProgramaDias,cronogramaDetalleSeleccionado?:ProgramaDetalle ) {
+    this.cronogramaDiaSeleccinado=cronogramaDiaSeleccinado;
+    
+    if(cronogramaDetalleSeleccionado!= undefined){
+      this.cronogramaDetalleSeleccionado=cronogramaDetalleSeleccionado;
+      this.cronogramaDetalleActividad=cronogramaDetalleSeleccionado.actividad;
+      this.cronogramaDetalleHora=cronogramaDetalleSeleccionado.hora;
+    }
+    this.modalRef = this._modalService.open(content, { size: "lg" });
+    this.modalRef.result.then(
+      (result) => {
+      this.resetVariablesCronogramaDetalle();
+      },
+      (reason) => {
+        this.resetVariablesCronogramaDetalle();
+      }
+    );
+  }
+  guardarCronogramaDetalle(){
+    if (this.cronogramaDetalleActividad != ""  && this.cronogramaDetalleHora!='') {
+    const enviar = {
+      hora:this.cronogramaDetalleHora,
+      actividad:this.cronogramaDetalleActividad,
+      dia_per:this.cronogramaDiaSeleccinado.id
+    }
+      if (this.cronogramaDetalleSeleccionado === undefined) {
+        this._programaDetalleService
+          .insertProgramaDetalle(enviar)
+          .subscribe((result) => {
+            this.getProgramaDetalle();
+            this.cerrarModal();
+          });
+      } else {
+        this._programaDetalleService
+          .editProgramaDetalle(this.cronogramaDetalleSeleccionado.id,enviar)
+          .subscribe((result) => {
+            this.getProgramaDetalle();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarCronogramaDetalle(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar detalle de cronograma?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._programaDetalleService
+          .deleteProgramaDetalle(id)
+          .subscribe((result) => {
+            this.getProgramaDetalle();
+          });
+      } else {
+      }
+    });
+  }
+  guardarCronogramaDia(){
+    if (this.cronogramaDiaFecha != ""  ) {
+    
+      if (this.cronogramaDiaSeleccinado === undefined) {
+        const enviar = {
+          fecha:this.cronogramaDiaFecha,
+          jornada_per:this.cronogramaJornadaSeleccinado.id
+        }
+        this._programaDiasService
+          .insertProgramaDias(enviar)
+          .subscribe((result) => {
+            this.getProgramaDias();
+            this.cerrarModal();
+          });
+      } else {
+        const enviar = {
+          fecha:this.cronogramaDiaFecha
+        }
+        this._programaDiasService
+          .editProgramaDias(this.cronogramaDiaSeleccinado.id,enviar)
+          .subscribe((result) => {
+            this.getProgramaDias();
+            this.cerrarModal();
+          });
+      }
+    } else {
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    }
+  }
+  eliminarCronogramaDia(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar el día de cronograma?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._programaDiasService
+          .deleteProgramaDias(id)
+          .subscribe((result) => {
+            this.getProgramaDias();
           });
       } else {
       }

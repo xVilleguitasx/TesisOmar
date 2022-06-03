@@ -19,7 +19,7 @@ export class ProgramaDetalleService {
   insertProgramaDetalle(programaDetalle:any): any{
     return this.http.post<ProgramaDetalle>(`${this.api}/programaDetalle`,programaDetalle);
   }
-  editProgramaDetalle(id: string, programaDetalle: any): any {
+  editProgramaDetalle(id: any, programaDetalle: any): any {
     return this.http.put(`${environment.api}/programaDetalle/${id}`,programaDetalle);
   }
   deleteProgramaDetalle(id: string) {

@@ -19,7 +19,7 @@ export class ProgramaDiasService {
   insertProgramaDias(ProgramaDias:any): any{
     return this.http.post<ProgramaDias>(`${this.api}/ProgramaDias`,ProgramaDias);
   }
-  editProgramaDias(id: string, ProgramaDias: any): any {
+  editProgramaDias(id: any, ProgramaDias: any): any {
     return this.http.put(`${environment.api}/ProgramaDias/${id}`,ProgramaDias);
   }
   deleteProgramaDias(id: string) {

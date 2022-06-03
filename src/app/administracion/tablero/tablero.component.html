@@ -2,22 +2,29 @@
 <div style="padding-left: 20px; padding-right: 20px; width: 100%; height: 100%">
   <hr />
 
-  <div style="margin-top: 5px; margin-left: 10px;"  style="background-color: #802417; color: #fff">
-    <div class="row">
-      <div class="col-md-10" >
-        <label> {{informacionCongreso[0].fecha}}</label>
-        <br>
-        <label style="font-weight: bold; font-size:1.5rem"> {{informacionCongreso[0].nombre}}</label>
-        <br>
-        <label> {{informacionCongreso[0].titulo}}</label>
+  <div
+    style="margin-top: 5px; margin-left: 10px"
+    style="background-color: #802417; color: #fff"
+  >
+    <div class="row" *ngIf="informacionCongreso.length!=0">
+      <div class="col-md-10">
+        <label> {{ informacionCongreso[0].fecha }}</label>
+        <br />
+        <label style="font-weight: bold; font-size: 1.5rem">
+          {{ informacionCongreso[0].nombre }}</label
+        >
+        <br />
+        <label> {{ informacionCongreso[0].titulo }}</label>
       </div>
       <div class="col-md-2" style="text-align: right">
-          <img [src]='URL+informacionCongreso[0].logo'  class="img-fluid" style="cursor:pointer" style="max-width: 100px; max-height: 100px; margin-right:25px">
-  
+        <img
+          [src]="URL + informacionCongreso[0].logo"
+          class="img-fluid"
+          style="cursor: pointer"
+          style="max-width: 100px; max-height: 100px; margin-right: 25px"
+        />
       </div>
     </div>
-   
-  
   </div>
   <hr />
   <button (click)="onLogOut()" class="btn btn-danger">Salir</button>
@@ -3138,7 +3145,12 @@
                       <br />
                       {{ item.programa }}
                       <br />
-                      <button class="btn"  (click)="openPrograma(programaModal,item)">Editar</button>
+                      <button
+                        class="btn"
+                        (click)="openPrograma(programaModal, item)"
+                      >
+                        Editar
+                      </button>
                       <button
                         style="background: #b41e26"
                         type="button"
@@ -3299,7 +3311,12 @@
                       <br />
                       {{ item.link }}
                       <br />
-                      <button class="btn"    (click)="openEnvioTrabajos(envioTrabajosModal,item)">Editar</button>
+                      <button
+                        class="btn"
+                        (click)="openEnvioTrabajos(envioTrabajosModal, item)"
+                      >
+                        Editar
+                      </button>
                       <button
                         style="background: #b41e26"
                         type="button"
@@ -3408,7 +3425,6 @@
               <button
                 class="btn"
                 (click)="openEnvioTrabajosFormatos(envioTrabajosFormatosModal)"
-               
               >
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Formato
               </button>
@@ -3427,7 +3443,17 @@
                       <br />
                       {{ item.link }}
                       <br />
-                      <button class="btn"  (click)="openEnvioTrabajosFormatos(envioTrabajosFormatosModal,item)">Editar</button>
+                      <button
+                        class="btn"
+                        (click)="
+                          openEnvioTrabajosFormatos(
+                            envioTrabajosFormatosModal,
+                            item
+                          )
+                        "
+                      >
+                        Editar
+                      </button>
                       <button
                         style="background: #b41e26"
                         type="button"
@@ -3535,7 +3561,6 @@
               <button
                 class="btn"
                 (click)="openEnvioTrabajosFechas(envioTrabajosFechasModal)"
-              
               >
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Formato
               </button>
@@ -3550,7 +3575,17 @@
                       <br />
                       Actividad: {{ item.actividad }}
                       <br />
-                      <button class="btn"  (click)="openEnvioTrabajosFechas(envioTrabajosFechasModal,item)">Editar</button>
+                      <button
+                        class="btn"
+                        (click)="
+                          openEnvioTrabajosFechas(
+                            envioTrabajosFechasModal,
+                            item
+                          )
+                        "
+                      >
+                        Editar
+                      </button>
                       <button
                         style="background: #b41e26"
                         type="button"
@@ -3604,7 +3639,7 @@
                       </div>
                     </div>
                   </div>
-                
+
                   <div style="text-align: center">
                     <ngb-toast
                       style="margin: 0 auto"
@@ -3639,60 +3674,73 @@
           <li [ngbNavItem]="22">
             <a ngbNavLink>Temario</a>
             <ng-template ngbNavContent>
-              <button
-              class="btn"
-              (click)="openTemario(temarioModal)"
-            >
-              <i class="fa fa-plus" aria-hidden="true"></i> Agregar Título
-            </button>
+              <button class="btn" (click)="openTemario(temarioModal)">
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Título
+              </button>
               <li class="list-group-item" *ngFor="let item of temarios">
                 <div class="row">
                   <div class="col-10">
-                  <label style="font-weight: bold">Título: </label>   {{ item.titulo }}
-<br>
+                    <label style="font-weight: bold">Título: </label>
+                    {{ item.titulo }}
+                    <br />
 
-                  
-                    <button class="btn"
-                    (click)="openTemario(temarioModal,item)"
-                    >Editar</button>
+                    <button
+                      class="btn"
+                      (click)="openTemario(temarioModal, item)"
+                    >
+                      Editar
+                    </button>
                     <button
                       style="background: #b41e26"
                       type="button"
                       class="btn btn-outline-dark"
-                     (click)="eliminarTemario(item.id)"
+                      (click)="eliminarTemario(item.id)"
                     >
                       Eliminar
                     </button>
-                    <hr>
+                    <hr />
                   </div>
                 </div>
                 <div class="row">
                   <button
-                  class="btn"
-                  (click)="openTemarioTema(temarioTemaModal,item.id)"
-                >
-                  <i class="fa fa-plus" aria-hidden="true"></i> Agregar Tema
-                </button>
-                <br>
-                  <div class="col-md-12" *ngFor="let temarioTema of temarioTemas">
-                   <label *ngIf="temarioTema.id_tema_per===item.id"> <label style="font-weight: bold;">Tema: </label> {{temarioTema.tema}}
-<br>
+                    class="btn"
+                    (click)="openTemarioTema(temarioTemaModal, item.id)"
+                  >
+                    <i class="fa fa-plus" aria-hidden="true"></i> Agregar Tema
+                  </button>
+                  <br />
+                  <div
+                    class="col-md-12"
+                    *ngFor="let temarioTema of temarioTemas"
+                  >
+                    <label *ngIf="temarioTema.id_tema_per === item.id">
+                      <label style="font-weight: bold">Tema: </label>
+                      {{ temarioTema.tema }}
+                      <br />
 
-                    <button class="btn"
-                    (click)="openTemarioTema(temarioTemaModal,item.id,temarioTema)">Editar</button>
-                    <button
-                      style="background: #b41e26"
-                      type="button"
-                      class="btn btn-outline-dark"
-                      (click)="eliminarTemarioTema(temarioTema.id)"
-                    >
-                      Eliminar
-                    </button>
-                    <hr>
-                   </label> 
-                  
+                      <button
+                        class="btn"
+                        (click)="
+                          openTemarioTema(
+                            temarioTemaModal,
+                            item.id,
+                            temarioTema
+                          )
+                        "
+                      >
+                        Editar
+                      </button>
+                      <button
+                        style="background: #b41e26"
+                        type="button"
+                        class="btn btn-outline-dark"
+                        (click)="eliminarTemarioTema(temarioTema.id)"
+                      >
+                        Eliminar
+                      </button>
+                      <hr />
+                    </label>
                   </div>
-                  
                 </div>
               </li>
               <ng-template #temarioModal let-modal>
@@ -3708,7 +3756,6 @@
                   </div>
                 </div>
                 <div class="modal-body" style="text-align: center">
-                 
                   <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
@@ -3723,7 +3770,7 @@
                       </div>
                     </div>
                   </div>
-                
+
                   <div style="text-align: center">
                     <ngb-toast
                       style="margin: 0 auto"
@@ -3766,7 +3813,6 @@
                   </div>
                 </div>
                 <div class="modal-body" style="text-align: center">
-                 
                   <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
@@ -3781,7 +3827,7 @@
                       </div>
                     </div>
                   </div>
-                
+
                   <div style="text-align: center">
                     <ngb-toast
                       style="margin: 0 auto"
@@ -3817,17 +3863,20 @@
             <a ngbNavLink>Inicio</a>
             <ng-template ngbNavContent>
               <button
-              class="btn"
-              (click)="openInicio(inicioModal)"
-              *ngIf="inicio.length===0"
-            >
-              <i class="fa fa-plus" aria-hidden="true"></i> Agregar Inicio
-            </button>
+                class="btn"
+                (click)="openInicio(inicioModal)"
+                *ngIf="inicio.length === 0"
+              >
+                <i class="fa fa-plus" aria-hidden="true"></i> Agregar Inicio
+              </button>
               <ul class="list-group">
                 <li class="list-group-item" *ngFor="let item of inicio">
                   <div class="row">
                     <div class="col-1" style="text-align: center">
-                      <img [src]="URL + item.imagen_llamado" class="patrocinador-img" />
+                      <img
+                        [src]="URL + item.imagen_llamado"
+                        class="patrocinador-img"
+                      />
                     </div>
                     <div class="col-11">
                       {{ item.texto_llamado }}
@@ -3837,19 +3886,19 @@
                       <br />
                       <button
                         class="btn"
-                        (click)="openInicio(inicioModal,item)"
+                        (click)="openInicio(inicioModal, item)"
                       >
                         Editar
                       </button>
                       <button
-                      *ngIf="inicio.length===1"
-                      style="background: #802417; margin-right: 15px"
-                      type="button"
-                      class="btn btn-outline-dark btn-eliminar"
-                      (click)="eliminarInicio(item.id)"
-                    >
-                      Eliminar
-                    </button>
+                        *ngIf="inicio.length === 1"
+                        style="background: #802417; margin-right: 15px"
+                        type="button"
+                        class="btn btn-outline-dark btn-eliminar"
+                        (click)="eliminarInicio(item.id)"
+                      >
+                        Eliminar
+                      </button>
                     </div>
                   </div>
                 </li>
@@ -3953,16 +4002,14 @@
             <a ngbNavLink>Galeria Inicio</a>
             <ng-template ngbNavContent>
               <ul class="list-group">
-                <li class="list-group-item" *ngFor="let item of lugarDelEvento">
+                <li class="list-group-item" *ngFor="let item of inicioGaleria">
                   <div class="row">
                     <div class="col-1" style="text-align: center">
                       <img [src]="URL + item.imagen" class="patrocinador-img" />
                     </div>
                     <div class="col-11">
-                      {{ item.texto_1 }}
+                      {{ item.link }}
                       <br />
-                      <br />
-                      {{ item.texto_2 }}
                       <br />
                       <button
                         class="btn"
@@ -3970,6 +4017,14 @@
                       >
                         Editar
                       </button>
+                      <button
+                      style="background: #b41e26"
+                      type="button"
+                      class="btn btn-outline-dark"
+                    
+                    >
+                      Eliminar
+                    </button>
                     </div>
                   </div>
                 </li>
@@ -4073,29 +4128,160 @@
           <li [ngbNavItem]="25">
             <a ngbNavLink>Cronograma</a>
             <ng-template ngbNavContent>
-              <ul class="list-group">
-                <li class="list-group-item" *ngFor="let item of lugarDelEvento">
-                  <div class="row">
-                    <div class="col-1" style="text-align: center">
-                      <img [src]="URL + item.imagen" class="patrocinador-img" />
-                    </div>
-                    <div class="col-11">
-                      {{ item.texto_1 }}
-                      <br />
-                      <br />
-                      {{ item.texto_2 }}
-                      <br />
-                      <button
-                        class="btn"
-                        (click)="openLugarDelEvento(LugarDelEventoModal, item)"
+              <div class="scrollme">
+                <table
+                  class="table table-striped mt-3 expand"
+                  style="width: 100%"
+                  *ngFor="let jornada of programaJornada"
+                >
+                  <thead>
+                    <tr
+                      class="row"
+                      style="font-weight: bold; text-align: center"
+                    >
+                      <td
+                        class="col"
+                        style="
+                          text-align: center;
+                          background-color: white;
+                          font-size: 20 px;
+                        "
                       >
-                        Editar
-                      </button>
+                        {{ jornada.nombre }}
+                        <br>
+                      <!--   <button class="btn"
+                        (click)="openCronogramaJornada(cronogramaJornadaModal)">
+                             
+                          Editar 
+                        </button>
+                        <button class="btn"  style="background-color: #7a1e19" >
+                              
+                          Eliminar 
+                        </button> -->
+                      </td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <div *ngIf="jornada.id === 1">
+                      <tr class="row" style="border: 1px solid #7a1e19">
+                        <td
+                          scope="col"
+                          *ngFor="let dias of DiasMatutina"
+                          class="col"
+                          style="text-align: center; background-color: white"
+                        >
+                          {{ dias.fecha }}
+                          <br>
+                          <button class="btn"
+                          (click)="openCronogramaDias(cronogramaDiaModal,jornada,dias)">
+                             
+                            Editar 
+                          </button>
+                          <button class="btn"  style="background-color: #7a1e19"
+                          (click)="eliminarCronogramaDia(dias.id)" >
+                              
+                            Eliminar 
+                          </button> 
+                          <hr style="background-color: #7a1e19" />
+                          <div *ngFor="let detalle of programaDetalle">
+                            <div *ngIf="dias.id === detalle.dia_per">
+                              <label>
+                                {{ detalle.hora }}
+                                <br />
+                                {{ detalle.actividad }}
+                              </label>
+                              <br>
+                              <button class="btn"
+                              (click)="openCronogramaDetalle(cronogramaDetalleModal,dias,detalle)">
+                                Editar 
+                              </button>
+                              <button class="btn"  style="background-color: #7a1e19"
+                              (click)="eliminarCronogramaDetalle(detalle.id)" >
+                              
+                                Eliminar 
+                              </button>
+                              <hr style="background-color: #7a1e19" />
+                             
+                            </div>
+                           
+                          </div>
+                          <button class="btn"
+                          (click)="openCronogramaDias(cronogramaDiaModal)">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Agregar Detalle
+                          </button>
+                        </td>
+                        <td    style="text-align: center; background-color: white">
+                          <button class="btn"
+                          (click)="openCronogramaDias(cronogramaDiaModal,jornada)">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Agregar Día
+                          </button>
+                        </td>
+                      </tr>
+                     
                     </div>
-                  </div>
-                </li>
-              </ul>
-              <ng-template #LugarDelEventoModal let-modal>
+
+                    <div *ngIf="jornada.id != 1">
+                      <tr class="row" style="border: 1px solid #7a1e19">
+                        <td
+                          *ngFor="let dias of DiasVespertina"
+                          class="col"
+                          style="text-align: center; background-color: white"
+                        >
+                          {{ dias.fecha }}
+                          <br>
+                          <button class="btn"
+                          (click)="openCronogramaDias(cronogramaDiaModal,jornada,dias)">
+                             
+                            Editar 
+                          </button>
+                          <button class="btn"  style="background-color: #7a1e19"
+                          (click)="eliminarCronogramaDia(dias.id)" >
+                              
+                            Eliminar 
+                          </button> 
+                          <hr style="background-color: #7a1e19" />
+                          <div *ngFor="let detalle of programaDetalle">
+                            <div *ngIf="dias.id === detalle.dia_per">
+                              <label>
+                                {{ detalle.hora }}
+                                <br />
+                                {{ detalle.actividad }}
+                              </label>
+                              <br>
+                              <button class="btn"
+                              (click)="openCronogramaDetalle(cronogramaDetalleModal,dias,detalle)">
+                                Editar 
+                              </button>
+                              <button class="btn"  style="background-color: #7a1e19"
+                              (click)="eliminarCronogramaDetalle(detalle.id)" >
+                              
+                                Eliminar 
+                              </button>
+                              <hr style="background-color: #7a1e19" />
+                            </div>
+                          
+                          </div>
+                          <button class="btn"
+                          (click)="openCronogramaDetalle(cronogramaDetalleModal,dias)">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Agregar Detalle
+                          </button>
+                        </td>
+                        <td    style="text-align: center; background-color: white">
+                          <button class="btn"
+                          (click)="openCronogramaDias(cronogramaDiaModal,jornada)">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Agregar Día
+                          </button>
+                        </td>
+                      </tr>
+                    </div>
+                  </tbody>
+                </table>
+              </div>
+              <ng-template #cronogramaJornadaModal let-modal>
                 <div class="modal-header">
                   <div style="text-align: center !important; width: 100%">
                     <h4
@@ -4103,7 +4289,7 @@
                       id="modal-basic-title"
                       style="font-weight: bold"
                     >
-                      Lugar del evento
+                      Cronograma Jornada
                     </h4>
                   </div>
                 </div>
@@ -4112,36 +4298,112 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Texto 1</label>
-
-                        <textarea
-                          id=""
-                          cols="60"
-                          rows="15"
-                          [(ngModel)]="texto1LugarEvento"
-                          [ngModelOptions]="{ standalone: true }"
-                        ></textarea>
+                        <label>Jornada</label>
+                        <input type="search" class="form-control "  />
                       </div>
                     </div>
                   </div>
 
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarInicio()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+              <ng-template #cronogramaDiaModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Cronograma Día
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
                   <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Imagen</label>
-                        <br />
-                        <div class="file-select" id="src-file1">
-                          <input
-                            type="file"
-                            name="src-file1"
-                            aria-label="Archivo"
-                            (change)="selectImgLugarDelEvento($event)"
-                            accept="image/*"
-                          />
-                        </div>
-                        <br />
-                        {{ imagenLugarEvento }}
+                        <label>Fecha</label>
+                        <input class="form-control " [(ngModel)]="cronogramaDiaFecha" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="text-align: center">
+                    <ngb-toast
+                      style="margin: 0 auto"
+                      class="toast"
+                      *ngIf="error"
+                      [autohide]="false"
+                      (hidden)="show = false"
+                    >
+                      Completar todos los datos
+                    </ngb-toast>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="cerrarModal()"
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    style="background: #b41e26"
+                    type="button"
+                    class="btn btn-outline-dark"
+                    (click)="guardarCronogramaDia()"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </ng-template>
+              <ng-template #cronogramaDetalleModal let-modal>
+                <div class="modal-header">
+                  <div style="text-align: center !important; width: 100%">
+                    <h4
+                      class="modal-title"
+                      id="modal-basic-title"
+                      style="font-weight: bold"
+                    >
+                      Cronograma Detalle
+                    </h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                  <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Actividad</label>
+                        <input  class="form-control "  [(ngModel)]="cronogramaDetalleActividad"  />
                       </div>
                     </div>
                   </div>
@@ -4149,14 +4411,8 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Texto 2</label>
-                        <textarea
-                          id=""
-                          cols="60"
-                          rows="15"
-                          [(ngModel)]="texto2LugarEvento"
-                          [ngModelOptions]="{ standalone: true }"
-                        ></textarea>
+                        <label>Hora</label>
+                        <input  class="form-control " [(ngModel)]="cronogramaDetalleHora"  />
                       </div>
                     </div>
                   </div>
@@ -4183,7 +4439,7 @@
                     style="background: #b41e26"
                     type="button"
                     class="btn btn-outline-dark"
-                    (click)="guardarLugarDelEvento()"
+                    (click)="guardarCronogramaDetalle()"
                   >
                     Guardar Cambios
                   </button>
@@ -4269,13 +4525,12 @@
                 <td scope="col">{{ item.id }}</td>
                 <td scope="col " *ngIf="!item.validacion">
                   <label class="container" id="c2">
-                  
                     <input
                       type="checkbox"
                       (click)="cambiarEstadoComite(item)"
                       class="chek"
                     />
-                   
+
                     <span class="checkmark"></span>
                   </label>
                 </td>
@@ -4360,11 +4615,7 @@
                 <div class="form-group">
                   <label>Tipo Comité</label>
                   <br />
-                  <div
-                    class="d-inline-block"
-                    ngbDropdown
-                    #drop="ngbDropdown"
-                  >
+                  <div class="d-inline-block" ngbDropdown #drop="ngbDropdown">
                     <button
                       style="color: black"
                       type="button"
@@ -4495,9 +4746,7 @@
     <li [ngbNavItem]="6">
       <a ngbNavLink>Usuarios</a>
 
-      <ng-template ngbNavContent>
-       
-      </ng-template>
+      <ng-template ngbNavContent> </ng-template>
     </li>
   </ul>
 
