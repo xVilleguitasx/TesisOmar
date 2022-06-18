@@ -72,6 +72,7 @@ export class RegistroComponent implements OnInit {
   direccion: string = "";
   idTipoInscripcion: number;
   idTipoPaper: number;
+  tituloDelPaper: string='';
   idPaper: string;
   idCarrera: number;
   idSemestre: number;
@@ -297,10 +298,11 @@ export class RegistroComponent implements OnInit {
       this.telefono != "" &&
       this.idLenguaje != null &&
       this.cedulaCorrecta &&
-      this.mailValido
+      this.mailValido 
+      
     ) {
       if (this.idTipoInscripcion === 1) {
-        if (this.idPaper != null && this.idTipoPaper != null) {
+        if (this.idPaper != null && this.idTipoPaper != null && this.tituloDelPaper!='') {
           this.idCarrera = null;
           this.idParalelo = null;
           this.idSemestre = null;
@@ -589,6 +591,7 @@ export class RegistroComponent implements OnInit {
                     id_inscripcion: this.idInscripcion,
                     id_paper: this.idPaper.toString(),
                     id_tipopaper: this.idTipoPaper,
+                    titulo:this.tituloDelPaper
                   };
                   this.paperService.updatePaper(this.paperGuardar).subscribe();
                 }
@@ -676,6 +679,7 @@ export class RegistroComponent implements OnInit {
             id_inscripcion: this.idInscripcion,
             id_paper: this.idPaper.toString(),
             id_tipopaper: this.idTipoPaper,
+            titulo:this.tituloDelPaper
           };
           this.paperService.insertPaper(this.paperGuardar).subscribe(()=>{});
         }

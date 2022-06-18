@@ -12,7 +12,7 @@ export class FooterInicioComponent implements OnInit {
   constructor(
     private patrocinadoresService: PatrocinadoresService
   ) { }
-  URL = "http://localhost:3000/";
+
   urlglobal:string='./assets/patrocinadores/'
   imagenes:string[] = [this.urlglobal+'aisti.png',this.urlglobal+'cedia.png',this.urlglobal+'cit.png',this.urlglobal+'dide.png',this.urlglobal+'rtc redu.png',this.urlglobal+'springer.png'];
   urlglobarlredessociales = './assets/redes-sociales/'

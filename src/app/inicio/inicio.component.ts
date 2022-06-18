@@ -39,6 +39,7 @@ import { ProgramaService } from "../services/programa.service";
 import { TemarioTemasService } from "../services/temario-temas.service";
 import { TemarioService } from "../services/temario.service";
 import emailjs, { EmailJSResponseStatus } from "@emailjs/browser";
+import { environment } from "../../environments/environment";
 import Swal from "sweetalert2";
 @Component({
   selector: "app-inicio",
@@ -75,7 +76,7 @@ export class InicioComponent implements OnInit {
   telefonoContacto: string = "";
   correoContacto: string = "";
   mensajeContacto: string = "";
-  URL = "http://localhost:3000/";
+  URL :  string = environment.api;
   constructor(
     private _comiteService: ComiteService,
     private _edicionService: EdicionService,

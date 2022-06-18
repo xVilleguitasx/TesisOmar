@@ -90,6 +90,7 @@ import { InicioGaleriaService } from "../../../app/services/inicio-galeria.servi
 import { ProgramaJornadaService } from "../../../app/services/programa-jornada.service";
 import { ProgramaDiasService } from "../../../app/services/programa-dias.service";
 import { ProgramaDetalleService } from "../../../app/services/programa-detalle.service";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "app-tablero",
@@ -97,7 +98,7 @@ import { ProgramaDetalleService } from "../../../app/services/programa-detalle.s
   styleUrls: ["./tablero.component.css"],
 })
 export class TableroComponent implements OnInit {
-  URL = "http://localhost:3000/";
+  URL :  string = environment.api;
   idPatrocinador: number = null;
   idInfoRegistro: number = null;
   documento = null;

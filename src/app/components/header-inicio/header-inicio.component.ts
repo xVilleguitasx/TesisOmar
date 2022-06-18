@@ -3,6 +3,7 @@ import { ImagenesPortada } from "../../models/imagenesPortada.model";
 import { ImagenPortadaService } from "../../services/imagen-portada.service";
 import { InformacionCongreso } from "../../models/informacionCongreso.model";
 import { InformacionCongresoService } from "../../services/informacion-congreso.service";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "app-header-inicio",
@@ -10,7 +11,7 @@ import { InformacionCongresoService } from "../../services/informacion-congreso.
   styleUrls: ["./header-inicio.component.css"],
 })
 export class HeaderInicioComponent implements OnInit {
-  URL = "http://localhost:3000/";
+  URL :  string = environment.api;
   infoCongreso: InformacionCongreso = {
     id:1,
   nombre: "",
