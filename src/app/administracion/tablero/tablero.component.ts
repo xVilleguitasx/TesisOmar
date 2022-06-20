@@ -91,6 +91,8 @@ import { ProgramaJornadaService } from "../../../app/services/programa-jornada.s
 import { ProgramaDiasService } from "../../../app/services/programa-dias.service";
 import { ProgramaDetalleService } from "../../../app/services/programa-detalle.service";
 import { environment } from "../../../environments/environment";
+import { UsuariosService } from "../../../app/services/usuarios.service";
+import { Usuarios } from "../../../app/models/usuarios.model";
 
 @Component({
   selector: "app-tablero",
@@ -98,7 +100,7 @@ import { environment } from "../../../environments/environment";
   styleUrls: ["./tablero.component.css"],
 })
 export class TableroComponent implements OnInit {
-  URL :  string = environment.api;
+  URL :  string = environment.api+"/";
   idPatrocinador: number = null;
   idInfoRegistro: number = null;
   documento = null;
@@ -176,8 +178,10 @@ export class TableroComponent implements OnInit {
     private _inicioGaleriaService: InicioGaleriaService,
     private _programaJornadaService: ProgramaJornadaService,
     private _programaDiasService: ProgramaDiasService,
-    private _programaDetalleService: ProgramaDetalleService
+    private _programaDetalleService: ProgramaDetalleService,
+    private _usuariosService: UsuariosService
   ) {}
+  usuarios:Usuarios[] = [];
   registros: string[] = [
     "Seleccione...",
     "Todos los registros",
@@ -437,6 +441,13 @@ cronogramaDiaFecha:string = "";
     this.getProgramaJornada();
     this.getProgramaDias();
     this.getProgramaDetalle();
+    this.getUsuarios();
+  }
+  getUsuarios() {
+   this._usuariosService.getUsuarios().subscribe((result) => {
+    this.usuarios= result;
+    console.log(result);
+   })
   }
   getProgramaDetalle() {
     this._programaDetalleService.getProgramaDetalle().subscribe((result) => {

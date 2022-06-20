@@ -4710,7 +4710,53 @@
     <li [ngbNavItem]="6">
       <a ngbNavLink>Usuarios</a>
 
-      <ng-template ngbNavContent> </ng-template>
+      <ng-template ngbNavContent> 
+        <button class="btn" >
+          <i class="fa fa-plus" aria-hidden="true"></i> Agregar
+          Usuario
+        </button>
+        <div class="scrollme">
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr style="font-weight: bold; font-size: 12px">
+                <td scope="col">#</td>
+                <td scope="col">Usuario</td>
+             
+                <td scope="col">Tipo Usuario</td>
+                <td scope="col">Opciones</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of usuarios; let indice = index"
+                style="font-size: 10px"
+              >
+                <td scope="col">{{ indice + 1 }}</td>
+                <td scope="col">{{ item.usuario  }}</td>
+               
+                <td scope="col">{{ item.tipo_usuario }}</td>
+                <td>
+                  <button
+                    class="btn"
+                    
+                    style="margin-right: 5px"
+                  >
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button
+                    class="btn"
+                    
+                    style="background: #7a1e19"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+             
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
     </li>
   </ul>
 

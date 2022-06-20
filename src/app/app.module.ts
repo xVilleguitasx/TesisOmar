@@ -16,6 +16,7 @@ import { AdministracionComponent } from "./administracion/administracion.compone
 import { InicioComponent } from "./inicio/inicio.component";
 import { TableroComponent } from "./administracion/tablero/tablero.component";
 import { ChartsModule } from 'ng2-charts';
+import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 
 
 
@@ -40,7 +41,7 @@ import { ChartsModule } from 'ng2-charts';
     InicioComponent,
     TableroComponent,
   ],
-  providers: [],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

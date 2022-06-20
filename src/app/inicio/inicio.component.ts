@@ -76,7 +76,7 @@ export class InicioComponent implements OnInit {
   telefonoContacto: string = "";
   correoContacto: string = "";
   mensajeContacto: string = "";
-  URL :  string = environment.api;
+  URL :  string = environment.api+"/";
   constructor(
     private _comiteService: ComiteService,
     private _edicionService: EdicionService,

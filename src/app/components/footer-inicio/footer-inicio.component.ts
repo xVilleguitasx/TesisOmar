@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { Patrocinador } from '../../../app/models/patrocinador.model';
 import { PatrocinadoresService } from '../../../app/services/patrocinadores.service';
 
@@ -9,6 +10,7 @@ import { PatrocinadoresService } from '../../../app/services/patrocinadores.serv
 })
 export class FooterInicioComponent implements OnInit {
   patrocinadores: Patrocinador[]=[];
+  URL :  string = environment.api+"/";
   constructor(
     private patrocinadoresService: PatrocinadoresService
   ) { }

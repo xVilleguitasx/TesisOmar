@@ -11,7 +11,7 @@ import { environment } from "../../../environments/environment";
   styleUrls: ["./header-inicio.component.css"],
 })
 export class HeaderInicioComponent implements OnInit {
-  URL :  string = environment.api;
+  URL :  string = environment.api+"/";
   infoCongreso: InformacionCongreso = {
     id:1,
   nombre: "",
