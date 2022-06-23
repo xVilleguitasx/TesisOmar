@@ -247,10 +247,10 @@ export class InicioComponent implements OnInit {
     e.preventDefault();
     emailjs
       .sendForm(
-        "service_61nw55v",
-        "template_2psxoxg",
+        "service_tog3xds",
+        "template_7jqkydj",
         e.target as HTMLFormElement,
-        "eRmeO7EXOVVDcz4cY"
+        "yeeju8ULL7flDQq3x"
       )
       .then(
         (result: EmailJSResponseStatus) => {

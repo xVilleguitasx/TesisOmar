@@ -6,9 +6,9 @@
     style="margin-top: 5px; margin-left: 10px"
     style="background-color: #802417; color: #fff"
   >
-    <div class="row" *ngIf="informacionCongreso.length!=0">
+    <div class="row" *ngIf="informacionCongreso.length!=0" style="font-family: Rubik">
       <div class="col-md-10">
-        <label> {{ informacionCongreso[0].fecha }}</label>
+        <label > {{ informacionCongreso[0].fecha }}</label>
         <br />
         <label style="font-weight: bold; font-size: 1.5rem">
           {{ informacionCongreso[0].nombre }}</label
@@ -2451,6 +2451,7 @@
                       <button
                         class="btn"
                         (click)="EliminarGaleriaLugar(item.id)"
+                        style="background: #b41e26"
                       >
                         Eliminar
                       </button>
@@ -2572,7 +2573,7 @@
                       >
                         Editar
                       </button>
-                      <button class="btn" (click)="openGaleriaModal(item.id)">
+                      <button class="btn" (click)="eliminarGaleriaInformacion(item.id)"  style="background: #b41e26">
                         Eliminar
                       </button>
                     </div>

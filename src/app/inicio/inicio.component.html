@@ -2,6 +2,7 @@
   <!-- Header -->
   <app-header-inicio></app-header-inicio>
   <!-- Contenido de la pagina -->
+  <div id="google_translate_element" style="position: absolute; z-index: 10000; right: 0"></div>
   <ul
     ngbNav
     #nav="ngbNav"
@@ -366,15 +367,35 @@
             <a ngbNavLink>INFORMACION</a>
             <ng-template ngbNavContent>
               <div class="row" *ngFor="let item of envioTrabajos">
-                <div class="col-md-6 mx-auto my-5">
+                <div class="col-md-12 mx-auto my-5">
                   {{ item.texto }}
                 </div>
-                <div class="col-md-6 mx-auto my-5">
+                <div class="col-md-12 mx-auto my-5" style="max-width: 500px;">
                   <img
                     class="img-fluid z-depth-1"
                     [src]="URL + item.boton"
                     (click)="abrirEnlace(item.link)"
                   />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 " style="text-align: center !important">
+                  <h3 class="titulo" style="color: #7a1e19">
+                    FORMATOS
+                  </h3>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                  class="col-md-4 mx-auto my-5"
+                  *ngFor="let item of envioTrabajosFormatos"
+                  (click)="abrirEnlace(item.link)"
+                  style="cursor: pointer; text-align: center"
+                >
+                  <a
+                    ><img class="img-fluid z-depth-1" [src]="URL + item.boton"
+                  /></a>
+                  <label style="text-align: justify"> {{ item.texto }} </label>
                 </div>
               </div>
             </ng-template>
@@ -444,24 +465,7 @@
               </div>
             </ng-template>
           </li>
-          <li [ngbNavItem]="4">
-            <a ngbNavLink>FORMATOS</a>
-            <ng-template ngbNavContent>
-              <div class="row">
-                <div
-                  class="col-md-4 mx-auto my-5"
-                  *ngFor="let item of envioTrabajosFormatos"
-                  (click)="abrirEnlace(item.link)"
-                  style="cursor: pointer; text-align: center"
-                >
-                  <a
-                    ><img class="img-fluid z-depth-1" [src]="URL + item.boton"
-                  /></a>
-                  <label style="text-align: justify"> {{ item.texto }} </label>
-                </div>
-              </div>
-            </ng-template>
-          </li>
+         
         </ul>
 
         <div [ngbNavOutlet]="nav" class="mt-2"></div>

@@ -3636,5 +3636,51 @@ inicioGaleriaSeleccionado:InicioGaleria=undefined;
       }
     });
   }
+  EliminarGaleriaLugar(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar imagen?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._galeriaLugarService
+          .deleteGaleria(id)
+          .subscribe((result) => {
+            this.getGaleriaLugar();
+          });
+      } else {
+      }
+    });
+  }
+  eliminarGaleriaInformacion(id: string) {
+    Swal.fire({
+      title: "Los datos se eliminaran permanentemente",
+      text: "Eliminar imagen?",
+      icon: "question",
+      iconColor: "#7A1E19",
+      color: "#7A1E19",
+      showCancelButton: true,
+      confirmButtonColor: "#7A1E19",
+      cancelButtonColor: "#85929E",
+      confirmButtonText: "SI",
+      cancelButtonText: "NO",
+    }).then((result) => {
+      if (result.value) {
+        this._galeriaInformacionService
+          .deleteGaleria(id)
+          .subscribe((result) => {
+            this.getGaleriaInformacion();
+          });
+      } else {
+      }
+    });
+  }
   
 }

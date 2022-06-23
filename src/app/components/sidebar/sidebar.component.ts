@@ -3,6 +3,8 @@ import { Edicion } from "../../../app/models/edicion.model";
 import { EdicionService } from "../../../app/services/edicion.service";
 import { Config } from "../../../app/models/config.model";
 import { ConfiguracionService } from "../../../app/services/configuracion.service";
+import { InformacionCongreso } from "../../../app/models/informacionCongreso.model";
+import { InformacionCongresoService } from "../../..//app/services/informacion-congreso.service";
 
 declare interface RouteInfo {
   path: string;
@@ -50,17 +52,30 @@ export var ROUTES: RouteInfo[] = [
   styleUrls: ["./sidebar.component.css"],
 })
 export class SidebarComponent implements OnInit {
-  edicionActual: Edicion;
+  infoCongreso: InformacionCongreso = {
+    id:1,
+  nombre: "",
+  titulo: "",
+  fecha: "",
+  logo: ""
+  };
   menuItems: any[];
   config: Config[] = [];
   constructor(
     private configService: ConfiguracionService,
-    private edicionService: EdicionService
+    private _edicionService: EdicionService,
+    private _informacionCongresoService: InformacionCongresoService
   ) {}
 
   ngOnInit() {
   
     this.getConf();
+    this.getInformacionCongreso();
+  }
+  getInformacionCongreso() {
+    this._informacionCongresoService.getInfoAll().subscribe((result) => {
+      this.infoCongreso = result[0];
+    });
   }
   
   getConf() {
@@ -70,7 +85,6 @@ export class SidebarComponent implements OnInit {
         if (element.estado) {
         } else {
           ROUTES = ROUTES.filter((item) => item.title != element.nombre);
-          console.log(element);
         }
       });
       this.menuItems = ROUTES.filter((menuItem) => menuItem);
