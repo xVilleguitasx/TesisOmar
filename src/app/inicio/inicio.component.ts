@@ -41,12 +41,14 @@ import { TemarioService } from "../services/temario.service";
 import emailjs, { EmailJSResponseStatus } from "@emailjs/browser";
 import { environment } from "../../environments/environment";
 import Swal from "sweetalert2";
+
 @Component({
   selector: "app-inicio",
   templateUrl: "./inicio.component.html",
   styleUrls: ["./inicio.component.css"],
 })
 export class InicioComponent implements OnInit {
+
   active = 1;
   comite = 1;
   trabajos = 1;
@@ -76,7 +78,7 @@ export class InicioComponent implements OnInit {
   telefonoContacto: string = "";
   correoContacto: string = "";
   mensajeContacto: string = "";
-  URL :  string = environment.api+"/";
+  URL: string = environment.api + "/";
   constructor(
     private _comiteService: ComiteService,
     private _edicionService: EdicionService,
@@ -97,7 +99,8 @@ export class InicioComponent implements OnInit {
     private _programaJornadaService: ProgramaJornadaService,
     private _programaDiasService: ProgramaDiasService,
     private _programaDetalleService: ProgramaDetalleService,
-    config: NgbAccordionConfig
+    config: NgbAccordionConfig,
+    
   ) {
     config.closeOthers = true;
     config.type = "info";
@@ -228,6 +231,8 @@ export class InicioComponent implements OnInit {
       this.ediciones = result;
     });
   }
+
+
   getInvestigadores() {
     this._investigadoresService.getInvestigadores().subscribe((result) => {
       this.investigadores = result;
@@ -271,12 +276,14 @@ export class InicioComponent implements OnInit {
   }
   confirmacionEmail() {
     Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Correo enviado',
-      text:'Pronto nos pondremos en contacto contigo',
+      position: "center",
+      icon: "success",
+      title: "Correo enviado",
+      text: "Pronto nos pondremos en contacto contigo",
       showConfirmButton: false,
-      timer: 1500
-    })
+      timer: 1500,
+    });
   }
+ 
+
 }
