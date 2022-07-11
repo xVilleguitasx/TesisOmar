@@ -93,6 +93,7 @@ import { ProgramaDetalleService } from "../../../app/services/programa-detalle.s
 import { environment } from "../../../environments/environment";
 import { UsuariosService } from "../../../app/services/usuarios.service";
 import { Usuarios } from "../../../app/models/usuarios.model";
+import { MailerService } from "../../../app/services/mailer.service";
 
 @Component({
   selector: "app-tablero",
@@ -100,7 +101,8 @@ import { Usuarios } from "../../../app/models/usuarios.model";
   styleUrls: ["./tablero.component.css"],
 })
 export class TableroComponent implements OnInit {
-  URL :  string = environment.api+"/";
+  rol = localStorage.getItem("rol");
+  URL: string = environment.api + "/";
   idPatrocinador: number = null;
   idInfoRegistro: number = null;
   documento = null;
@@ -113,6 +115,7 @@ export class TableroComponent implements OnInit {
   inscripcionesValidadas: AdminsInscrip[];
   inscripciones: AdminsInscrip[] = [];
   inscripcionesFiltradas: AdminsInscrip[] = [];
+  inscripcionSeleccinada: AdminsInscrip = undefined ;
   pageSizeComite = 10;
   pageComite = 1;
   closeResult = "";
@@ -179,9 +182,10 @@ export class TableroComponent implements OnInit {
     private _programaJornadaService: ProgramaJornadaService,
     private _programaDiasService: ProgramaDiasService,
     private _programaDetalleService: ProgramaDetalleService,
-    private _usuariosService: UsuariosService
+    private _usuariosService: UsuariosService,
+    private _mailerService: MailerService
   ) {}
-  usuarios:Usuarios[] = [];
+  usuarios: Usuarios[] = [];
   registros: string[] = [
     "Seleccione...",
     "Todos los registros",
@@ -374,20 +378,20 @@ export class TableroComponent implements OnInit {
   programaDetalle: ProgramaDetalle[] = [];
   inicioSeleccionado: Inicio = undefined;
   ////////////////////////////////
-  inicioGaleriaImagen:string = "";
-inicioGaleriaLink:string = "";
-/////////////
-texto_llamado_inicio = "";
-imagen_llamado_inicio = "";
-link_llamado_inicio = "";
-////////////
-cronogramaDetalleActividad:string = "";
-cronogramaDetalleHora:string = "";
-cronogramaDiaSeleccinado:ProgramaDias=undefined;
-cronogramaDetalleSeleccionado:ProgramaDetalle=undefined;
-//
-cronogramaJornadaSeleccinado:ProgramaJornada=undefined;
-cronogramaDiaFecha:string = "";
+  inicioGaleriaImagen: string = "";
+  inicioGaleriaLink: string = "";
+  /////////////
+  texto_llamado_inicio = "";
+  imagen_llamado_inicio = "";
+  link_llamado_inicio = "";
+  ////////////
+  cronogramaDetalleActividad: string = "";
+  cronogramaDetalleHora: string = "";
+  cronogramaDiaSeleccinado: ProgramaDias = undefined;
+  cronogramaDetalleSeleccionado: ProgramaDetalle = undefined;
+  //
+  cronogramaJornadaSeleccinado: ProgramaJornada = undefined;
+  cronogramaDiaFecha: string = "";
   resetVariables() {
     this.documento = null;
     this.file = null;
@@ -410,8 +414,11 @@ cronogramaDiaFecha:string = "";
   }
 
   ngOnInit(): void {
-    this.getInscripciones();
-    this.inscripcionesFiltradas = this.inscripciones;
+    if (this.rol === "COMITE_ORGANIZADOR") {
+      this.active = 2;
+    }
+ 
+      this.getInscripciones();
     this.CargarDatosCombos();
     this.obtenerConfiguracion();
     this.getPatrocinadores();
@@ -444,10 +451,9 @@ cronogramaDiaFecha:string = "";
     this.getUsuarios();
   }
   getUsuarios() {
-   this._usuariosService.getUsuarios().subscribe((result) => {
-    this.usuarios= result;
-    console.log(result);
-   })
+    this._usuariosService.getUsuarios().subscribe((result) => {
+      this.usuarios = result;
+    });
   }
   getProgramaDetalle() {
     this._programaDetalleService.getProgramaDetalle().subscribe((result) => {
@@ -455,8 +461,8 @@ cronogramaDiaFecha:string = "";
     });
   }
   getProgramaDias() {
-    this.DiasMatutina=[];
-    this.DiasVespertina=[];
+    this.DiasMatutina = [];
+    this.DiasVespertina = [];
     this._programaDiasService.getProgramaDias().subscribe((result) => {
       this.programaDias = result;
       result.forEach((dia) => {
@@ -469,7 +475,6 @@ cronogramaDiaFecha:string = "";
   getProgramaJornada() {
     this._programaJornadaService.getProgramaJornada().subscribe((result) => {
       this.programaJornada = result;
-      console.log("Detalle", result);
     });
   }
   getInicioGaleria() {
@@ -605,17 +610,14 @@ cronogramaDiaFecha:string = "";
     });
   }
   getInscripciones() {
-    this._adminInscripService
-      .getInscripciones()
-      .subscribe(
-        (result) => (
-          (this.inscripcionesFiltradas = result),
-          (this.inscripciones = result),
-          (this.inscripcionesValidadas = result.filter(
-            (element) => element.estado === "V"
-          ))
-        )
+    this._adminInscripService.getInscripciones().subscribe((result) => {
+      this.inscripcionesFiltradas = result;
+      this.inscripciones = result;
+      this.inscripcionesValidadas = result.filter(
+        (element) => element.estado === "V"
       );
+      console.log("inscripciones ", result);
+    });
   }
   cambiarConfiguracion(conf: Config) {
     conf.estado = !conf.estado;
@@ -994,7 +996,6 @@ cronogramaDiaFecha:string = "";
     this.inscripcion.forEach((element) => {
       if (element.nom_inscr === "AUTHOR") {
         this.totalRecaudacionAutores = this.totalAutores * element.costo;
-        console.log(this.totalAutoresValidados, element.costo);
       } else if (element.nom_inscr === "PROFESSIONAL") {
         this.totalRecaudacionProfesionales =
           this.totalProfesionales * element.costo;
@@ -1500,14 +1501,12 @@ cronogramaDiaFecha:string = "";
         this._carreraService
           .insertCarrera(carreraGuardar)
           .subscribe((result) => {
-            console.log(result);
             this.CargarCarreras();
             this.cerrarModal();
           });
       } else {
         carreraGuardar.id = this.idCarreraActual;
         this._carreraService.editCarrera(carreraGuardar).subscribe((result) => {
-          console.log(result);
           this.CargarCarreras();
           this.cerrarModal();
         });
@@ -1589,7 +1588,6 @@ cronogramaDiaFecha:string = "";
         edicion: year,
         validacion: this.validarComite,
       };
-      console.log(this.idComite);
       if (this.idComite === null) {
         this._comiteService.insertComite(comiteGuardar).subscribe((result) => {
           this.getComite();
@@ -1751,7 +1749,6 @@ cronogramaDiaFecha:string = "";
   }
   editarEstadoIscripcion() {
     this.estadoInscripcion = !this.estadoInscripcion;
-    console.log(this.estadoInscripcion);
   }
   openInvestigadores(content) {
     this.modalRef = this._modalService.open(content, { size: "lg" });
@@ -2017,8 +2014,6 @@ cronogramaDiaFecha:string = "";
     ) {
       canvas.getContext("2d");
 
-      console.log(canvas.height + "  " + canvas.width);
-
       var imgData = canvas.toDataURL("image/jpeg", 1.0);
       var pdf = new jsPDF("p", "pt", [PDF_Width, PDF_Height]);
       pdf.addImage(
@@ -2212,7 +2207,6 @@ cronogramaDiaFecha:string = "";
   selectImgPortada(event) {
     this.file = event.target.files[0];
     this.imagenPortada = this.file.name;
-    console.log(this.imagenPortada);
   }
   editImgPortada(item: ImagenesPortada, content) {
     this.idImgPortada = item.id;
@@ -2790,7 +2784,6 @@ cronogramaDiaFecha:string = "";
         }, 5000);
       }
     } else {
-      console.log(this.informacionTuristicaSeleccionada);
       this._informacionTuristica
         .editInformacionTuristica(
           this.informacionTuristicaSeleccionada.id,
@@ -2870,7 +2863,7 @@ cronogramaDiaFecha:string = "";
     this.file = event.target.files[0];
     this.imagenPrograma = this.file.name;
   }
-  pdfPrograma:string = "";
+  pdfPrograma: string = "";
   selectPDFPrograma(event) {
     this.file2 = event.target.files[0];
     this.pdfPrograma = this.file2.name;
@@ -2879,15 +2872,14 @@ cronogramaDiaFecha:string = "";
     if (this.descripcionPrograma != "") {
       var data = new FormData();
       data.append("descripcion", this.descripcionPrograma);
-      this.file!= undefined ? data.append("imagen", this.file) : "";
-      this.file2!= undefined ? data.append("triptico", this.file2) : "";
+      this.file != undefined ? data.append("imagen", this.file) : "";
+      this.file2 != undefined ? data.append("triptico", this.file2) : "";
       if (this.programaSeleccionaado === undefined) {
         this._programaService.insertPrograma(data).subscribe((result) => {
           this.cerrarModal();
           this.getPrograma();
         });
       } else {
-        console.log(this.programaSeleccionaado);
         this._programaService
           .editPrograma(this.programaSeleccionaado.id, data)
           .subscribe((result) => {
@@ -3136,7 +3128,6 @@ cronogramaDiaFecha:string = "";
     }
   }
   eliminarEnvioTrabajosFechas(id: string) {
-    console.log(id);
     Swal.fire({
       title: "Los datos se eliminaran permanentemente",
       text: "Eliminar fecha?",
@@ -3310,9 +3301,9 @@ cronogramaDiaFecha:string = "";
   openInicio(content, inicio: Inicio) {
     this.inicioSeleccionado = inicio;
     if (this.inicioSeleccionado != undefined) {
-      this.texto_llamado_inicio=this.inicioSeleccionado.texto_llamado;
-      this.imagen_llamado_inicio=this.inicioSeleccionado.imagen_llamado;
-      this.link_llamado_inicio=this.inicioSeleccionado.link_llamado;
+      this.texto_llamado_inicio = this.inicioSeleccionado.texto_llamado;
+      this.imagen_llamado_inicio = this.inicioSeleccionado.imagen_llamado;
+      this.link_llamado_inicio = this.inicioSeleccionado.link_llamado;
     }
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
@@ -3330,7 +3321,7 @@ cronogramaDiaFecha:string = "";
     this.imagen_llamado_inicio = "";
     this.link_llamado_inicio = "";
     this.file = undefined;
-    this.inicioSeleccionado=undefined;
+    this.inicioSeleccionado = undefined;
   }
   selectImgLlamadoInicio(event) {
     this.file = event.target.files[0];
@@ -3340,19 +3331,17 @@ cronogramaDiaFecha:string = "";
     if (this.texto_llamado_inicio != "") {
       var data = new FormData();
       data.append("texto_llamado", this.texto_llamado_inicio);
-    this.file!=undefined ?  data.append("imagen_llamado", this.file) : "";
-    data.append("link_llamado", this.link_llamado_inicio);
+      this.file != undefined ? data.append("imagen_llamado", this.file) : "";
+      data.append("link_llamado", this.link_llamado_inicio);
 
       if (this.inicioSeleccionado === undefined) {
-        this._inicioService
-          .insertInicio(data)
-          .subscribe((result) => {
-            this.getInicio();
-            this.cerrarModal();
-          });
+        this._inicioService.insertInicio(data).subscribe((result) => {
+          this.getInicio();
+          this.cerrarModal();
+        });
       } else {
         this._inicioService
-          .editInicio(this.inicioSeleccionado.id,data)
+          .editInicio(this.inicioSeleccionado.id, data)
           .subscribe((result) => {
             this.getInicio();
             this.cerrarModal();
@@ -3379,38 +3368,35 @@ cronogramaDiaFecha:string = "";
       cancelButtonText: "NO",
     }).then((result) => {
       if (result.value) {
-        this._inicioService
-          .deleteInicio(id)
-          .subscribe((result) => {
-            this.getInicio();
-          });
+        this._inicioService.deleteInicio(id).subscribe((result) => {
+          this.getInicio();
+        });
       } else {
       }
     });
   }
   openCronogramaJornada(content, inicio: Inicio) {
-
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
-      (result) => {
-       
-      },
-      (reason) => {
-       
-      }
+      (result) => {},
+      (reason) => {}
     );
   }
-  openCronogramaDias(content,cronogramaJornada:ProgramaJornada, cronogramaDia?:ProgramaDias) {
-    this.cronogramaJornadaSeleccinado=cronogramaJornada;
-    if(cronogramaDia != undefined){
-      this.cronogramaDiaSeleccinado= cronogramaDia;
-      this.cronogramaDiaFecha= cronogramaDia.fecha;
+  openCronogramaDias(
+    content,
+    cronogramaJornada: ProgramaJornada,
+    cronogramaDia?: ProgramaDias
+  ) {
+    this.cronogramaJornadaSeleccinado = cronogramaJornada;
+    if (cronogramaDia != undefined) {
+      this.cronogramaDiaSeleccinado = cronogramaDia;
+      this.cronogramaDiaFecha = cronogramaDia.fecha;
     }
 
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
       (result) => {
-      this.resetVariablesCronogramaDia();
+        this.resetVariablesCronogramaDia();
       },
       (reason) => {
         this.resetVariablesCronogramaDia();
@@ -3418,42 +3404,49 @@ cronogramaDiaFecha:string = "";
     );
   }
 
-  resetVariablesCronogramaDetalle(){
+  resetVariablesCronogramaDetalle() {
     this.cronogramaDetalleActividad = "";
-  this.cronogramaDetalleHora = "";
-  this.cronogramaDiaSeleccinado=undefined;
-  this.cronogramaDetalleSeleccionado=undefined;
+    this.cronogramaDetalleHora = "";
+    this.cronogramaDiaSeleccinado = undefined;
+    this.cronogramaDetalleSeleccionado = undefined;
   }
-  resetVariablesCronogramaDia(){
-  this.cronogramaDiaFecha = "";
-  this.cronogramaDiaSeleccinado=undefined;
-  this.cronogramaJornadaSeleccinado=undefined;
+  resetVariablesCronogramaDia() {
+    this.cronogramaDiaFecha = "";
+    this.cronogramaDiaSeleccinado = undefined;
+    this.cronogramaJornadaSeleccinado = undefined;
   }
-  openCronogramaDetalle(content, cronogramaDiaSeleccinado: ProgramaDias,cronogramaDetalleSeleccionado?:ProgramaDetalle ) {
-    this.cronogramaDiaSeleccinado=cronogramaDiaSeleccinado;
-    
-    if(cronogramaDetalleSeleccionado!= undefined){
-      this.cronogramaDetalleSeleccionado=cronogramaDetalleSeleccionado;
-      this.cronogramaDetalleActividad=cronogramaDetalleSeleccionado.actividad;
-      this.cronogramaDetalleHora=cronogramaDetalleSeleccionado.hora;
+  openCronogramaDetalle(
+    content,
+    cronogramaDiaSeleccinado: ProgramaDias,
+    cronogramaDetalleSeleccionado?: ProgramaDetalle
+  ) {
+    this.cronogramaDiaSeleccinado = cronogramaDiaSeleccinado;
+
+    if (cronogramaDetalleSeleccionado != undefined) {
+      this.cronogramaDetalleSeleccionado = cronogramaDetalleSeleccionado;
+      this.cronogramaDetalleActividad = cronogramaDetalleSeleccionado.actividad;
+      this.cronogramaDetalleHora = cronogramaDetalleSeleccionado.hora;
     }
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
       (result) => {
-      this.resetVariablesCronogramaDetalle();
+        this.resetVariablesCronogramaDetalle();
       },
       (reason) => {
         this.resetVariablesCronogramaDetalle();
       }
     );
   }
-  guardarCronogramaDetalle(){
-    if (this.cronogramaDetalleActividad != ""  && this.cronogramaDetalleHora!='') {
-    const enviar = {
-      hora:this.cronogramaDetalleHora,
-      actividad:this.cronogramaDetalleActividad,
-      dia_per:this.cronogramaDiaSeleccinado.id
-    }
+  guardarCronogramaDetalle() {
+    if (
+      this.cronogramaDetalleActividad != "" &&
+      this.cronogramaDetalleHora != ""
+    ) {
+      const enviar = {
+        hora: this.cronogramaDetalleHora,
+        actividad: this.cronogramaDetalleActividad,
+        dia_per: this.cronogramaDiaSeleccinado.id,
+      };
       if (this.cronogramaDetalleSeleccionado === undefined) {
         this._programaDetalleService
           .insertProgramaDetalle(enviar)
@@ -3463,7 +3456,7 @@ cronogramaDiaFecha:string = "";
           });
       } else {
         this._programaDetalleService
-          .editProgramaDetalle(this.cronogramaDetalleSeleccionado.id,enviar)
+          .editProgramaDetalle(this.cronogramaDetalleSeleccionado.id, enviar)
           .subscribe((result) => {
             this.getProgramaDetalle();
             this.cerrarModal();
@@ -3499,14 +3492,13 @@ cronogramaDiaFecha:string = "";
       }
     });
   }
-  guardarCronogramaDia(){
-    if (this.cronogramaDiaFecha != ""  ) {
-    
+  guardarCronogramaDia() {
+    if (this.cronogramaDiaFecha != "") {
       if (this.cronogramaDiaSeleccinado === undefined) {
         const enviar = {
-          fecha:this.cronogramaDiaFecha,
-          jornada_per:this.cronogramaJornadaSeleccinado.id
-        }
+          fecha: this.cronogramaDiaFecha,
+          jornada_per: this.cronogramaJornadaSeleccinado.id,
+        };
         this._programaDiasService
           .insertProgramaDias(enviar)
           .subscribe((result) => {
@@ -3515,10 +3507,10 @@ cronogramaDiaFecha:string = "";
           });
       } else {
         const enviar = {
-          fecha:this.cronogramaDiaFecha
-        }
+          fecha: this.cronogramaDiaFecha,
+        };
         this._programaDiasService
-          .editProgramaDias(this.cronogramaDiaSeleccinado.id,enviar)
+          .editProgramaDias(this.cronogramaDiaSeleccinado.id, enviar)
           .subscribe((result) => {
             this.getProgramaDias();
             this.cerrarModal();
@@ -3545,52 +3537,47 @@ cronogramaDiaFecha:string = "";
       cancelButtonText: "NO",
     }).then((result) => {
       if (result.value) {
-        this._programaDiasService
-          .deleteProgramaDias(id)
-          .subscribe((result) => {
-            this.getProgramaDias();
-          });
+        this._programaDiasService.deleteProgramaDias(id).subscribe((result) => {
+          this.getProgramaDias();
+        });
       } else {
       }
     });
   }
 
-inicioGaleriaSeleccionado:InicioGaleria=undefined;
-  selectImgInicioGaleria(event){
+  inicioGaleriaSeleccionado: InicioGaleria = undefined;
+  selectImgInicioGaleria(event) {
     this.file = event.target.files[0];
     this.inicioGaleriaImagen = this.file.name;
   }
-  resertVariablesInicioGaleria(){
+  resertVariablesInicioGaleria() {
     this.inicioGaleriaImagen = "";
     this.inicioGaleriaLink = "";
     this.file = undefined;
-    this.inicioGaleriaSeleccionado=undefined;  
+    this.inicioGaleriaSeleccionado = undefined;
   }
-  openInicioGaleria(content, inicioGaleria:InicioGaleria ) {
-   
-    
-    if(inicioGaleria!= undefined){
-      this.inicioGaleriaSeleccionado=inicioGaleria; 
-      this.inicioGaleriaImagen=inicioGaleria.imagen;
-      this.inicioGaleriaLink=inicioGaleria.link;
+  openInicioGaleria(content, inicioGaleria: InicioGaleria) {
+    if (inicioGaleria != undefined) {
+      this.inicioGaleriaSeleccionado = inicioGaleria;
+      this.inicioGaleriaImagen = inicioGaleria.imagen;
+      this.inicioGaleriaLink = inicioGaleria.link;
     }
     this.modalRef = this._modalService.open(content, { size: "lg" });
     this.modalRef.result.then(
       (result) => {
-      this.resertVariablesInicioGaleria();
+        this.resertVariablesInicioGaleria();
       },
       (reason) => {
         this.resertVariablesInicioGaleria();
       }
     );
   }
-  guardarInicioGaleria(){
-    if (this.inicioGaleriaImagen != ""  && this.file!= undefined) {
+  guardarInicioGaleria() {
+    if (this.inicioGaleriaImagen != "" && this.file != undefined) {
       var data = new FormData();
-        data.append("imagen", this.file);
-        data.append("link", this.inicioGaleriaLink);
+      data.append("imagen", this.file);
+      data.append("link", this.inicioGaleriaLink);
       if (this.inicioGaleriaSeleccionado === undefined) {
-      
         this._inicioGaleriaService
           .insertInicioGaleria(data)
           .subscribe((result) => {
@@ -3598,9 +3585,8 @@ inicioGaleriaSeleccionado:InicioGaleria=undefined;
             this.cerrarModal();
           });
       } else {
-        
         this._inicioGaleriaService
-          .editInicioGaleria(this.inicioGaleriaSeleccionado.id,data)
+          .editInicioGaleria(this.inicioGaleriaSeleccionado.id, data)
           .subscribe((result) => {
             this.getInicioGaleria();
             this.cerrarModal();
@@ -3650,11 +3636,9 @@ inicioGaleriaSeleccionado:InicioGaleria=undefined;
       cancelButtonText: "NO",
     }).then((result) => {
       if (result.value) {
-        this._galeriaLugarService
-          .deleteGaleria(id)
-          .subscribe((result) => {
-            this.getGaleriaLugar();
-          });
+        this._galeriaLugarService.deleteGaleria(id).subscribe((result) => {
+          this.getGaleriaLugar();
+        });
       } else {
       }
     });
@@ -3682,5 +3666,47 @@ inicioGaleriaSeleccionado:InicioGaleria=undefined;
       }
     });
   }
-  
+  asunto:string = "";
+  mensaje:string = "";
+  destinatario:string = "";
+  resetVariablesEmail(){
+    this.asunto = "";
+    this.mensaje = "";
+    this.destinatario="";
+  }
+  openEmailIndividual(inscripcion: AdminsInscrip , content){
+    this.destinatario= inscripcion.correo;
+    this.modalRef = this._modalService.open(content, { size: "xl" });
+    this.modalRef.result.then(
+      (result) => {
+        this.resetVariablesEmail();
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        this.resetVariablesEmail();
+      }
+    );
+  }
+  enviarCorreoIndividual(){
+    if(this.mensaje!='' && this.asunto!=""){
+
+    
+    const email ={
+      asunto:this.asunto,
+      destinatario: this.destinatario,
+      mensaje: this.mensaje
+    }
+       this._mailerService
+      .mailInscritos(email).subscribe((result)=>{
+        this.Mensaje("Operación exitosa","Correo enviado correctamente");
+        this.cerrarModal();
+      }); 
+    }else{
+      this.error = true;
+      setTimeout(() => {
+        this.error = false;
+      }, 5000);
+    
+    }
+  }
 }

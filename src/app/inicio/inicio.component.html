@@ -1,6 +1,4 @@
 <div class="container">
- 
-   
   <!-- Header -->
   <app-header-inicio></app-header-inicio>
   <!-- Contenido de la pagina -->
@@ -19,7 +17,7 @@
             <div class="row">
               <div class="col-md-12" *ngFor="let item of inicio">
                 <label>{{ item.texto_llamado }}</label>
-                <br>  
+                <br />
                 <img
                   [src]="URL + item.imagen_llamado"
                   alt=""
@@ -298,60 +296,83 @@
             <div class="row">
               <div class="col-md-3"></div>
               <div class="col-md-6 mx-auto my-5">
-                <img (click)="abrirPDF(item.triptico)" class="img-fluid z-depth-1" [src]="URL + item.imagen" />
+                <img
+                  (click)="abrirPDF(item.triptico)"
+                  class="img-fluid z-depth-1"
+                  [src]="URL + item.imagen"
+                />
               </div>
               <div class="col-md-3"></div>
             </div>
-         
-            <div class="scrollme">
-            <table
-              class="table table-striped mt-3 expand" style="width: 100%"
-              *ngFor="let jornada of programaJornada"
-            >
-              <thead>
-                <tr class="row" style="font-weight: bold;text-align: center;" >
-                  <td class="col"  style="text-align: center; background-color:white; font-size: 20 px">{{ jornada.nombre }}</td>
-                </tr>
-              </thead>
-              <tbody>
-                <div *ngIf="jornada.id === 1">
-                  <tr class="row" style="border: 1px solid #7A1E19"> 
-                    <td  scope="col" *ngFor="let dias of DiasMatutina" class="col" style="text-align: center; background-color:white">
-                      {{ dias.fecha }}
-                      <hr style="background-color:#7A1E19">
-                      <div *ngFor="let detalle of programaDetalle">
-                        <div *ngIf="dias.id === detalle.dia_per">
-                          <label>
-                            {{detalle.hora}}
-                            <br>
-                            {{ detalle.actividad }}
-                          </label>
-                          <hr style="background-color:#7A1E19"> 
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </div>
 
-                <div *ngIf="jornada.id != 1">
-                  <tr class="row" style="border: 1px solid #7A1E19">
-                    <td *ngFor="let dias of DiasVespertina" class="col" style="text-align: center; background-color:white">
-                      {{ dias.fecha }}
-                      <hr style="background-color:#7A1E19">
-                      <div *ngFor="let detalle of programaDetalle">
-                        <div *ngIf="dias.id === detalle.dia_per">
-                          <label>
-                            {{ detalle.actividad }}
-                          </label>
-                          <hr style="background-color:#7A1E19">
-                        </div>
-                      </div>
+            <div class="scrollme">
+              <table
+                class="table table-striped mt-3 expand"
+                style="width: 100%"
+                *ngFor="let jornada of programaJornada"
+              >
+                <thead>
+                  <tr class="row" style="font-weight: bold; text-align: center">
+                    <td
+                      class="col"
+                      style="
+                        text-align: center;
+                        background-color: white;
+                        font-size: 20 px;
+                      "
+                    >
+                      {{ jornada.nombre }}
                     </td>
                   </tr>
-                </div>
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  <div *ngIf="jornada.id === 1">
+                    <tr class="row" style="border: 1px solid #7a1e19">
+                      <td
+                        scope="col"
+                        *ngFor="let dias of DiasMatutina"
+                        class="col"
+                        style="text-align: center; background-color: white"
+                      >
+                        {{ dias.fecha }}
+                        <hr style="background-color: #7a1e19" />
+                        <div *ngFor="let detalle of programaDetalle">
+                          <div *ngIf="dias.id === detalle.dia_per">
+                            <label>
+                              {{ detalle.hora }}
+                              <br />
+                              {{ detalle.actividad }}
+                            </label>
+                            <hr style="background-color: #7a1e19" />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </div>
+
+                  <div *ngIf="jornada.id != 1">
+                    <tr class="row" style="border: 1px solid #7a1e19">
+                      <td
+                        *ngFor="let dias of DiasVespertina"
+                        class="col"
+                        style="text-align: center; background-color: white"
+                      >
+                        {{ dias.fecha }}
+                        <hr style="background-color: #7a1e19" />
+                        <div *ngFor="let detalle of programaDetalle">
+                          <div *ngIf="dias.id === detalle.dia_per">
+                            <label>
+                              {{ detalle.actividad }}
+                            </label>
+                            <hr style="background-color: #7a1e19" />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </div>
+                </tbody>
+              </table>
+            </div>
           </li>
         </ul>
       </ng-template>
@@ -368,24 +389,31 @@
           <li [ngbNavItem]="1">
             <a ngbNavLink>INFORMACION</a>
             <ng-template ngbNavContent>
-              <div class="row" *ngFor="let item of envioTrabajos">
-                <div class="col-md-12 mx-auto my-5">
-                  {{ item.texto }}
-                </div>
-                <div class="col-md-12 mx-auto my-5" style="max-width: 500px;">
-                  <img
-                    class="img-fluid z-depth-1"
-                    [src]="URL + item.boton"
-                    (click)="abrirEnlace(item.link)"
-                  />
-                </div>
-              </div>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of envioTrabajos">
+                  <div class="row">
+                    <div class="col-md-8" style="text-align: justify">
+{{item.texto}}
+                    </div>
+                    <div
+                      class="col-md-4 mx-auto my-5"
+                      style="cursor: pointer"
+                      *ngIf="item.boton != '' && item.boton != null"
+                    >
+                      <img
+                        class="img-fluid z-depth-1"
+                        [src]="URL + item.boton"
+                        (click)="abrirEnlace(item.link)"
+                        style="max-width:300px; max-height:300px"
+                      />
+                    </div>
+                  </div>
+                </li>
+              </ul>
               <hr />
               <div class="row">
-                <div class="col-md-12 ">
-                  <h3 class="titulo" style="color: #7a1e19">
-                    FORMATOS
-                  </h3>
+                <div class="col-md-12">
+                  <h3 class="titulo" style="color: #7a1e19">FORMATOS</h3>
                 </div>
               </div>
               <div class="row">
@@ -454,7 +482,7 @@
                       <td scope="col">Actividad</td>
                     </tr>
                   </thead>
-                  *ngFor="let dia of programaDias"
+                  <!--   *ngFor="let dia of programaDias" -->
                   <tbody>
                     <tr
                       *ngFor="let item of envioTrabajosFechas"
@@ -468,7 +496,6 @@
               </div>
             </ng-template>
           </li>
-         
         </ul>
 
         <div [ngbNavOutlet]="nav" class="mt-2"></div>
@@ -495,24 +522,44 @@
             </section>
           </section>
 
-          <form action="" class="form_contact"  (submit)="sendEmail($event)">
+          <form action="" class="form_contact" (submit)="sendEmail($event)">
             <h2>Envia un mensaje</h2>
             <div class="user_info">
               <label for="names">Nombres *</label>
-              <input type="text" id="names" name="nombre" [(ngModel)]="nombreContacto" />
+              <input
+                type="text"
+                id="names"
+                name="nombre"
+                [(ngModel)]="nombreContacto"
+              />
 
               <label for="phone">Telefono / Celular</label>
-              <input type="text" id="phone" name="numero"  [(ngModel)]="telefonoContacto" />
+              <input
+                type="text"
+                id="phone"
+                name="numero"
+                [(ngModel)]="telefonoContacto"
+              />
 
               <label for="phone">Dirección de correo electrónico</label>
-              <input type="text" id="phone" name="correo" [(ngModel)]="correoContacto" />
+              <input
+                type="text"
+                id="phone"
+                name="correo"
+                [(ngModel)]="correoContacto"
+              />
 
               <label for="mensaje">Mensaje *</label>
-              <textarea id="mensaje" name="mensaje"  [(ngModel)]="mensajeContacto" ></textarea>
+              <textarea
+                id="mensaje"
+                name="mensaje"
+                [(ngModel)]="mensajeContacto"
+              ></textarea>
               <button
                 class="btn"
                 style="background-color: #7a1e19; font-size: 18px"
-                type="submit" value="Send"
+                type="submit"
+                value="Send"
               >
                 Enviar
               </button>

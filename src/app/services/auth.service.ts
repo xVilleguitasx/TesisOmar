@@ -29,6 +29,7 @@ export class AuthService {
     return this.http.post<any>(`${this.api}/auth`, auth).pipe(
       map((res: UserResponse) => {
         localStorage.setItem("token", res.token);
+        localStorage.setItem("rol", res.rol);
         this.loggedId.next(true);
         return res;
       }),

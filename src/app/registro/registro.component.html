@@ -208,10 +208,10 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="tipoAutor">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Teléfono</label>
+                  <label>Título Paper</label>
                   <input type="text" class="form-control mt-2"[ngModelOptions]="{standalone: true}" [(ngModel)]="tituloDelPaper"  onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                 </div>
               </div>
@@ -239,7 +239,7 @@
                     <button type="button" class="btn btn-outline btn-neutral border btn-block" id="dropdownManual"
                       ngbDropdownAnchor (focus)="dropLenguaje.open()">{{tipoIdioma}}</button>
                     <div ngbDropdownMenu aria-labelledby="dropdownManual">
-                      <button ngbDropdownItem *ngFor="let idioma of idiomas"
+                      <button ngbDropdownItem *ngFor="let idioma of c"
                         (click)="CambiarLenguaje(idioma)">{{idioma.idioma}}</button>
                     </div>
                   </div>

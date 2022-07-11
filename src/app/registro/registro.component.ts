@@ -147,7 +147,7 @@ export class RegistroComponent implements OnInit {
   }
   async CargarIdiomas() {
     await this.idiomaService.getIdiomas().subscribe((result) => {
-      this.idiomas = result.filter((element) => element.estado);
+      this.idiomas = result;
     });
   }
   async cargarPapers() {

@@ -29,7 +29,7 @@
   <hr />
   <button (click)="onLogOut()" class="btn btn-danger">Salir</button>
   <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-    <li [ngbNavItem]="1">
+    <li [ngbNavItem]="1"  *ngIf="rol==='ADMINISTRADOR' || rol==='EMPRESA_PUBLICA'">
       <a ngbNavLink>Control inscripciones</a>
       <ng-template ngbNavContent>
         <div class="box mt-3 mb-3">
@@ -39,7 +39,7 @@
               type="search"
               id="search"
               placeholder="Buscar..."
-              (keypress)="busquedaMiltoFiltro()"
+             
               style="border: 1px solid #802417"
               [(ngModel)]="multiFiltro"
             />
@@ -273,6 +273,12 @@
           </div>
           <div class="col-6" style="text-align: right">
             <button
+            class="btn btn-rojo"
+            (click)="openFacturasLote(emailPorLotes)"
+          >
+            Emails por lote
+          </button>
+            <button
               class="btn btn-rojo"
               (click)="openFacturasLote(facturasLote)"
             >
@@ -298,6 +304,7 @@
                 <td scope="col">Celular</td>
                 <td scope="col">Dirección</td>
                 <td scope="col">Factura</td>
+                <td scope="col">Correo</td>
                 <td scope="col">Editar</td>
               </tr>
             </thead>
@@ -372,13 +379,22 @@
                 </td>
                 <td>
                   <button
+                  class="btn"
+                  (click)="openEmailIndividual(inscripcion, emailIndividual)"
+                  style="background-color: #05952A;"
+                >
+                  <i class="fa fa-envelope-o"></i>
+                </button>
+               
+              </td>
+              <td>
+                  <button
                     class="btn"
                     (click)="editarRegistroAdmin(inscripcion, editarIncripcion)"
-                    style="margin-right: 5px"
                   >
                     <i class="fa fa-pencil"></i>
                   </button>
-                  <!--   <button class="btn"   style="background:#7A1E19"><i class="fa-solid fa-trash"></i></button> -->
+                
                 </td>
               </tr>
             </tbody>
@@ -569,7 +585,7 @@
         </ng-template>
       </ng-template>
     </li>
-    <li [ngbNavItem]="2">
+    <li [ngbNavItem]="2" *ngIf="rol==='ADMINISTRADOR' || rol==='COMITE_ORGANIZADOR'">
       <a ngbNavLink>Reportes</a>
 
       <ng-template ngbNavContent>
@@ -584,7 +600,7 @@
         </div>
       </ng-template>
     </li>
-    <li [ngbNavItem]="3">
+    <li [ngbNavItem]="3" *ngIf="rol==='ADMINISTRADOR' || rol==='COMITE_ORGANIZADOR'">
       <a ngbNavLink>Certificados</a>
       <ng-template ngbNavContent>
         <div class="scrollme">
@@ -658,7 +674,7 @@
         ></ngb-pagination>
       </ng-template>
     </li>
-    <li [ngbNavItem]="4">
+    <li [ngbNavItem]="4"*ngIf="rol==='ADMINISTRADOR'">
       <a ngbNavLink>Configuración</a>
 
       <ng-template ngbNavContent>
@@ -3273,7 +3289,7 @@
               <button
                 class="btn"
                 (click)="openEnvioTrabajos(envioTrabajosModal)"
-                *ngIf="envioTrabajos.length === 0"
+                
               >
                 <i class="fa fa-plus" aria-hidden="true"></i> Agregar Envio
                 Trabajo
@@ -3300,7 +3316,7 @@
                         style="background: #b41e26"
                         type="button"
                         class="btn btn-outline-dark"
-                        *ngIf="envioTrabajos.length != 0"
+                      
                         (click)="eliminarEnvioTrabajos(item.id)"
                       >
                         Eliminar
@@ -4417,7 +4433,7 @@
         <div [ngbNavOutlet]="nav" class="mt-2"></div>
       </ng-template>
     </li>
-    <li [ngbNavItem]="5">
+    <li [ngbNavItem]="5" *ngIf="rol==='ADMINISTRADOR' || rol==='COMITE_ORGANIZADOR'">
       <a ngbNavLink>Comité</a>
       <ng-template ngbNavContent>
         <button
@@ -4708,7 +4724,7 @@
         </ng-template>
       </ng-template>
     </li>
-    <li [ngbNavItem]="6">
+    <li [ngbNavItem]="6" *ngIf="rol==='ADMINISTRADOR' ">
       <a ngbNavLink>Usuarios</a>
 
       <ng-template ngbNavContent> 
@@ -4910,7 +4926,148 @@
       </div>
     </div>
   </ng-template>
+  <ng-template #emailPorLotes let-modal>
+    <div class="modal-header">
+      <div style="text-align: center !important; width: 100%">
+        <h4
+          class="modal-title"
+          id="modal-basic-title"
+          style="font-weight: bold"
+        >
+          Email por lotes
+        </h4>
+      </div>
+    </div>
+    <div class="modal-body" >
+      <form >
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label>Asunto</label>
+              <input  type="text" class="form-control mt-2"
+                [ngModelOptions]="{standalone: true}"  >  
 
+            </div>
+          </div>
+        
+        </div>
+        <div class="row">
+          <div class="col-md-12 pr-1">
+            <div class="form-group">
+              <label>Mensaje</label>
+              <textarea  type="text" class="form-control mt-2"
+                [ngModelOptions]="{standalone: true}"  >  
+              </textarea>
+            </div>
+          </div>
+        
+        </div>
+
+       
+        <div style="text-align: center;">
+          <ngb-toast style=" margin: 0 auto;"class="toast" *ngIf="mostrarToas"  [autohide]="false" (hidden)="show=false">
+            Completar todos los datos
+          </ngb-toast>
+        </div>
+        <hr>
+        <div class="button-container" style="text-align: center;">
+          <button
+          style="background: #b1bdbd"
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.close('Save click')"
+        >
+          Cerrar
+        </button>
+          <button class="btn 
+          button-perso"  submit>
+
+            Enviar Correos
+          </button>
+
+        </div>
+      </form>
+     
+    </div>
+    
+  </ng-template>
+  <ng-template #emailIndividual let-modal>
+    <div class="modal-header">
+      <div style="text-align: center !important; width: 100%">
+        <h4
+          class="modal-title"
+          id="modal-basic-title"
+          style="font-weight: bold"
+        >
+          Email individual
+        </h4>
+      </div>
+    </div>
+    <div class="modal-body" >
+      <form >
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label>Destinatario</label>
+              <input  type="text" class="form-control mt-2" disabled
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="destinatario" >  
+
+            </div>
+          </div>
+        
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label>Asunto</label>
+              <input  type="text" class="form-control mt-2"
+                [ngModelOptions]="{standalone: true}"  [(ngModel)]="asunto" >  
+
+            </div>
+          </div>
+        
+        </div>
+        <div class="row">
+          <div class="col-md-12 pr-1">
+            <div class="form-group">
+              <label>Mensaje</label>
+              <textarea  type="text" class="form-control mt-2"
+                [ngModelOptions]="{standalone: true}"  [(ngModel)]="mensaje"  >  
+              </textarea>
+            </div>
+          </div>
+        
+        </div>
+
+       
+        <div style="text-align: center;">
+          <ngb-toast style=" margin: 0 auto;"class="toast" *ngIf="error"  [autohide]="false" (hidden)="show=false">
+            Completar todos los datos
+          </ngb-toast>
+        </div>
+        <hr>
+        <div class="button-container" style="text-align: center;">
+          <button
+          style="background: #b1bdbd"
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.close('Save click')"
+        >
+          Cerrar
+        </button>
+          <button class="btn 
+          button-perso"
+          (click)="enviarCorreoIndividual()"
+          >
+
+            Enviar Correo
+          </button>
+
+        </div>
+      </form>
+     
+    </div>
+  </ng-template>
   <ng-template #reporteInscritos let-modal>
     <div style="margin-left: 30px; margin-top: 30px">
       <div class="row">
